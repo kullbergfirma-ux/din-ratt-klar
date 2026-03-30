@@ -25,8 +25,7 @@ const faqs = [
 ];
 
 const FAQ = () => (
-  <div className="mt-16">
-    <h2 className="text-xl font-bold text-foreground mb-4">Vanliga frågor</h2>
+  <div>
     <Accordion type="single" collapsible className="card-elevated divide-y divide-border">
       {faqs.map((faq, i) => (
         <AccordionItem key={i} value={`faq-${i}`} className="border-none">
