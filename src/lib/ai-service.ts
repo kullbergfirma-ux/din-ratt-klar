@@ -13,29 +13,29 @@ export function getMockAssessment(category: Category, answers: Record<string, st
   sentiment: 'positive' | 'uncertain' | 'negative';
 } {
   const assessments: Record<string, { assessment: string; sentiment: 'positive' | 'uncertain' | 'negative' }> = {
-    flyg: {
+    resor: {
       sentiment: 'positive',
       assessment: `## Bedömning
 
-Baserat på din situation har du sannolikt **rätt till ekonomisk ersättning** enligt EU-förordning 261/2004.
+Baserat på din situation har du sannolikt **rätt till ekonomisk ersättning** enligt tillämplig EU-förordning.
 
 ### Uppskattad ersättning
-- **250–600 €** beroende på flygsträckans längd
-- Kort rutt (<1500 km): **250 €**
-- Medellång rutt (1500–3500 km): **400 €**
-- Lång rutt (>3500 km): **600 €**
+- **Flyg** (EU 261/2004): 250–600 € beroende på sträcka
+- **Tåg** (EU 1371/2007): 25–50% av biljettpriset
+- **Buss** (EU 181/2011): 50% av biljettpriset vid försening >120 min
+- **Färja** (EU 1177/2010): 25–50% av biljettpriset
 
 ### Nästa steg
-1. Kontakta flygbolaget skriftligt med ditt krav
+1. Kontakta transportbolaget/arrangören skriftligt med ditt krav
 2. Om de avslår eller inte svarar inom 6 veckor: anmäl till **ARN** (kostnadsfritt)
-3. Du kan även använda **EU:s klagomålsformulär** för gränsöverskridande flyg
+3. Vid flyg kan du även använda **EU:s klagomålsformulär**
 
-### Undantag att vara medveten om
-Flygbolaget kan undgå ansvar vid *extraordinära omständigheter* som extremväder eller strejk utanför bolagets kontroll.
+### Undantag
+Transportbolaget kan undgå ansvar vid *extraordinära omständigheter* som extremväder eller strejk utanför bolagets kontroll.
 
 *OBS: Detta är vägledning baserad på gällande lagstiftning, inte juridisk rådgivning.*`,
     },
-    reklamation: {
+    'kop-ehandel': {
       sentiment: 'positive',
       assessment: `## Bedömning
 
@@ -45,6 +45,7 @@ Du har sannolikt **rätt att reklamera** produkten enligt Konsumentköplagen (20
 - **3 års reklamationsrätt** från köpdatum
 - Fel som visar sig inom **2 år** anses vara ursprungliga — säljaren har bevisbördan
 - Du har rätt till: avhjälpande, omleverans, prisavdrag eller hävning
+- Vid onlineköp: **14 dagars ångerrätt** enligt distansavtalslagen
 
 ### Uppskattad ersättning
 Reparation eller ersättningsprodukt i första hand. Vid väsentligt fel: **full återbetalning**.
@@ -77,6 +78,52 @@ Beror på skillnaden mellan betald hyra och skälig hyra. Kan bli **tusentals kr
 
 *OBS: Detta är vägledning baserad på gällande lagstiftning, inte juridisk rådgivning.*`,
     },
+    abonnemang: {
+      sentiment: 'positive',
+      assessment: `## Bedömning
+
+Du har sannolikt **rätt till återbetalning** av felaktiga debiteringar enligt distansavtalslagen och avtalslagen.
+
+### Dina rättigheter
+- **14 dagars ångerrätt** för tjänster tecknade online
+- Företaget **ska bekräfta uppsägning skriftligt**
+- Oskäliga bindningstider kan **jämkas** av domstol
+- Felaktiga debiteringar efter uppsägning ska återbetalas
+
+### Uppskattad ersättning
+Alla belopp debiterade efter giltig uppsägning ska återbetalas i sin helhet.
+
+### Nästa steg
+1. Skicka skriftligt krav om återbetalning med 14 dagars frist
+2. Kontakta din bank för att stoppa framtida debiteringar
+3. Om företaget vägrar: anmäl till **ARN**
+
+*OBS: Detta är vägledning baserad på gällande lagstiftning, inte juridisk rådgivning.*`,
+    },
+    hantverkare: {
+      sentiment: 'positive',
+      assessment: `## Bedömning
+
+Du har sannolikt **rätt till avhjälpande** enligt konsumenttjänstlagen (1985:716).
+
+### Dina rättigheter
+- Arbetet ska utföras **fackmässigt** (4 §)
+- Du har rätt att **hålla inne betalning** vid fel (16 §)
+- Hantverkaren ska **åtgärda felet utan kostnad** (20 §)
+- Rätt till **prisavdrag** om avhjälpande inte sker inom skälig tid (21 §)
+- Rätt till **hävning** vid väsentligt fel (22 §)
+
+### Uppskattad ersättning
+Kostnad för att åtgärda felet, alternativt prisavdrag motsvarande värdeminskingen.
+
+### Nästa steg
+1. Dokumentera felet med foton
+2. Kontakta hantverkaren skriftligt med krav på avhjälpande
+3. Sätt en rimlig tidsfrist (normalt 2–4 veckor)
+4. Om de vägrar: anmäl till **ARN**
+
+*OBS: Detta är vägledning baserad på gällande lagstiftning, inte juridisk rådgivning.*`,
+    },
   };
 
   return assessments[category.id] || {
@@ -100,7 +147,7 @@ Baserat på din beskrivning har du sannolikt **rättigheter som konsument** enli
 }
 
 export function getMockLetter(category: Category, answers: Record<string, string>, assessment: string): string {
-  const counterparty = answers.airline || answers.company || answers.organizer || answers.bank || '[MOTPARTENS NAMN]';
+  const counterparty = answers.company || answers.bank || answers.organizer || '[MOTPARTENS NAMN]';
   
   return `[DITT NAMN]
 [DIN ADRESS]

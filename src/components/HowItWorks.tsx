@@ -20,7 +20,7 @@ const steps = [
 ];
 
 const HowItWorks = () => (
-  <section id="hur-fungerar" className="py-20 sm:py-28 bg-background">
+  <section id="hur-fungerar" aria-label="Så fungerar det" className="py-20 sm:py-28 bg-background">
     <div className="max-w-5xl mx-auto px-4">
       <div className="text-center mb-14">
         <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-3">
@@ -31,9 +31,9 @@ const HowItWorks = () => (
         </p>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-8">
+      <ol className="grid md:grid-cols-3 gap-8 list-none p-0">
         {steps.map((step, i) => (
-          <motion.div
+          <motion.li
             key={i}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -51,9 +51,9 @@ const HowItWorks = () => (
               <h3 className="font-bold text-foreground text-lg mb-2">{step.title}</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">{step.description}</p>
             </div>
-          </motion.div>
+          </motion.li>
         ))}
-      </div>
+      </ol>
     </div>
   </section>
 );

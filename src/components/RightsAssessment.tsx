@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '@/components/ui/button';
 import { FileText, ArrowLeft } from 'lucide-react';
+import { SITE_CONFIG } from '@/config/site';
 
 interface Props {
   assessment: string;
@@ -32,7 +33,7 @@ const RightsAssessment = ({ assessment, sentiment, onGenerateLetter, onBack, cre
       </div>
 
       <div className="mt-4 text-xs text-muted-foreground bg-muted/50 rounded-lg p-3">
-        Rätten.se ger vägledning baserad på gällande svensk och EU-lagstiftning. Detta ersätter inte professionell juridisk rådgivning.
+        {SITE_CONFIG.disclaimer}
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 mt-6">
