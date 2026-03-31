@@ -291,21 +291,6 @@ export const categories: Category[] = [
   },
 ];
 
-// Fill in missing legalInfo/faqs/relatedSlugs for resor (first item)
-categories[0].legalInfo = [
-  'EU-förordning 261/2004 (flyg): Ersättning 250–600€ vid försening >3h, inställt eller överbookning',
-  'EU-förordning 1371/2007 (tåg): 25% ersättning vid 60–119 min försening, 50% vid >120 min',
-  'EU-förordning 181/2011 (buss): 50% av biljettpriset vid försening >120 min (resor >250 km)',
-  'EU-förordning 1177/2010 (färja): 25% ersättning vid kortare försening, 50% vid längre',
-  'Paketreselagen (2018:1217): Arrangören ansvarar för hela resan — rätt till prisavdrag',
-  'Avtalslagen 36 §: Oskäliga hotellvillkor kan jämkas',
-];
-categories[0].faqs = [
-  { q: 'Vilken ersättning kan jag få vid försenat flyg?', a: 'Vid försening >3h vid ankomst: 250€ (<1500km), 400€ (1500–3500km) eller 600€ (>3500km).' },
-  { q: 'Gäller EU-reglerna för tåg i Sverige?', a: 'Ja, SJ tillämpar EU-förordning 1371/2007. Du har rätt till ersättning vid försening över 60 minuter.' },
-  { q: 'Vad gör jag om hotellet inte är som utlovat?', a: 'Dokumentera bristerna och reklamera till arrangören/hotellet. Vid paketresa ansvarar arrangören.' },
-];
-categories[0].relatedSlugs = ['leverans', 'betalning-aterkrav', 'kop-ehandel'];
 
 export function getCategoryBySlug(slug: string): Category | undefined {
   return categories.find(c => c.slug === slug);
