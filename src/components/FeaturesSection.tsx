@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ShieldCheck, Clock, BookOpen, BadgeEuro, Gavel, Globe } from 'lucide-react';
+import { SITE_CONFIG } from '@/config/site';
 
 const features = [
   {
@@ -30,16 +31,16 @@ const features = [
   {
     icon: Globe,
     title: 'EU-rättigheter inkluderade',
-    description: 'Flyg, paketresor och gränsöverskridande köp — vi täcker även EU-förordningar.',
+    description: 'Flyg, tåg, buss, färja och paketresor — vi täcker alla EU-förordningar.',
   },
 ];
 
 const FeaturesSection = () => (
-  <section className="py-20 sm:py-28 bg-muted/50">
+  <section aria-label="Funktioner" className="py-20 sm:py-28 bg-muted/50">
     <div className="max-w-5xl mx-auto px-4">
       <div className="text-center mb-14">
         <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-3">
-          Varför Rätten.se?
+          Varför {SITE_CONFIG.name}?
         </h2>
         <p className="text-muted-foreground text-lg max-w-lg mx-auto">
           Vi gör juridiken tillgänglig för alla
