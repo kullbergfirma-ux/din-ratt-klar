@@ -35,6 +35,20 @@ export const categories: Category[] = [
     subtitle: 'Flyg, tåg, buss, färja, hotell och paketresor',
     seoTitle: 'Försenat flyg, tåg eller buss? Kräv ersättning',
     seoDescription: 'Få hjälp att kräva ersättning vid försenat flyg, tåg, buss eller färja. Vi guidar dig genom EU-förordningarna och svensk lag.',
+    legalInfo: [
+      'EU-förordning 261/2004 (flyg): Ersättning 250–600€ vid försening >3h, inställt eller överbookning',
+      'EU-förordning 1371/2007 (tåg): 25% ersättning vid 60–119 min försening, 50% vid >120 min',
+      'EU-förordning 181/2011 (buss): 50% av biljettpriset vid försening >120 min (resor >250 km)',
+      'EU-förordning 1177/2010 (färja): 25% ersättning vid kortare försening, 50% vid längre',
+      'Paketreselagen (2018:1217): Arrangören ansvarar för hela resan — rätt till prisavdrag',
+      'Avtalslagen 36 §: Oskäliga hotellvillkor kan jämkas',
+    ],
+    faqs: [
+      { q: 'Vilken ersättning kan jag få vid försenat flyg?', a: 'Vid försening >3h vid ankomst: 250€ (<1500km), 400€ (1500–3500km) eller 600€ (>3500km).' },
+      { q: 'Gäller EU-reglerna för tåg i Sverige?', a: 'Ja, SJ tillämpar EU-förordning 1371/2007. Du har rätt till ersättning vid försening över 60 minuter.' },
+      { q: 'Vad gör jag om hotellet inte är som utlovat?', a: 'Dokumentera bristerna och reklamera till arrangören/hotellet. Vid paketresa ansvarar arrangören.' },
+    ],
+    relatedSlugs: ['leverans', 'betalning-aterkrav', 'kop-ehandel'],
     questions: [
       { id: 'travel_type', label: 'Typ av resa?', type: 'select', options: ['Flyg', 'Tåg', 'Buss', 'Färja', 'Hotell', 'Paketresa', 'Hyrbil'] },
       { id: 'company', label: 'Transportbolag eller arrangör?', type: 'text', placeholder: 'T.ex. SAS, SJ, FlixBus, Stena Line' },
