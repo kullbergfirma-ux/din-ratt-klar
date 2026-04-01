@@ -3,21 +3,18 @@ import { WebSiteSchema, FAQSchema } from '@/components/StructuredData';
 import HeroSection from '@/components/HeroSection';
 import HowItWorks from '@/components/HowItWorks';
 import CategoriesSection from '@/components/CategoriesSection';
+import ReviewsSection from '@/components/ReviewsSection';
 import FeaturesSection from '@/components/FeaturesSection';
 import PricingSection from '@/components/PricingSection';
 import { SITE_CONFIG } from '@/config/site';
 
-interface Props {
-  onOpenCredits: () => void;
-}
-
 const homeFaqs = [
-  { q: 'Vad kostar det?', a: 'Att se din rättighetsbedömning är helt gratis. Du får 2 credits att börja med. Att generera ett formellt kravbrev kostar 1 credit. Fler credits kan köpas från 19 kr.' },
+  { q: 'Vad kostar det?', a: 'Att se din rättighetsbedömning är helt gratis. Vill du se fullständig analys och kravbrev kostar det 39 kr (Bas) eller 99 kr (Komplett). Engångsbetalning per ärende — ingen prenumeration.' },
   { q: 'Hur säker är bedömningen?', a: 'Bedömningen baseras på gällande svensk och EU-lagstiftning och ger dig en god uppfattning om dina rättigheter. Vid komplexa ärenden rekommenderar vi att du kontaktar Konsumentverket eller en jurist.' },
   { q: 'Vad gör jag om motparten vägrar?', a: 'Om motparten inte svarar eller vägrar kan du anmäla ärendet till ARN (Allmänna reklamationsnämnden) som gör en kostnadsfri prövning.' },
 ];
 
-const HomePage = ({ onOpenCredits }: Props) => (
+const HomePage = () => (
   <main>
     <SEOHead
       title={SITE_CONFIG.tagline}
@@ -30,8 +27,9 @@ const HomePage = ({ onOpenCredits }: Props) => (
     <HeroSection />
     <HowItWorks />
     <CategoriesSection />
+    <ReviewsSection />
     <FeaturesSection />
-    <PricingSection onOpenCredits={onOpenCredits} />
+    <PricingSection />
 
     <section id="faq" aria-label="Vanliga frågor" className="py-20 sm:py-28 bg-background">
       <div className="max-w-3xl mx-auto px-4">
