@@ -55,7 +55,7 @@ export const categories: Category[] = [
       { id: 'company', label: 'Transportbolag eller arrangör?', type: 'text', placeholder: 'T.ex. SAS, SJ, FlixBus, Stena Line' },
       { id: 'date', label: 'Datum för resan?', type: 'date' },
       { id: 'issue', label: 'Vad hände?', type: 'select', options: ['Försening', 'Inställt', 'Överbookning', 'Ej som utlovat', 'Annat'] },
-      { id: 'delay_duration', label: 'Om försening: hur många minuter/timmar?', type: 'text', placeholder: 'T.ex. 3 timmar' },
+      { id: 'delay_duration', label: 'Hur många minuter/timmar var förseningen?', type: 'text', placeholder: 'T.ex. 3 timmar', showWhen: { questionId: 'issue', values: ['Försening'] } },
       { id: 'compensation_offered', label: 'Fick du någon ersättning eller hjälp på plats?', type: 'select', options: ['Ja', 'Nej', 'Delvis'] },
     ],
   },
