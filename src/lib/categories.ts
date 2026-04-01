@@ -4,6 +4,7 @@ export interface CategoryQuestion {
   type: 'text' | 'select' | 'date';
   options?: string[];
   placeholder?: string;
+  showWhen?: { questionId: string; values: string[] };
 }
 
 export interface CategoryFAQ {
