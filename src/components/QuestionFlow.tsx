@@ -3,6 +3,8 @@ import { type Category, type CategoryQuestion } from '@/lib/categories';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import AutocompleteInput from '@/components/AutocompleteInput';
+import { questionCompanyMap } from '@/data/companies';
 
 interface Props {
   category: Category;
@@ -14,8 +16,21 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [currentQ, setCurrentQ] = useState(0);
 
-  const questions = category.questions;
+  // Filter questions based on conditional logic
+  const getVisibleQuestions = (): CategoryQuestion[] => {
+    return category.questions.filter(q => {
+      if (q.showWhen) {
+        const depAnswer = answers[q.showWhen.questionId];
+        return q.showWhen.values.includes(depAnswer);
+      }
+      return true;
+    });
+  };
+
+  const questions = getVisibleQuestions();
   const question = questions[currentQ];
+  if (!question) return null;
+
   const isLast = currentQ === questions.length - 1;
   const canProceed = !!answers[question.id]?.trim();
 
@@ -35,9 +50,14 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
     }
   };
 
+  const hasSuggestions = (qId: string): string[] | undefined => {
+    return questionCompanyMap[qId];
+  };
+
   const renderInput = (q: CategoryQuestion) => {
     const value = answers[q.id] || '';
     const onChange = (val: string) => setAnswers({ ...answers, [q.id]: val });
+    const suggestions = hasSuggestions(q.id);
 
     if (q.type === 'select' && q.options) {
       return (
@@ -66,6 +86,19 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+        />
+      );
+    }
+
+    // Text input — with or without autocomplete
+    if (suggestions) {
+      return (
+        <AutocompleteInput
+          value={value}
+          onChange={onChange}
+          suggestions={suggestions}
+          placeholder={q.placeholder}
+          onKeyDown={(e) => e.key === 'Enter' && canProceed && handleNext()}
         />
       );
     }

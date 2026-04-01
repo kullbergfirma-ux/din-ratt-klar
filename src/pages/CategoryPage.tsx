@@ -1,10 +1,9 @@
-import { useState, useCallback, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getCategoryBySlug } from '@/lib/categories';
-import { getCredits, useCredit } from '@/lib/credits';
 import { getMockAssessment, getMockLetter } from '@/lib/ai-service';
-import { useToast } from '@/hooks/use-toast';
+import { generateCaseId, getTier, setTier, type Tier } from '@/lib/pricing';
 
 import SEOHead from '@/components/SEOHead';
 import { ServiceSchema, FAQSchema } from '@/components/StructuredData';
@@ -12,22 +11,13 @@ import QuestionFlow from '@/components/QuestionFlow';
 import ProgressBar from '@/components/ProgressBar';
 import RightsAssessment from '@/components/RightsAssessment';
 import LetterDisplay from '@/components/LetterDisplay';
-import CreditModal from '@/components/CreditModal';
-import RelatedLinks from '@/components/RelatedLinks';
+import GuidesSection from '@/components/GuidesSection';
 import NotFound from '@/pages/NotFound';
-import { SITE_CONFIG } from '@/config/site';
 import { ArrowRight } from 'lucide-react';
 
 type Step = 'info' | 'questions' | 'loading' | 'assessment' | 'letter';
 
-interface Props {
-  credits: number;
-  refreshCredits: () => void;
-  showCreditModal: boolean;
-  setShowCreditModal: (v: boolean) => void;
-}
-
-const CategoryPage = ({ credits, refreshCredits, showCreditModal, setShowCreditModal }: Props) => {
+const CategoryPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const category = getCategoryBySlug(slug || '');
   const [step, setStep] = useState<Step>('info');
@@ -35,12 +25,16 @@ const CategoryPage = ({ credits, refreshCredits, showCreditModal, setShowCreditM
   const [assessment, setAssessment] = useState('');
   const [sentiment, setSentiment] = useState<'positive' | 'uncertain' | 'negative'>('positive');
   const [letter, setLetter] = useState('');
-  const { toast } = useToast();
+  const [caseId, setCaseId] = useState('');
+  const [tier, setLocalTier] = useState<Tier>('free');
   const toolRef = useRef<HTMLDivElement>(null);
 
   if (!category) return <NotFound />;
 
   const handleStartFlow = () => {
+    const newCaseId = generateCaseId();
+    setCaseId(newCaseId);
+    setLocalTier(getTier(newCaseId));
     setStep('questions');
     setTimeout(() => toolRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
   };
@@ -56,15 +50,13 @@ const CategoryPage = ({ credits, refreshCredits, showCreditModal, setShowCreditM
     }, 2000);
   };
 
-  const handleGenerateLetter = () => {
-    if (credits <= 0) { setShowCreditModal(true); return; }
-    const success = useCredit();
-    if (!success) { setShowCreditModal(true); return; }
-    refreshCredits();
-    const generatedLetter = getMockLetter(category, answers, assessment);
-    setLetter(generatedLetter);
-    setStep('letter');
-    toast({ title: 'Kravbrev genererat!', description: '1 credit har använts.' });
+  const handleUnlock = (newTier: Tier) => {
+    setTier(caseId, newTier);
+    setLocalTier(newTier);
+    if (newTier === 'bas' || newTier === 'komplett') {
+      const generatedLetter = getMockLetter(category, answers, assessment);
+      setLetter(generatedLetter);
+    }
   };
 
   const handleReset = () => {
@@ -72,19 +64,13 @@ const CategoryPage = ({ credits, refreshCredits, showCreditModal, setShowCreditM
     setAnswers({});
     setAssessment('');
     setLetter('');
+    setCaseId('');
+    setLocalTier('free');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const isInFlow = step !== 'info';
   const stepIndex = step === 'questions' ? 1 : 2;
-
-  // Related guides for this category
-  const relatedGuidesSlugs = [];
-  if (category.slug === 'resor') relatedGuidesSlugs.push('forsenat-flyg-ersattning', 'forsenat-tag-ersattning');
-  if (category.slug === 'kop-ehandel') relatedGuidesSlugs.push('reklamera-trasig-produkt');
-  if (category.slug === 'hyra') relatedGuidesSlugs.push('andrahandshyra-regler');
-  if (category.slug === 'abonnemang') relatedGuidesSlugs.push('avsluta-abonnemang');
-  if (category.slug === 'hantverkare') relatedGuidesSlugs.push('fel-pa-hantverksarbete');
 
   return (
     <main className="min-h-screen">
@@ -146,8 +132,8 @@ const CategoryPage = ({ credits, refreshCredits, showCreditModal, setShowCreditM
               </section>
             )}
 
-            {/* Related links */}
-            <RelatedLinks categorySlugs={category.relatedSlugs} guideSlugs={relatedGuidesSlugs} />
+            {/* Guides for this category */}
+            <GuidesSection categorySlug={category.slug} categoryTitle={category.title} />
           </div>
         </section>
       )}
@@ -173,20 +159,19 @@ const CategoryPage = ({ credits, refreshCredits, showCreditModal, setShowCreditM
 
             {step === 'assessment' && (
               <motion.div key="assessment" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
-                <RightsAssessment assessment={assessment} sentiment={sentiment} onGenerateLetter={handleGenerateLetter} onBack={handleReset} credits={credits} />
-              </motion.div>
-            )}
-
-            {step === 'letter' && (
-              <motion.div key="letter" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
-                <LetterDisplay letter={letter} onBack={handleReset} />
+                <RightsAssessment
+                  assessment={assessment}
+                  sentiment={sentiment}
+                  tier={tier}
+                  letter={letter}
+                  onUnlock={handleUnlock}
+                  onBack={handleReset}
+                />
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       )}
-
-      <CreditModal open={showCreditModal} onClose={() => setShowCreditModal(false)} onPurchase={refreshCredits} />
     </main>
   );
 };

@@ -8,7 +8,7 @@ import {
 const faqs = [
   {
     q: 'Vad kostar det?',
-    a: 'Att se din rättighetsbedömning är helt gratis. Du får 2 credits att börja med. Att generera ett formellt kravbrev kostar 1 credit. Fler credits kan köpas från 19 kr.',
+    a: 'Att se din rättighetsbedömning är helt gratis. Vill du se fullständig analys och kravbrev kostar det 39 kr (Bas) eller 99 kr (Komplett). Engångsbetalning per ärende — ingen prenumeration.',
   },
   {
     q: 'Hur säker är bedömningen?',

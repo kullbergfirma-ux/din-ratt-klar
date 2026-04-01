@@ -51,6 +51,7 @@ const Footer = () => (
         <div>
           <h4 className="font-bold text-white mb-3 text-sm uppercase tracking-wider">Resurser</h4>
           <ul className="space-y-2 text-sm">
+            <li><Link to="/guider" className="hover:text-white transition-colors">Alla guider</Link></li>
             <li><Link to="/faq" className="hover:text-white transition-colors">Vanliga frågor</Link></li>
             <li><Link to="/om-oss" className="hover:text-white transition-colors">Om oss</Link></li>
             <li><a href="https://www.konsumentverket.se" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Konsumentverket</a></li>

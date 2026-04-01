@@ -147,40 +147,83 @@ Baserat på din beskrivning har du sannolikt **rättigheter som konsument** enli
 }
 
 export function getMockLetter(category: Category, answers: Record<string, string>, assessment: string): string {
-  const counterparty = answers.company || answers.bank || answers.organizer || '[MOTPARTENS NAMN]';
-  
-  return `[DITT NAMN]
+  const counterparty = answers.company || answers.bank || answers.subscription_company || answers.purchase_company || answers.delivery_company || '[MOTPARTENS FÖRETAGSNAMN]';
+
+  const today = new Date();
+  const deadline = new Date(today);
+  deadline.setDate(deadline.getDate() + 14);
+  const deadlineStr = deadline.toISOString().split('T')[0];
+
+  // Build situation description from answers
+  const situationLines = category.questions
+    .filter(q => answers[q.id])
+    .map(q => `${q.label} ${answers[q.id]}`)
+    .join('. ');
+
+  // Determine relevant legal reference and authority
+  let legalRef = 'gällande konsumentlagstiftning';
+  let authority = 'Allmänna reklamationsnämnden (ARN)';
+
+  if (category.id === 'resor') {
+    const travelType = answers.travel_type || '';
+    if (travelType === 'Flyg') legalRef = 'EU-förordning 261/2004 om flygpassagerares rättigheter';
+    else if (travelType === 'Tåg') legalRef = 'EU-förordning 1371/2007 om tågresenärers rättigheter';
+    else if (travelType === 'Buss') legalRef = 'EU-förordning 181/2011 om busspassagerares rättigheter';
+    else if (travelType === 'Färja') legalRef = 'EU-förordning 1177/2010 om sjöpassagerares rättigheter';
+    else legalRef = 'tillämpliga EU-förordningar och svensk konsumentlagstiftning';
+  } else if (category.id === 'kop-ehandel' || category.id === 'garanti-dolda-fel') {
+    legalRef = 'Konsumentköplagen (2022:260)';
+  } else if (category.id === 'leverans') {
+    legalRef = 'Konsumentköplagen (2022:260) samt Distansavtalslagen (2005:59)';
+  } else if (category.id === 'betalning-aterkrav') {
+    legalRef = 'Betaltjänstlagen';
+    authority = 'Finansinspektionen och ARN';
+  } else if (category.id === 'abonnemang') {
+    legalRef = 'Distansavtalslagen (2005:59) samt Avtalslagen (1915:218) 36 §';
+  } else if (category.id === 'bilkop') {
+    legalRef = answers.seller_type === 'Privatperson' ? 'Köplagen (1990:931)' : 'Konsumentköplagen (2022:260)';
+  } else if (category.id === 'hyra') {
+    legalRef = 'Hyreslagen (12 kap. Jordabalken)';
+    authority = 'Hyresnämnden';
+  } else if (category.id === 'hantverkare') {
+    legalRef = 'Konsumenttjänstlagen (1985:716)';
+  }
+
+  return `[ORT], [DATUM]
+
+[DITT NAMN]
 [DIN ADRESS]
-[POSTNUMMER ORT]
+[POSTNUMMER OCH ORT]
+[DIN E-POST]
+[DITT TELEFONNUMMER]
 
-${counterparty}
-[MOTPARTENS ADRESS]
-
-[ORT], [DATUM]
+Till: ${counterparty}
+[MOTPARTENS ADRESS OM KÄND]
 
 KRAVBREV
 
-Till ${counterparty},
+Grund för kravet:
+Jag vänder mig till er med anledning av följande: ${situationLines}. Med stöd av ${legalRef} framställer jag härmed krav på ersättning/åtgärd. Enligt aktuell lagstiftning har jag som konsument rätt till kompensation i denna situation.
 
-Jag skriver till er angående ${category.title.toLowerCase()} som jag önskar reklamera/kräva ersättning för.
+Exakt belopp som krävs:
+[SPECIFICERAT BELOPP I SEK ELLER EUR]
+Om ränta är aktuellt tillkommer dröjsmålsränta enligt räntelagen.
+Totalt: [BELOPP] kr/€
 
-Bakgrund:
-${category.questions.map(q => `- ${q.label} ${answers[q.id] || '[EJ ANGIVET]'}`).join('\n')}
+Tidsfrist:
+Betalning eller åtgärd ska vara genomförd senast ${deadlineStr}.
 
-Med hänvisning till gällande lagstiftning framställer jag härmed följande krav:
+Betalningsinstruktioner:
+Vänligen genomför betalning till nedanstående konto:
+Bankgiro/Swish: [DITT BANKGIRO ELLER SWISH-NUMMER]
+Vid åtgärd istället för betalning: [BESKRIV VAD SOM KONKRET FÖRVÄNTAS]
 
-1. Ersättning/återbetalning enligt ovan beskrivna rättigheter
-2. Att ni bekräftar mottagande av detta brev inom 14 dagar
-3. Att ärendet hanteras skyndsamt
-
-Om jag inte erhåller ett tillfredsställande svar inom 14 dagar från detta brevs datum kommer jag att anmäla ärendet till Allmänna reklamationsnämnden (ARN) för vidare prövning.
-
-Jag bifogar relevant dokumentation som stöd för mitt krav.
+Konsekvenser vid utebliven betalning:
+Om betalning eller åtgärd inte sker inom angiven tidsfrist kommer ärendet att anmälas till ${authority}. Vi förbehåller oss rätten att kräva ersättning för eventuella tillkommande kostnader.
 
 Med vänliga hälsningar,
 
-____________________________
 [DITT NAMN]
-[TELEFONNUMMER]
-[E-POSTADRESS]`;
+________________________
+Underskrift`;
 }

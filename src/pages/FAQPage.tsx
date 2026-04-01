@@ -6,10 +6,10 @@ const faqGroups = [
   {
     heading: 'Om tjänsten',
     items: [
-      { q: 'Vad kostar det?', a: 'Att se din rättighetsbedömning är helt gratis. Du får 2 credits att börja med. Att generera ett formellt kravbrev kostar 1 credit. Fler credits kan köpas från 19 kr.' },
+      { q: 'Vad kostar det?', a: 'Att se din rättighetsbedömning är helt gratis. Vill du se fullständig analys med belopp, lagparagrafer och kravbrev kostar det 39 kr (Bas) eller 99 kr (Komplett). Engångsbetalning per ärende — ingen prenumeration.' },
       { q: 'Hur säker är bedömningen?', a: 'Bedömningen baseras på gällande svensk och EU-lagstiftning och ger dig en god uppfattning om dina rättigheter. Vid komplexa ärenden rekommenderar vi att du kontaktar Konsumentverket eller en jurist.' },
       { q: 'Sparas min information?', a: 'Nej. All information stannar i din webbläsare och skickas direkt till AI-tjänsten för analys. Vi sparar ingenting på våra servrar.' },
-      { q: 'Behöver jag skapa ett konto?', a: 'Nej, ingen registrering krävs. Credits sparas lokalt i din webbläsare.' },
+      { q: 'Behöver jag skapa ett konto?', a: 'Nej, ingen registrering krävs. Betalning sker per ärende.' },
     ],
   },
   {
