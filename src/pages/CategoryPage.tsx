@@ -160,7 +160,7 @@ const CategoryPage = () => {
           <AnimatePresence mode="wait">
             {step === 'userinfo' && (
               <motion.div key="userinfo" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
-                <UserInfoForm category Title={category.title} onSubmit={handleUserInfoSubmit} onBack={handleReset} />
+                <UserInfoForm categoryTitle={category.title} onSubmit={handleUserInfoSubmit} onBack={handleReset} />
               </motion.div>
             )}
 
