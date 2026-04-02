@@ -41,6 +41,11 @@ const CategoryPage = () => {
   };
 
   const handleQuestionsSubmit = (ans: Record<string, string>) => {
+    const validationError = validateBeforeAnalysis(category, ans);
+    if (validationError) {
+      toast.error(validationError);
+      return;
+    }
     setAnswers(ans);
     setStep('loading');
     setTimeout(() => {
