@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 
 import SEOHead from '@/components/SEOHead';
 import { ServiceSchema, FAQSchema } from '@/components/StructuredData';
+import UserInfoForm, { type UserProfile } from '@/components/UserInfoForm';
 import QuestionFlow from '@/components/QuestionFlow';
 import ProgressBar from '@/components/ProgressBar';
 import RightsAssessment from '@/components/RightsAssessment';
@@ -16,12 +17,13 @@ import GuidesSection from '@/components/GuidesSection';
 import NotFound from '@/pages/NotFound';
 import { ArrowRight } from 'lucide-react';
 
-type Step = 'info' | 'questions' | 'loading' | 'assessment' | 'letter';
+type Step = 'info' | 'userinfo' | 'questions' | 'loading' | 'assessment' | 'letter';
 
 const CategoryPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const category = getCategoryBySlug(slug || '');
   const [step, setStep] = useState<Step>('info');
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [assessment, setAssessment] = useState('');
   const [sentiment, setSentiment] = useState<'positive' | 'uncertain' | 'negative'>('positive');
@@ -36,8 +38,13 @@ const CategoryPage = () => {
     const newCaseId = generateCaseId();
     setCaseId(newCaseId);
     setLocalTier(getTier(newCaseId));
-    setStep('questions');
+    setStep('userinfo');
     setTimeout(() => toolRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+  };
+
+  const handleUserInfoSubmit = (profile: UserProfile) => {
+    setUserProfile(profile);
+    setStep('questions');
   };
 
   const handleQuestionsSubmit = (ans: Record<string, string>) => {
@@ -60,13 +67,14 @@ const CategoryPage = () => {
     setTier(caseId, newTier);
     setLocalTier(newTier);
     if (newTier === 'bas' || newTier === 'komplett') {
-      const generatedLetter = getMockLetter(category, answers, assessment);
+      const generatedLetter = getMockLetter(category, answers, assessment, userProfile || undefined);
       setLetter(generatedLetter);
     }
   };
 
   const handleReset = () => {
     setStep('info');
+    setUserProfile(null);
     setAnswers({});
     setAssessment('');
     setLetter('');
@@ -76,7 +84,7 @@ const CategoryPage = () => {
   };
 
   const isInFlow = step !== 'info';
-  const stepIndex = step === 'questions' ? 1 : 2;
+  const stepIndex = step === 'userinfo' ? 1 : step === 'questions' ? 2 : 3;
 
   return (
     <main className="min-h-screen">
@@ -147,12 +155,18 @@ const CategoryPage = () => {
       {/* Flow */}
       {isInFlow && (
         <div ref={toolRef} className="max-w-[860px] mx-auto px-4 py-8">
-          <ProgressBar current={stepIndex} total={3} />
+          <ProgressBar current={stepIndex} total={4} />
 
           <AnimatePresence mode="wait">
+            {step === 'userinfo' && (
+              <motion.div key="userinfo" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
+                <UserInfoForm category Title={category.title} onSubmit={handleUserInfoSubmit} onBack={handleReset} />
+              </motion.div>
+            )}
+
             {step === 'questions' && (
               <motion.div key="questions" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
-                <QuestionFlow category={category} onSubmit={handleQuestionsSubmit} onBack={handleReset} />
+                <QuestionFlow category={category} onSubmit={handleQuestionsSubmit} onBack={() => setStep('userinfo')} />
               </motion.div>
             )}
 
