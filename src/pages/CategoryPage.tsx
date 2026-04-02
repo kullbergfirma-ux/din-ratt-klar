@@ -2,8 +2,9 @@ import { useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getCategoryBySlug } from '@/lib/categories';
-import { getMockAssessment, getMockLetter } from '@/lib/ai-service';
+import { getMockAssessment, getMockLetter, validateBeforeAnalysis } from '@/lib/ai-service';
 import { generateCaseId, getTier, setTier, type Tier } from '@/lib/pricing';
+import { toast } from 'sonner';
 
 import SEOHead from '@/components/SEOHead';
 import { ServiceSchema, FAQSchema } from '@/components/StructuredData';
