@@ -179,7 +179,7 @@ function analyzeKopEhandel(answers: Record<string, string>): { assessment: strin
   if (purchaseDate && yearsBetween(purchaseDate) > 3) {
     return {
       sentiment: 'negative',
-      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsrätten på tre år har löpt ut enligt Konsumentköplagen 32 §.\n\n### Beräkning\nKöpet gjordes ${purchaseDate}, vilket är ${formatElapsed(purchaseDate)} sedan. Reklamationsrätten löpte ut 3 år efter köpdatumet. Denna situation **faller utanför** reklamationsrätten.\n\n### Nästa steg\nOm du har en separat garanti från tillverkaren som fortfarande är giltig, kontrollera garantivillkoren. Den lagstadgade reklamationsrätten kan dock inte längre tillämpas.${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsrätten på tre år har löpt ut enligt ${LEGAL_LINKS.konsumentkoplagen} 32 §.\n\n### Beräkning\nKöpet gjordes ${purchaseDate}, vilket är ${formatElapsed(purchaseDate)} sedan. Reklamationsrätten löpte ut 3 år efter köpdatumet. Denna situation **faller utanför** reklamationsrätten.\n\n### Juridiska referenser\n- 32 §: Reklamationsrätt i tre år från köpdatum\n- 33 §: Fel som visar sig inom två år presumeras vara ursprungliga\n\n### Nästa steg\nOm du har en separat garanti från tillverkaren som fortfarande är giltig, kontrollera garantivillkoren. Den lagstadgade reklamationsrätten kan dock inte längre tillämpas.${DISCLAIMER}`,
     };
   }
 
