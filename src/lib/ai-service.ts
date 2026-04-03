@@ -250,7 +250,7 @@ function analyzeHantverkare(answers: Record<string, string>): { assessment: stri
   if (workDate && yearsBetween(workDate) > 3) {
     return {
       sentiment: 'negative',
-      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsfristen har löpt ut.\n\n### Beräkning\nArbetet utfördes ${workDate}, vilket är ${formatElapsed(workDate)} sedan. Enligt Konsumenttjänstlagen (1985:716) måste reklamation ske inom **3 år** från det att uppdraget avslutades. Denna situation **faller utanför** reklamationsfristen.${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsfristen har löpt ut.\n\n### Beräkning\nArbetet utfördes ${workDate}, vilket är ${formatElapsed(workDate)} sedan. Enligt ${LEGAL_LINKS.konsumenttjanstlagen} måste reklamation ske inom **3 år** från det att uppdraget avslutades. Denna situation **faller utanför** reklamationsfristen.${DISCLAIMER}`,
     };
   }
 
