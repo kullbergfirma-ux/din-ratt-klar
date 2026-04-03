@@ -57,6 +57,21 @@ function formatElapsed(dateStr: string): string {
 
 const DISCLAIMER = '\n\n*OBS: Detta är juridisk vägledning baserad på angiven information och gällande lagstiftning. Det ersätter inte rådgivning från en jurist. Vid komplexa ärenden rekommenderas kontakt med Konsumentverket eller en kvalificerad jurist.*';
 
+// --- Verified legal references with riksdagen.se links ---
+const LEGAL_LINKS = {
+  konsumentkoplagen: '[Konsumentköplagen (2022:260)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/konsumentkoplag-2022260_sfs-2022-260/)',
+  konsumenttjanstlagen: '[Konsumenttjänstlagen (1985:716)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/konsumenttjanstlag-1985716_sfs-1985-716/)',
+  distansavtalslagen: '[Distansavtalslagen (2005:59)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-200559-om-distansavtal-och-avtal-utanfor_sfs-2005-59/)',
+  koplagen: '[Köplagen (1990:931)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/koplag-1990931_sfs-1990-931/)',
+  avtalslagen: '[Avtalslagen (1915:218)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-1915218-om-avtal-och-andra-rattshandlingar_sfs-1915-218/)',
+  betaltjanstlagen: '[Betaltjänstlagen (2010:751)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-2010751-om-betaltjanster_sfs-2010-751/)',
+  jordabalken: '[Jordabalken (1970:994)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/jordabalk-1970994_sfs-1970-994/)',
+  eu261: '[EU-förordning 261/2004](https://eur-lex.europa.eu/legal-content/SV/TXT/?uri=CELEX%3A32004R0261)',
+  eu1371: '[EU-förordning 1371/2007](https://eur-lex.europa.eu/legal-content/SV/TXT/?uri=CELEX%3A32007R1371)',
+  eu181: '[EU-förordning 181/2011](https://eur-lex.europa.eu/legal-content/SV/TXT/?uri=CELEX%3A32011R0181)',
+  eu1177: '[EU-förordning 1177/2010](https://eur-lex.europa.eu/legal-content/SV/TXT/?uri=CELEX%3A32010R1177)',
+};
+
 // --- Category analyzers with strict deadline enforcement ---
 
 function analyzeResor(answers: Record<string, string>): { assessment: string; sentiment: 'positive' | 'uncertain' | 'negative' } {
@@ -69,7 +84,7 @@ function analyzeResor(answers: Record<string, string>): { assessment: string; se
   if (travelType === 'Flyg' && flightDate && yearsBetween(flightDate) > 3) {
     return {
       sentiment: 'negative',
-      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ersättning i detta fall.\n\nFlygresan ägde rum ${flightDate}, vilket är ${formatElapsed(flightDate)} sedan. I Sverige är preskriptionstiden för krav enligt EU-förordning 261/2004 **3 år**. Ditt krav har därmed preskriberats.\n\n### Beräkning\nResan genomfördes ${flightDate}. Preskriptionstiden löpte ut 3 år därefter. Denna situation **faller utanför** den tillåtna tidsfristen.${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ersättning i detta fall.\n\nFlygresan ägde rum ${flightDate}, vilket är ${formatElapsed(flightDate)} sedan. I Sverige är preskriptionstiden för krav enligt ${LEGAL_LINKS.eu261} **3 år**. Ditt krav har därmed preskriberats.\n\n### Beräkning\nResan genomfördes ${flightDate}. Preskriptionstiden löpte ut 3 år därefter. Denna situation **faller utanför** den tillåtna tidsfristen.${DISCLAIMER}`,
     };
   }
 
@@ -85,19 +100,19 @@ function analyzeResor(answers: Record<string, string>): { assessment: string; se
     if (hours < 3) {
       return {
         sentiment: 'negative',
-        assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ersättning i detta fall.\n\nEnligt EU-förordning 261/2004 uppstår rätt till ekonomisk kompensation först när ankomsten till slutdestinationen är försenad med **mer än 3 timmar**. Du har angett en försening på ${hours} timmar, vilket understiger tröskeln.\n\n### Svagheter i ditt ärende\nFörseningar under 3 timmar ger inte rätt till standardiserad kompensation enligt förordningen, även om de är irriterande.\n\n### Nästa steg\nOm flygbolaget erbjöd mat, dryck eller annan assistans som uteblev, kan du ha rätt till ersättning för utlägg du haft under väntetiden.${DISCLAIMER}`,
+        assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ersättning i detta fall.\n\nEnligt ${LEGAL_LINKS.eu261} uppstår rätt till ekonomisk kompensation först när ankomsten till slutdestinationen är försenad med **mer än 3 timmar**. Du har angett en försening på ${hours} timmar, vilket understiger tröskeln.\n\n### Juridiska referenser\n- Artikel 7: Ersättningsbelopp\n- Artikel 5–6: Villkor för kompensation\n\n### Svagheter i ditt ärende\nFörseningar under 3 timmar ger inte rätt till standardiserad kompensation enligt förordningen, även om de är irriterande.\n\n### Nästa steg\nOm flygbolaget erbjöd mat, dryck eller annan assistans som uteblev, kan du ha rätt till ersättning för utlägg du haft under väntetiden.${DISCLAIMER}`,
       };
     }
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt EU-förordning 261/2004 har du rätt till ekonomisk kompensation vid flygförsening över 3 timmar. Beroende på flygdistansen kan ersättningen vara:\n- **250 €** för flygningar upp till 1 500 km\n- **400 €** för flygningar inom EU över 1 500 km eller andra flygningar 1 500–3 500 km\n- **600 €** för flygningar över 3 500 km\n\n### Juridisk grund\nArtikel 7 i EU-förordning 261/2004 om kompensation. Rätten gäller det **operativa flygbolaget**, inte researrangören eller bokningsplattformen.\n\n### Svagheter i ditt ärende\nFlygbolaget kan invända att förseningen orsakades av **extraordinära omständigheter** (extremväder, flygledningsbeslut, säkerhetshot) vilket undantar dem från kompensationsskyldighet. Du bör kontrollera om sådana omständigheter förelåg.\n\n### Nästa steg\n1. Kontakta flygbolaget skriftligt med krav på kompensation\n2. Om avslag eller inget svar inom 6 veckor: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt ${LEGAL_LINKS.eu261} har du rätt till ekonomisk kompensation vid flygförsening över 3 timmar. Beroende på flygdistansen kan ersättningen vara:\n- **250 €** för flygningar upp till 1 500 km\n- **400 €** för flygningar inom EU över 1 500 km eller andra flygningar 1 500–3 500 km\n- **600 €** för flygningar över 3 500 km\n\n### Juridiska referenser\n- Artikel 7: Ersättningsbelopp — 250€ (<1500km), 400€ (1500–3500km), 600€ (>3500km)\n- Artikel 5: Inställda flygningar\n- Artikel 6: Förseningar — rätt till assistans vid försening över 2 timmar\n- Artikel 9: Rätt till måltider, förfriskningar och inkvartering\n\nRätten gäller det **operativa flygbolaget**, inte researrangören eller bokningsplattformen.\n\n### Svagheter i ditt ärende\nFlygbolaget kan invända att förseningen orsakades av **extraordinära omständigheter** (extremväder, flygledningsbeslut, säkerhetshot) vilket undantar dem från kompensationsskyldighet. Du bör kontrollera om sådana omständigheter förelåg.\n\n### Nästa steg\n1. Kontakta flygbolaget skriftligt med krav på kompensation\n2. Om avslag eller inget svar inom 6 veckor: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
     };
   }
 
   if (travelType === 'Flyg' && issue === 'Inställt') {
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt EU-förordning 261/2004 har du vid inställt flyg rätt till:\n1. **Ombokning eller full återbetalning** av biljetten\n2. **Ekonomisk kompensation** (250–600 € beroende på sträcka) om du informerades mindre än 14 dagar före avgång\n3. **Assistans** — mat, dryck och vid behov hotell\n\n### Svagheter i ditt ärende\nKompensation utgår inte om du informerades mer än 14 dagar i förväg, eller om flygbolaget kan visa extraordinära omständigheter.\n\n### Nästa steg\n1. Kontakta flygbolaget skriftligt\n2. Vid avslag: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt ${LEGAL_LINKS.eu261} har du vid inställt flyg rätt till:\n1. **Ombokning eller full återbetalning** av biljetten\n2. **Ekonomisk kompensation** (250–600 € beroende på sträcka) om du informerades mindre än 14 dagar före avgång\n3. **Assistans** — mat, dryck och vid behov hotell\n\n### Juridiska referenser\n- Artikel 5: Inställda flygningar — rätt till återbetalning eller ombokning samt ersättning\n- Artikel 7: Ersättningsbelopp\n- Artikel 9: Rätt till måltider, förfriskningar och inkvartering\n\n### Svagheter i ditt ärende\nKompensation utgår inte om du informerades mer än 14 dagar i förväg, eller om flygbolaget kan visa extraordinära omständigheter.\n\n### Nästa steg\n1. Kontakta flygbolaget skriftligt\n2. Vid avslag: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
     };
   }
 
@@ -107,13 +122,13 @@ function analyzeResor(answers: Record<string, string>): { assessment: string; se
     if (minutes < 60) {
       return {
         sentiment: 'negative',
-        assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ersättning i detta fall.\n\nEnligt EU-förordning 1371/2007 uppstår rätt till ekonomisk ersättning först vid försening över **60 minuter**. Din angivna försening understiger denna gräns.\n\n### Nästa steg\nKontrollera om tågoperatören har egna resegarantier som kan ge viss kompensation även vid kortare förseningar.${DISCLAIMER}`,
+        assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ersättning i detta fall.\n\nEnligt ${LEGAL_LINKS.eu1371} uppstår rätt till ekonomisk ersättning först vid försening över **60 minuter**. Din angivna försening understiger denna gräns.\n\n### Nästa steg\nKontrollera om tågoperatören har egna resegarantier som kan ge viss kompensation även vid kortare förseningar.${DISCLAIMER}`,
       };
     }
     const pct = minutes >= 120 ? '50%' : '25%';
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt EU-förordning 1371/2007 artikel 17 har du rätt till ersättning med **${pct} av biljettpriset** vid en försening på ${Math.round(minutes)} minuter.\n\n### Juridisk grund\nArtikel 17: 25% vid försening 60–119 minuter, 50% vid försening över 120 minuter. Gäller internationella tågresor och operatörer som frivilligt tillämpar förordningen (SJ gör det).\n\n### Svagheter i ditt ärende\nOm du reste med en operatör som inte tillämpar EU-förordningen för inrikesresor, kan ersättningen vara lägre eller utebli.\n\n### Nästa steg\n1. Ansök om ersättning direkt via tågoperatörens webbplats\n2. Vid avslag: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt ${LEGAL_LINKS.eu1371} artikel 17 har du rätt till ersättning med **${pct} av biljettpriset** vid en försening på ${Math.round(minutes)} minuter.\n\n### Juridiska referenser\nArtikel 17: 25% vid försening 60–119 minuter, 50% vid försening över 120 minuter. Gäller internationella tågresor och operatörer som frivilligt tillämpar förordningen (SJ gör det).\n\n### Svagheter i ditt ärende\nOm du reste med en operatör som inte tillämpar EU-förordningen för inrikesresor, kan ersättningen vara lägre eller utebli.\n\n### Nästa steg\n1. Ansök om ersättning direkt via tågoperatörens webbplats\n2. Vid avslag: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
     };
   }
 
@@ -139,20 +154,20 @@ function analyzeBetalning(answers: Record<string, string>): { assessment: string
   if (issue === 'Obehörig transaktion') {
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt Betaltjänstlagen (2010:751) 5 a kap. ska din bank återbetala obehöriga transaktioner. Din självrisk är normalt max **400 kr** om du inte agerat grovt oaktsamt.\n\n### Juridisk grund\nBetaltjänstlagen 5 a kap. 1–4 §§. Banken ska återbetala beloppet senast nästa bankdag efter att du anmält den obehöriga transaktionen.\n\n### Uppskattad ersättning\n${parsed} kr minus eventuell självrisk (max 400 kr).\n\n### Svagheter i ditt ärende\nOm banken kan visa att du lämnat ut kortuppgifter eller pinkod genom grov oaktsamhet kan du bli ansvarig för hela beloppet.\n\n### Nästa steg\n1. Anmäl till banken omedelbart om du inte redan gjort det\n2. Polisanmäl bedrägeriet\n3. Om banken avslår: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt ${LEGAL_LINKS.betaltjanstlagen} 5 a kap. ska din bank återbetala obehöriga transaktioner. Din självrisk är normalt max **400 kr** om du inte agerat grovt oaktsamt.\n\n### Juridiska referenser\n${LEGAL_LINKS.betaltjanstlagen} 5 a kap. 1–4 §§. Banken ska återbetala beloppet senast nästa bankdag efter att du anmält den obehöriga transaktionen.\n- Du måste rapportera till banken inom **13 månader** från transaktionsdatum\n\n### Uppskattad ersättning\n${parsed} kr minus eventuell självrisk (max 400 kr).\n\n### Svagheter i ditt ärende\nOm banken kan visa att du lämnat ut kortuppgifter eller pinkod genom grov oaktsamhet kan du bli ansvarig för hela beloppet.\n\n### Nästa steg\n1. Anmäl till banken omedelbart om du inte redan gjort det\n2. Polisanmäl bedrägeriet\n3. Om banken avslår: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
     };
   }
 
   if (issue === 'Vara ej levererad' || issue === 'Vara avviker från beskrivning') {
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nOm du betalat med kort och varan inte levererats eller väsentligt avviker från beskrivningen, kan du begära **chargeback** via din kortutgivare.\n\n### Juridisk grund\nKortnätverkens konsumentskyddsregler samt Konsumentköplagen (2022:260).\n\n### Uppskattad ersättning\n${parsed} kr.\n\n### Svagheter i ditt ärende\nChargeback har tidsgränser — vanligtvis 120 dagar från köp eller förväntat leveransdatum. Du behöver dokumentation på att du kontaktat säljaren först.\n\n### Nästa steg\n1. Kontakta säljaren skriftligt med krav\n2. Om inget svar inom 14 dagar: kontakta din bank och begär chargeback\n3. Spara all dokumentation${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nOm du betalat med kort och varan inte levererats eller väsentligt avviker från beskrivningen, kan du begära **chargeback** via din kortutgivare.\n\n### Juridiska referenser\nKortnätverkens konsumentskyddsregler samt ${LEGAL_LINKS.konsumentkoplagen}.\n- 26 §: Rätt till avhjälpande eller omleverans vid fel\n- 28 §: Rätt till prisavdrag om avhjälpande inte sker\n\n### Uppskattad ersättning\n${parsed} kr.\n\n### Svagheter i ditt ärende\nChargeback har tidsgränser — vanligtvis 120 dagar från köp eller förväntat leveransdatum. Du behöver dokumentation på att du kontaktat säljaren först.\n\n### Nästa steg\n1. Kontakta säljaren skriftligt med krav\n2. Om inget svar inom 14 dagar: kontakta din bank och begär chargeback\n3. Spara all dokumentation${DISCLAIMER}`,
     };
   }
 
   return {
     sentiment: 'uncertain',
-    assessment: `## Bedömning\n\nSituationen är oklar — mer information behövs.\n\nDu har angett "${issue}" med ett belopp på ${parsed} kr, men det framgår inte tillräckligt tydligt om det rör sig om en obehörig transaktion eller ett köp du själv genomfört. Betaltjänstlagen skyddar mot **obehöriga** transaktioner — inte mot köp du är missnöjd med i efterhand.\n\n### Nästa steg\nFörtydliga om transaktionen genomfördes av dig eller utan ditt godkännande. Det avgör vilken lag som är tillämplig.${DISCLAIMER}`,
+    assessment: `## Bedömning\n\nSituationen är oklar — mer information behövs.\n\nDu har angett "${issue}" med ett belopp på ${parsed} kr, men det framgår inte tillräckligt tydligt om det rör sig om en obehörig transaktion eller ett köp du själv genomfört. ${LEGAL_LINKS.betaltjanstlagen} skyddar mot **obehöriga** transaktioner — inte mot köp du är missnöjd med i efterhand.\n\n### Nästa steg\nFörtydliga om transaktionen genomfördes av dig eller utan ditt godkännande. Det avgör vilken lag som är tillämplig.${DISCLAIMER}`,
   };
 }
 
@@ -164,7 +179,7 @@ function analyzeKopEhandel(answers: Record<string, string>): { assessment: strin
   if (purchaseDate && yearsBetween(purchaseDate) > 3) {
     return {
       sentiment: 'negative',
-      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsrätten på tre år har löpt ut enligt Konsumentköplagen 32 §.\n\n### Beräkning\nKöpet gjordes ${purchaseDate}, vilket är ${formatElapsed(purchaseDate)} sedan. Reklamationsrätten löpte ut 3 år efter köpdatumet. Denna situation **faller utanför** reklamationsrätten.\n\n### Nästa steg\nOm du har en separat garanti från tillverkaren som fortfarande är giltig, kontrollera garantivillkoren. Den lagstadgade reklamationsrätten kan dock inte längre tillämpas.${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsrätten på tre år har löpt ut enligt ${LEGAL_LINKS.konsumentkoplagen} 32 §.\n\n### Beräkning\nKöpet gjordes ${purchaseDate}, vilket är ${formatElapsed(purchaseDate)} sedan. Reklamationsrätten löpte ut 3 år efter köpdatumet. Denna situation **faller utanför** reklamationsrätten.\n\n### Juridiska referenser\n- 32 §: Reklamationsrätt i tre år från köpdatum\n- 33 §: Fel som visar sig inom två år presumeras vara ursprungliga\n\n### Nästa steg\nOm du har en separat garanti från tillverkaren som fortfarande är giltig, kontrollera garantivillkoren. Den lagstadgade reklamationsrätten kan dock inte längre tillämpas.${DISCLAIMER}`,
     };
   }
 
@@ -174,13 +189,13 @@ function analyzeKopEhandel(answers: Record<string, string>): { assessment: strin
       if (daysSincePurchase > 14) {
         return {
           sentiment: 'negative',
-          assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ångerrätt i detta fall.\n\nEnligt Distansavtalslagen (2005:59) 14 § gäller ångerrätten i **14 dagar** från det att du mottog varan. Det har gått ${daysSincePurchase} dagar sedan köpet, vilket innebär att ångerfristen har löpt ut.\n\n### Svagheter i ditt ärende\nÅngerrätten är absolut — efter 14 dagar kan säljaren neka utan juridisk grund för krav.\n\n### Nästa steg\nOm varan är felaktig kan du istället reklamera enligt Konsumentköplagen. Reklamationsrätten gäller i 3 år.${DISCLAIMER}`,
+          assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ångerrätt i detta fall.\n\nEnligt ${LEGAL_LINKS.distansavtalslagen} 14 § gäller ångerrätten i **14 dagar** från det att du mottog varan. Det har gått ${daysSincePurchase} dagar sedan köpet, vilket innebär att ångerfristen har löpt ut.\n\n### Svagheter i ditt ärende\nÅngerrätten är absolut — efter 14 dagar kan säljaren neka utan juridisk grund för krav.\n\n### Nästa steg\nOm varan är felaktig kan du istället reklamera enligt ${LEGAL_LINKS.konsumentkoplagen}. Reklamationsrätten gäller i 3 år.${DISCLAIMER}`,
         };
       }
     }
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt Distansavtalslagen (2005:59) 14 § har du **14 dagars ångerrätt** vid köp på distans (online, telefon). Du kan returnera varan utan att ange skäl.\n\n### Juridisk grund\nDistansavtalslagen 14 §. Säljaren ska återbetala inom 14 dagar efter att de mottagit den returnerade varan.\n\n### Svagheter i ditt ärende\nUndantag finns för bland annat: specialtillverkade varor, förseglad mjukvara/hygienartiklar som öppnats, och digitalt innehåll om nedladdning påbörjats.\n\n### Nästa steg\n1. Meddela säljaren skriftligt att du vill använda din ångerrätt\n2. Returnera varan inom 14 dagar${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt ${LEGAL_LINKS.distansavtalslagen} 14 § har du **14 dagars ångerrätt** vid köp på distans (online, telefon). Du kan returnera varan utan att ange skäl.\n\n### Juridiska referenser\n${LEGAL_LINKS.distansavtalslagen} 14 §. Säljaren ska återbetala inom 14 dagar efter att de mottagit den returnerade varan.\n\n### Svagheter i ditt ärende\nUndantag finns för bland annat: specialtillverkade varor, förseglad mjukvara/hygienartiklar som öppnats, och digitalt innehåll om nedladdning påbörjats.\n\n### Nästa steg\n1. Meddela säljaren skriftligt att du vill använda din ångerrätt\n2. Returnera varan inom 14 dagar${DISCLAIMER}`,
     };
   }
 
@@ -192,7 +207,7 @@ function analyzeKopEhandel(answers: Record<string, string>): { assessment: strin
 
   return {
     sentiment: 'positive',
-    assessment: `## Bedömning\n\nDu har troligtvis rätt att reklamera produkten.\n\nEnligt Konsumentköplagen (2022:260) har du **3 års reklamationsrätt**. Fel som visar sig inom 2 år anses vara ursprungliga — säljaren har bevisbördan.\n\n### Juridisk grund\nKonsumentköplagen 4 kap. 1–3 §§. Du har rätt till avhjälpande, omleverans, prisavdrag eller hävning.${burdenNote}\n\n### Svagheter i ditt ärende\nOm felet beror på normalt slitage eller felaktig användning kan reklamationen avslås. Säljaren kan försöka hävda att felet uppstått efter köpet.\n\n### Nästa steg\n1. Kontakta säljaren skriftligt med reklamation\n2. Säljaren bekostar returtransport\n3. Om säljaren vägrar: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
+    assessment: `## Bedömning\n\nDu har troligtvis rätt att reklamera produkten.\n\nEnligt ${LEGAL_LINKS.konsumentkoplagen} har du **3 års reklamationsrätt**. Fel som visar sig inom 2 år anses vara ursprungliga — säljaren har bevisbördan.\n\n### Juridiska referenser\n- 26 §: Rätt till avhjälpande eller omleverans vid fel\n- 28 §: Rätt till prisavdrag om avhjälpande inte sker\n- 29 §: Rätt till hävning om felet är väsentligt\n- 30 §: Säljaren bekostar transport vid reklamation\n- 32 §: Reklamationsrätt i tre år från köpdatum\n- 33 §: Fel som visar sig inom två år presumeras vara ursprungliga${burdenNote}\n\n### Svagheter i ditt ärende\nOm felet beror på normalt slitage eller felaktig användning kan reklamationen avslås. Säljaren kan försöka hävda att felet uppstått efter köpet.\n\n### Nästa steg\n1. Kontakta säljaren skriftligt med reklamation\n2. Säljaren bekostar returtransport\n3. Om säljaren vägrar: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
   };
 }
 
@@ -204,19 +219,19 @@ function analyzeAbonnemang(answers: Record<string, string>): { assessment: strin
     if (hasProof === 'Nej') {
       return {
         sentiment: 'uncertain',
-        assessment: `## Bedömning\n\nSituationen är oklar — mer information behövs.\n\nDu anger att företaget fortsätter debitera efter uppsägning, men du har ingen skriftlig bekräftelse på uppsägningen. Utan bevis på att uppsägning skett blir det svårt att driva kravet.\n\n### Juridisk grund\nDistansavtalslagen (2005:59) 25 § kräver att tjänsteleverantören bekräftar uppsägning skriftligt. Avtalslagen 36 § kan tillämpas om villkoren anses oskäliga.\n\n### Svagheter i ditt ärende\nUtan dokumentation på uppsägning kan företaget hävda att abonnemanget fortfarande löper. Bevisbördan ligger på dig.\n\n### Nästa steg\n1. Säg upp skriftligt igen och spara bekräftelsen\n2. Kontakta din bank för att stoppa autogiro/kortdragning\n3. Kräv återbetalning från datumet du kan bevisa uppsägning${DISCLAIMER}`,
+        assessment: `## Bedömning\n\nSituationen är oklar — mer information behövs.\n\nDu anger att företaget fortsätter debitera efter uppsägning, men du har ingen skriftlig bekräftelse på uppsägningen. Utan bevis på att uppsägning skett blir det svårt att driva kravet.\n\n### Juridiska referenser\n${LEGAL_LINKS.distansavtalslagen} 25 § kräver att tjänsteleverantören bekräftar uppsägning skriftligt. ${LEGAL_LINKS.avtalslagen} 36 § kan tillämpas om villkoren anses oskäliga.\n\n### Svagheter i ditt ärende\nUtan dokumentation på uppsägning kan företaget hävda att abonnemanget fortfarande löper. Bevisbördan ligger på dig.\n\n### Nästa steg\n1. Säg upp skriftligt igen och spara bekräftelsen\n2. Kontakta din bank för att stoppa autogiro/kortdragning\n3. Kräv återbetalning från datumet du kan bevisa uppsägning${DISCLAIMER}`,
       };
     }
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nOm du har skriftlig bekräftelse på uppsägning har företaget ingen rätt att fortsätta debitera. Alla belopp debiterade efter uppsägningsdatumet ska återbetalas.\n\n### Juridisk grund\nDistansavtalslagen (2005:59) 25 § — uppsägning ska bekräftas skriftligt. Avtalslagen 36 § — oskäliga villkor kan jämkas.\n\n### Svagheter i ditt ärende\nFöretaget kan hävda att uppsägningstiden inte löpt ut. Kontrollera avtalsvillkoren.\n\n### Nästa steg\n1. Skicka skriftligt krav med kopia av uppsägningsbekräftelsen\n2. Sätt 14 dagars tidsfrist\n3. Kontakta banken för att stoppa framtida debiteringar\n4. Vid utebliven respons: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nOm du har skriftlig bekräftelse på uppsägning har företaget ingen rätt att fortsätta debitera. Alla belopp debiterade efter uppsägningsdatumet ska återbetalas.\n\n### Juridiska referenser\n${LEGAL_LINKS.distansavtalslagen} 25 § — uppsägning ska bekräftas skriftligt. ${LEGAL_LINKS.avtalslagen} 36 § — oskäliga villkor kan jämkas.\n\n### Svagheter i ditt ärende\nFöretaget kan hävda att uppsägningstiden inte löpt ut. Kontrollera avtalsvillkoren.\n\n### Nästa steg\n1. Skicka skriftligt krav med kopia av uppsägningsbekräftelsen\n2. Sätt 14 dagars tidsfrist\n3. Kontakta banken för att stoppa framtida debiteringar\n4. Vid utebliven respons: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
     };
   }
 
   if (issue === 'Kan inte säga upp') {
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till åtgärd.\n\nEnligt Lagen om avtalsvillkor i konsumentförhållanden (1994:1512) 3 § är villkor som gör det orimligt svårt att säga upp ett abonnemang potentiellt **ogiltiga**.\n\n### Juridisk grund\nAvtalsvillkorslagen 3 § samt Avtalslagen 36 § om oskäliga avtalsvillkor.\n\n### Nästa steg\n1. Säg upp skriftligt via e-post och behåll bekräftelse\n2. Om företaget hindrar uppsägning: anmäl till [Konsumentverket](https://www.konsumentverket.se)\n3. Kontakta banken för att stoppa framtida betalningar${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till åtgärd.\n\nEnligt Lagen om avtalsvillkor i konsumentförhållanden (1994:1512) 3 § är villkor som gör det orimligt svårt att säga upp ett abonnemang potentiellt **ogiltiga**.\n\n### Juridiska referenser\nAvtalsvillkorslagen 3 § samt ${LEGAL_LINKS.avtalslagen} 36 § om oskäliga avtalsvillkor.\n\n### Nästa steg\n1. Säg upp skriftligt via e-post och behåll bekräftelse\n2. Om företaget hindrar uppsägning: anmäl till [Konsumentverket](https://www.konsumentverket.se)\n3. Kontakta banken för att stoppa framtida betalningar${DISCLAIMER}`,
     };
   }
 
@@ -235,27 +250,27 @@ function analyzeHantverkare(answers: Record<string, string>): { assessment: stri
   if (workDate && yearsBetween(workDate) > 3) {
     return {
       sentiment: 'negative',
-      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsfristen har löpt ut.\n\n### Beräkning\nArbetet utfördes ${workDate}, vilket är ${formatElapsed(workDate)} sedan. Enligt Konsumenttjänstlagen (1985:716) måste reklamation ske inom **3 år** från det att uppdraget avslutades. Denna situation **faller utanför** reklamationsfristen.${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsfristen har löpt ut.\n\n### Beräkning\nArbetet utfördes ${workDate}, vilket är ${formatElapsed(workDate)} sedan. Enligt ${LEGAL_LINKS.konsumenttjanstlagen} måste reklamation ske inom **3 år** från det att uppdraget avslutades. Denna situation **faller utanför** reklamationsfristen.${DISCLAIMER}`,
     };
   }
 
   if (!defect || defect.trim().length < 10) {
     return {
       sentiment: 'uncertain',
-      assessment: `## Bedömning\n\nSituationen är oklar — mer information behövs.\n\nDu har inte beskrivit tillräckligt detaljerat vad felet är. Konsumenttjänstlagen (1985:716) kräver att felet avviker från **fackmässig standard** — inte bara från dina personliga preferenser.\n\n### Nästa steg\nBeskriv exakt vad som är felaktigt med det utförda arbetet och hur det avviker från vad som avtalades.${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nSituationen är oklar — mer information behövs.\n\nDu har inte beskrivit tillräckligt detaljerat vad felet är. ${LEGAL_LINKS.konsumenttjanstlagen} kräver att felet avviker från **fackmässig standard** — inte bara från dina personliga preferenser.\n\n### Nästa steg\nBeskriv exakt vad som är felaktigt med det utförda arbetet och hur det avviker från vad som avtalades.${DISCLAIMER}`,
     };
   }
 
   if (contacted && contacted.toLowerCase().includes('nej')) {
     return {
       sentiment: 'uncertain',
-      assessment: `## Bedömning\n\nDu har sannolikt rättigheter, men du behöver ge hantverkaren möjlighet att avhjälpa felet först.\n\nEnligt Konsumenttjänstlagen (1985:716) 20 § har hantverkaren rätt att **avhjälpa felet** innan du kan kräva prisavdrag eller hävning. Du måste därför kontakta hantverkaren och ge dem en rimlig tidsfrist.\n\n### Juridisk grund\nKonsumenttjänstlagen 4 § (fackmässighet), 20 § (avhjälpande), 16 § (rätt att hålla inne betalning).\n\n### Nästa steg\n1. Kontakta hantverkaren skriftligt och beskriv felet\n2. Ge en rimlig tidsfrist (2–4 veckor) för avhjälpande\n3. Du har rätt att hålla inne del av betalningen som säkerhet${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har sannolikt rättigheter, men du behöver ge hantverkaren möjlighet att avhjälpa felet först.\n\nEnligt ${LEGAL_LINKS.konsumenttjanstlagen} 20 § har hantverkaren rätt att **avhjälpa felet** innan du kan kräva prisavdrag eller hävning. Du måste därför kontakta hantverkaren och ge dem en rimlig tidsfrist.\n\n### Juridiska referenser\n${LEGAL_LINKS.konsumenttjanstlagen}:\n- 4 §: Fackmässighet\n- 16 §: Rätt att hålla inne betalning\n- 20 §: Avhjälpande\n\n### Nästa steg\n1. Kontakta hantverkaren skriftligt och beskriv felet\n2. Ge en rimlig tidsfrist (2–4 veckor) för avhjälpande\n3. Du har rätt att hålla inne del av betalningen som säkerhet${DISCLAIMER}`,
     };
   }
 
   return {
     sentiment: 'positive',
-    assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt Konsumenttjänstlagen (1985:716) ska arbetet utföras fackmässigt (4 §). Om resultatet avviker från fackmässig standard föreligger ett fel (9 §).\n\n### Juridisk grund\n- 4 §: Fackmässighet\n- 16 §: Rätt att hålla inne betalning\n- 20 §: Rätt till avhjälpande utan kostnad\n- 21 §: Prisavdrag om avhjälpande inte sker inom skälig tid\n- 22 §: Hävning vid väsentligt fel\n\n### Svagheter i ditt ärende\nMotparten kan hävda att arbetet utförts fackmässigt och att resultatet uppfyller avtalet. Det kan krävas en oberoende besiktning.\n\n### Nästa steg\n1. Dokumentera felet med foton\n2. Skicka skriftligt krav på avhjälpande\n3. Sätt rimlig tidsfrist (2–4 veckor)\n4. Om de vägrar: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
+    assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt ${LEGAL_LINKS.konsumenttjanstlagen} ska arbetet utföras fackmässigt (4 §). Om resultatet avviker från fackmässig standard föreligger ett fel (9 §).\n\n### Juridiska referenser\n${LEGAL_LINKS.konsumenttjanstlagen}:\n- 4 §: Fackmässighet\n- 9 §: Fel i tjänst\n- 16 §: Rätt att hålla inne betalning\n- 20 §: Rätt till avhjälpande utan kostnad\n- 21 §: Prisavdrag om avhjälpande inte sker inom skälig tid\n- 22 §: Hävning vid väsentligt fel\n\n### Svagheter i ditt ärende\nMotparten kan hävda att arbetet utförts fackmässigt och att resultatet uppfyller avtalet. Det kan krävas en oberoende besiktning.\n\n### Nästa steg\n1. Dokumentera felet med foton\n2. Skicka skriftligt krav på avhjälpande\n3. Sätt rimlig tidsfrist (2–4 veckor)\n4. Om de vägrar: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
   };
 }
 
@@ -265,7 +280,7 @@ function analyzeHyra(answers: Record<string, string>): { assessment: string; sen
   if (issue === 'Överhyra i andrahand') {
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt Hyreslagen (12 kap. Jordabalken) är max tillåtet påslag vid andrahandsuthyrning **15% på förstahandshyran**. Överskjutande belopp kan krävas tillbaka **upp till 3 år bakåt**.\n\n### Juridisk grund\n12 kap. 55 c–d §§ Jordabalken.\n\n### Svagheter i ditt ärende\nDu behöver veta förstahandshyran för att beräkna överhyran. Utan den uppgiften kan inte Hyresnämnden fastställa exakt belopp.\n\n### Nästa steg\n1. Kontakta Hyresnämnden i din region\n2. Ansök om prövning av hyrans skälighet\n3. Begär återbetalning av överskjutande hyra${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt Hyreslagen (${LEGAL_LINKS.jordabalken} 12 kap.) är max tillåtet påslag vid andrahandsuthyrning **15% på förstahandshyran**. Överskjutande belopp kan krävas tillbaka **upp till 3 år bakåt**.\n\n### Juridiska referenser\n${LEGAL_LINKS.jordabalken} 12 kap. 55 c–d §§.\n\n### Svagheter i ditt ärende\nDu behöver veta förstahandshyran för att beräkna överhyran. Utan den uppgiften kan inte Hyresnämnden fastställa exakt belopp.\n\n### Nästa steg\n1. Kontakta Hyresnämnden i din region\n2. Ansök om prövning av hyrans skälighet\n3. Begär återbetalning av överskjutande hyra${DISCLAIMER}`,
     };
   }
 
@@ -283,20 +298,20 @@ function analyzeBilkop(answers: Record<string, string>): { assessment: string; s
   if (sellerType === 'Handlare' && purchaseDate && yearsBetween(purchaseDate) > 3) {
     return {
       sentiment: 'negative',
-      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsrätten på tre år har löpt ut enligt Konsumentköplagen 32 §.\n\n### Beräkning\nKöpet gjordes ${purchaseDate}, vilket är ${formatElapsed(purchaseDate)} sedan. Reklamationsrätten löpte ut 3 år efter köpdatumet. Denna situation **faller utanför** reklamationsrätten.${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsrätten på tre år har löpt ut enligt ${LEGAL_LINKS.konsumentkoplagen} 32 §.\n\n### Beräkning\nKöpet gjordes ${purchaseDate}, vilket är ${formatElapsed(purchaseDate)} sedan. Reklamationsrätten löpte ut 3 år efter köpdatumet. Denna situation **faller utanför** reklamationsrätten.${DISCLAIMER}`,
     };
   }
 
   if (sellerType === 'Privatperson') {
     return {
       sentiment: 'uncertain',
-      assessment: `## Bedömning\n\nSituationen är oklar — privatköp ger väsentligt sämre skydd.\n\nVid köp av bil från privatperson gäller **Köplagen (1990:931)**, inte Konsumentköplagen. Vid köp i "befintligt skick" (vanligt vid privatköp) krävs att felet **väsentligt avviker** från vad du som köpare kunde förutsätta.\n\n### Juridisk grund\nKöplagen 17–19 §§. Bevisbördan ligger på dig som köpare.\n\n### Svagheter i ditt ärende\nPrivatköp i befintligt skick innebär höga krav på vad du som köpare borde ha undersökt innan köpet. Undersökningsplikten är omfattande.\n\n### Nästa steg\n1. Dokumentera felet — gärna med oberoende besiktningsprotokoll\n2. Kontakta säljaren skriftligt med krav\n3. Vid tvist: tingsrätten (ARN prövar inte privatköp)${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nSituationen är oklar — privatköp ger väsentligt sämre skydd.\n\nVid köp av bil från privatperson gäller **${LEGAL_LINKS.koplagen}**, inte Konsumentköplagen. Vid köp i "befintligt skick" (vanligt vid privatköp) krävs att felet **väsentligt avviker** från vad du som köpare kunde förutsätta.\n\n### Juridiska referenser\n${LEGAL_LINKS.koplagen} 17–19 §§. Bevisbördan ligger på dig som köpare.\n\n### Svagheter i ditt ärende\nPrivatköp i befintligt skick innebär höga krav på vad du som köpare borde ha undersökt innan köpet. Undersökningsplikten är omfattande.\n\n### Nästa steg\n1. Dokumentera felet — gärna med oberoende besiktningsprotokoll\n2. Kontakta säljaren skriftligt med krav\n3. Vid tvist: tingsrätten (ARN prövar inte privatköp)${DISCLAIMER}`,
     };
   }
 
   return {
     sentiment: 'positive',
-    assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nVid köp av bil från bilhandlare gäller **Konsumentköplagen (2022:260)**. Du har 3 års reklamationsrätt och fel som visar sig inom 2 år presumeras ha funnits vid köpet.\n\n### Juridisk grund\nKonsumentköplagen 4 kap. Säljaren har bevisbördan de första 2 åren.\n\n### Svagheter i ditt ärende\nSäljaren kan hävda normalt slitage, att felet uppstått efter leverans, eller att du kände till felet vid köpet.\n\n### Nästa steg\n1. Reklamera skriftligt till bilhandlaren\n2. Begär avhjälpande i första hand\n3. Vid avslag: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
+    assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nVid köp av bil från bilhandlare gäller **${LEGAL_LINKS.konsumentkoplagen}**. Du har 3 års reklamationsrätt och fel som visar sig inom 2 år presumeras ha funnits vid köpet.\n\n### Juridiska referenser\n${LEGAL_LINKS.konsumentkoplagen}:\n- 26 §: Rätt till avhjälpande eller omleverans\n- 28 §: Prisavdrag\n- 29 §: Hävning vid väsentligt fel\n- 32 §: Tre års reklamationsrätt\n- 33 §: Bevisbörda inom två år\n\n### Svagheter i ditt ärende\nSäljaren kan hävda normalt slitage, att felet uppstått efter leverans, eller att du kände till felet vid köpet.\n\n### Nästa steg\n1. Reklamera skriftligt till bilhandlaren\n2. Begär avhjälpande i första hand\n3. Vid avslag: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
   };
 }
 
@@ -307,13 +322,13 @@ function analyzeGaranti(answers: Record<string, string>): { assessment: string; 
   if (purchaseDate && yearsBetween(purchaseDate) > 3) {
     return {
       sentiment: 'negative',
-      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsrätten på tre år har löpt ut enligt Konsumentköplagen 32 §.\n\n### Beräkning\nKöpet gjordes ${purchaseDate}, vilket är ${formatElapsed(purchaseDate)} sedan. Reklamationsrätten löpte ut 3 år efter köpdatumet. Denna situation **faller utanför** reklamationsrätten.\n\nOm du har en separat garanti från tillverkaren som fortfarande är giltig, kontrollera garantivillkoren separat.${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsrätten på tre år har löpt ut enligt ${LEGAL_LINKS.konsumentkoplagen} 32 §.\n\n### Beräkning\nKöpet gjordes ${purchaseDate}, vilket är ${formatElapsed(purchaseDate)} sedan. Reklamationsrätten löpte ut 3 år efter köpdatumet. Denna situation **faller utanför** reklamationsrätten.\n\nOm du har en separat garanti från tillverkaren som fortfarande är giltig, kontrollera garantivillkoren separat.${DISCLAIMER}`,
     };
   }
 
   return {
     sentiment: 'uncertain',
-    assessment: `## Bedömning\n\nSituationen är oklar — det beror på garantivillkoren och felets natur.\n\nGaranti är ett **frivilligt åtagande** från säljaren — vad som täcks beror helt på garantivillkoren. Separat från garantin har du **3 års reklamationsrätt** enligt Konsumentköplagen (2022:260).\n\n### Viktigt att skilja på\n- **Garanti**: Frivilligt åtagande — kontrollera villkoren noga\n- **Reklamationsrätt**: Lagstadgad i 3 år oavsett garanti\n- **Dolda fel (fastighet)**: Jordabalken 4 kap 19 § — helt annan lagstiftning\n\n### Svagheter i ditt ärende\nOm felet beror på normal förslitning, felaktig användning, eller inte täcks av garantivillkoren, kan kravet sakna grund.\n\n### Nästa steg\n1. Kontrollera garantivillkoren noggrant\n2. Om felet uppstått inom 2 år: reklamera oavsett garanti\n3. Kontakta säljaren skriftligt${DISCLAIMER}`,
+    assessment: `## Bedömning\n\nSituationen är oklar — det beror på garantivillkoren och felets natur.\n\nGaranti är ett **frivilligt åtagande** från säljaren — vad som täcks beror helt på garantivillkoren. Separat från garantin har du **3 års reklamationsrätt** enligt ${LEGAL_LINKS.konsumentkoplagen}.\n\n### Viktigt att skilja på\n- **Garanti**: Frivilligt åtagande — kontrollera villkoren noga\n- **Reklamationsrätt**: Lagstadgad i 3 år oavsett garanti (${LEGAL_LINKS.konsumentkoplagen} 32 §)\n- **Dolda fel (fastighet)**: ${LEGAL_LINKS.jordabalken} 4 kap 19 § — helt annan lagstiftning\n\n### Svagheter i ditt ärende\nOm felet beror på normal förslitning, felaktig användning, eller inte täcks av garantivillkoren, kan kravet sakna grund.\n\n### Nästa steg\n1. Kontrollera garantivillkoren noggrant\n2. Om felet uppstått inom 2 år: reklamera oavsett garanti\n3. Kontakta säljaren skriftligt${DISCLAIMER}`,
   };
 }
 
@@ -323,7 +338,7 @@ function analyzeLeverans(answers: Record<string, string>): { assessment: string;
   if (issue === 'Försenat' || issue === 'Borttappat') {
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt Konsumentköplagen (2022:260) ansvarar **säljaren** för varan tills den levererats till dig. Om paketet är försenat eller försvunnet har du rätt att kräva ny leverans eller häva köpet.\n\n### Juridisk grund\nKonsumentköplagen 2 kap 5 § (riskens övergång) samt Distansavtalslagen.\n\n### Svagheter i ditt ärende\nSäljaren kan hävda att leverans skett om de har spårningsbevis. Kontrollera spårningsinformationen.\n\n### Nästa steg\n1. Kontakta säljaren — inte transportföretaget (säljaren ansvarar)\n2. Kräv ny leverans eller återbetalning\n3. Sätt 14 dagars tidsfrist${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt ${LEGAL_LINKS.konsumentkoplagen} ansvarar **säljaren** för varan tills den levererats till dig. Om paketet är försenat eller försvunnet har du rätt att kräva ny leverans eller häva köpet.\n\n### Juridiska referenser\n${LEGAL_LINKS.konsumentkoplagen} 2 kap 5 § (riskens övergång) samt ${LEGAL_LINKS.distansavtalslagen}.\n\n### Svagheter i ditt ärende\nSäljaren kan hävda att leverans skett om de har spårningsbevis. Kontrollera spårningsinformationen.\n\n### Nästa steg\n1. Kontakta säljaren — inte transportföretaget (säljaren ansvarar)\n2. Kräv ny leverans eller återbetalning\n3. Sätt 14 dagars tidsfrist${DISCLAIMER}`,
     };
   }
 
