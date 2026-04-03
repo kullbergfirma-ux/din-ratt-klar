@@ -128,7 +128,7 @@ function analyzeResor(answers: Record<string, string>): { assessment: string; se
     const pct = minutes >= 120 ? '50%' : '25%';
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt EU-förordning 1371/2007 artikel 17 har du rätt till ersättning med **${pct} av biljettpriset** vid en försening på ${Math.round(minutes)} minuter.\n\n### Juridisk grund\nArtikel 17: 25% vid försening 60–119 minuter, 50% vid försening över 120 minuter. Gäller internationella tågresor och operatörer som frivilligt tillämpar förordningen (SJ gör det).\n\n### Svagheter i ditt ärende\nOm du reste med en operatör som inte tillämpar EU-förordningen för inrikesresor, kan ersättningen vara lägre eller utebli.\n\n### Nästa steg\n1. Ansök om ersättning direkt via tågoperatörens webbplats\n2. Vid avslag: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt ${LEGAL_LINKS.eu1371} artikel 17 har du rätt till ersättning med **${pct} av biljettpriset** vid en försening på ${Math.round(minutes)} minuter.\n\n### Juridiska referenser\nArtikel 17: 25% vid försening 60–119 minuter, 50% vid försening över 120 minuter. Gäller internationella tågresor och operatörer som frivilligt tillämpar förordningen (SJ gör det).\n\n### Svagheter i ditt ärende\nOm du reste med en operatör som inte tillämpar EU-förordningen för inrikesresor, kan ersättningen vara lägre eller utebli.\n\n### Nästa steg\n1. Ansök om ersättning direkt via tågoperatörens webbplats\n2. Vid avslag: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
     };
   }
 
