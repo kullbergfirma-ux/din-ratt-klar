@@ -122,7 +122,7 @@ function analyzeResor(answers: Record<string, string>): { assessment: string; se
     if (minutes < 60) {
       return {
         sentiment: 'negative',
-        assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ersättning i detta fall.\n\nEnligt EU-förordning 1371/2007 uppstår rätt till ekonomisk ersättning först vid försening över **60 minuter**. Din angivna försening understiger denna gräns.\n\n### Nästa steg\nKontrollera om tågoperatören har egna resegarantier som kan ge viss kompensation även vid kortare förseningar.${DISCLAIMER}`,
+        assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ersättning i detta fall.\n\nEnligt ${LEGAL_LINKS.eu1371} uppstår rätt till ekonomisk ersättning först vid försening över **60 minuter**. Din angivna försening understiger denna gräns.\n\n### Nästa steg\nKontrollera om tågoperatören har egna resegarantier som kan ge viss kompensation även vid kortare förseningar.${DISCLAIMER}`,
       };
     }
     const pct = minutes >= 120 ? '50%' : '25%';
