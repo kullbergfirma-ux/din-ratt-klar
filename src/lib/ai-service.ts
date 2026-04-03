@@ -280,7 +280,7 @@ function analyzeHyra(answers: Record<string, string>): { assessment: string; sen
   if (issue === 'Överhyra i andrahand') {
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt Hyreslagen (12 kap. Jordabalken) är max tillåtet påslag vid andrahandsuthyrning **15% på förstahandshyran**. Överskjutande belopp kan krävas tillbaka **upp till 3 år bakåt**.\n\n### Juridisk grund\n12 kap. 55 c–d §§ Jordabalken.\n\n### Svagheter i ditt ärende\nDu behöver veta förstahandshyran för att beräkna överhyran. Utan den uppgiften kan inte Hyresnämnden fastställa exakt belopp.\n\n### Nästa steg\n1. Kontakta Hyresnämnden i din region\n2. Ansök om prövning av hyrans skälighet\n3. Begär återbetalning av överskjutande hyra${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt Hyreslagen (${LEGAL_LINKS.jordabalken} 12 kap.) är max tillåtet påslag vid andrahandsuthyrning **15% på förstahandshyran**. Överskjutande belopp kan krävas tillbaka **upp till 3 år bakåt**.\n\n### Juridiska referenser\n${LEGAL_LINKS.jordabalken} 12 kap. 55 c–d §§.\n\n### Svagheter i ditt ärende\nDu behöver veta förstahandshyran för att beräkna överhyran. Utan den uppgiften kan inte Hyresnämnden fastställa exakt belopp.\n\n### Nästa steg\n1. Kontakta Hyresnämnden i din region\n2. Ansök om prövning av hyrans skälighet\n3. Begär återbetalning av överskjutande hyra${DISCLAIMER}`,
     };
   }
 
