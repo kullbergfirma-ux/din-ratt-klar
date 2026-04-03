@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { type Category, type CategoryQuestion } from '@/lib/categories';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plane, Train, Bus, Ship, Building2, Briefcase, Car, Clock, X, Users, AlertTriangle, MessageSquare } from 'lucide-react';
 import AutocompleteInput from '@/components/AutocompleteInput';
 import { questionCompanyMap } from '@/data/companies';
 
@@ -12,11 +10,27 @@ interface Props {
   onBack: () => void;
 }
 
+const optionIconMap: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
+  'Flyg': Plane,
+  'Tåg': Train,
+  'Buss': Bus,
+  'Färja': Ship,
+  'Hotell': Building2,
+  'Paketresa': Briefcase,
+  'Hyrbil': Car,
+  'Försening': Clock,
+  'Inställt': X,
+  'Överbookning': Users,
+  'Ej som utlovat': AlertTriangle,
+  'Annat': MessageSquare,
+};
+
+const months = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'];
+
 const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [currentQ, setCurrentQ] = useState(0);
 
-  // Filter questions based on conditional logic
   const getVisibleQuestions = (): CategoryQuestion[] => {
     return category.questions.filter(q => {
       if (q.showWhen) {
@@ -33,6 +47,7 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
 
   const isLast = currentQ === questions.length - 1;
   const canProceed = !!answers[question.id]?.trim();
+  const progressPercent = ((currentQ + 1) / questions.length) * 100;
 
   const handleNext = () => {
     if (isLast) {
@@ -54,43 +69,117 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
     return questionCompanyMap[qId];
   };
 
+  const isShortOptions = (opts: string[]) => opts.length <= 3 && opts.every(o => o.length <= 10);
+
+  const renderDateInput = (value: string, onChange: (val: string) => void) => {
+    const parts = value ? value.split('-') : ['', '', ''];
+    const year = parts[0] || '';
+    const month = parts[1] || '';
+    const day = parts[2] || '';
+    const currentYear = new Date().getFullYear();
+    const years = Array.from({ length: 11 }, (_, i) => String(currentYear - i));
+    const days = Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'));
+
+    const update = (y: string, m: string, d: string) => {
+      if (y && m && d) onChange(`${y}-${m}-${d}`);
+      else onChange('');
+    };
+
+    const selectStyle: React.CSSProperties = {
+      width: '100%',
+      padding: '14px 16px',
+      border: '1.5px solid #E2E8F0',
+      borderRadius: 10,
+      fontSize: 15,
+      color: '#1A2744',
+      background: '#FAFBFC',
+      outline: 'none',
+      appearance: 'none' as const,
+      cursor: 'pointer',
+    };
+
+    return (
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: 10 }}>
+        <select value={day} onChange={e => update(year, month, e.target.value)} style={selectStyle}>
+          <option value="">Dag</option>
+          {days.map(d => <option key={d} value={d}>{parseInt(d)}</option>)}
+        </select>
+        <select value={month} onChange={e => update(year, e.target.value, day)} style={selectStyle}>
+          <option value="">Månad</option>
+          {months.map((m, i) => <option key={m} value={String(i + 1).padStart(2, '0')}>{m}</option>)}
+        </select>
+        <select value={year} onChange={e => update(e.target.value, month, day)} style={selectStyle}>
+          <option value="">År</option>
+          {years.map(y => <option key={y} value={y}>{y}</option>)}
+        </select>
+      </div>
+    );
+  };
+
   const renderInput = (q: CategoryQuestion) => {
     const value = answers[q.id] || '';
     const onChange = (val: string) => setAnswers({ ...answers, [q.id]: val });
     const suggestions = hasSuggestions(q.id);
 
     if (q.type === 'select' && q.options) {
+      const short = isShortOptions(q.options);
       return (
-        <div className="flex flex-wrap gap-2">
-          {q.options.map((opt) => (
-            <button
-              key={opt}
-              onClick={() => onChange(opt)}
-              className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-all border ${
-                value === opt
-                  ? 'bg-primary text-primary-foreground border-primary'
-                  : 'bg-card text-foreground border-border hover:border-primary/40'
-              }`}
-            >
-              {opt}
-            </button>
-          ))}
+        <div style={short ? { display: 'grid', gridTemplateColumns: `repeat(${q.options.length}, 1fr)`, gap: 8 } : undefined}>
+          {q.options.map((opt) => {
+            const selected = value === opt;
+            const IconComp = optionIconMap[opt];
+            return (
+              <button
+                key={opt}
+                onClick={() => onChange(opt)}
+                style={{
+                  width: '100%',
+                  padding: '14px 20px',
+                  border: selected ? '1.5px solid #1B4F8A' : '1.5px solid #E2E8F0',
+                  borderRadius: 10,
+                  background: selected ? '#EEF4FF' : '#FFFFFF',
+                  fontSize: 15,
+                  fontWeight: 500,
+                  color: selected ? '#1B4F8A' : '#1A2744',
+                  cursor: 'pointer',
+                  marginBottom: short ? 0 : 8,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  transition: 'all 0.15s ease',
+                  textAlign: 'left',
+                }}
+                onMouseEnter={e => {
+                  if (!selected) {
+                    e.currentTarget.style.borderColor = '#93AACF';
+                    e.currentTarget.style.background = '#F8FAFF';
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (!selected) {
+                    e.currentTarget.style.borderColor = '#E2E8F0';
+                    e.currentTarget.style.background = '#FFFFFF';
+                  }
+                }}
+              >
+                <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  {IconComp && <IconComp style={{ width: 16, height: 16, strokeWidth: 1.5 }} />}
+                  {opt}
+                </span>
+                {selected && (
+                  <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#1B4F8A', flexShrink: 0 }} />
+                )}
+              </button>
+            );
+          })}
         </div>
       );
     }
 
     if (q.type === 'date') {
-      return (
-        <input
-          type="date"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
-        />
-      );
+      return renderDateInput(value, onChange);
     }
 
-    // Text input — with or without autocomplete
     if (suggestions) {
       return (
         <AutocompleteInput
@@ -109,49 +198,125 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={q.placeholder}
-        className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+        style={{
+          width: '100%',
+          padding: '14px 16px',
+          border: '1.5px solid #E2E8F0',
+          borderRadius: 10,
+          fontSize: 15,
+          color: '#1A2744',
+          background: '#FAFBFC',
+          outline: 'none',
+          transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+        }}
+        onFocus={e => {
+          e.currentTarget.style.borderColor = '#1B4F8A';
+          e.currentTarget.style.boxShadow = '0 0 0 3px rgba(27, 79, 138, 0.08)';
+          e.currentTarget.style.background = '#FFFFFF';
+        }}
+        onBlur={e => {
+          e.currentTarget.style.borderColor = '#E2E8F0';
+          e.currentTarget.style.boxShadow = 'none';
+          e.currentTarget.style.background = '#FAFBFC';
+        }}
         onKeyDown={(e) => e.key === 'Enter' && canProceed && handleNext()}
       />
     );
   };
 
   return (
-    <motion.div
-      key={currentQ}
-      initial={{ opacity: 0, x: 30 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -30 }}
-      transition={{ duration: 0.25 }}
+    <div
+      className="question-card"
+      style={{
+        background: '#FFFFFF',
+        borderRadius: 16,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)',
+        border: '1px solid rgba(0,0,0,0.06)',
+        padding: '40px 48px',
+        maxWidth: 640,
+        margin: '0 auto',
+      }}
     >
-      <div className="card-elevated p-6 sm:p-8">
-        <div className="flex items-center gap-3 mb-6">
-          <span className="text-2xl">{category.emoji}</span>
-          <div>
-            <p className="text-xs text-muted-foreground font-medium">
-              Fråga {currentQ + 1} av {questions.length}
-            </p>
-            <h3 className="text-lg font-semibold text-foreground">{question.label}</h3>
-          </div>
+      {/* Progress bar */}
+      <div style={{ marginBottom: 32 }}>
+        <div style={{ height: 3, background: '#E8ECF0', borderRadius: 4, overflow: 'hidden' }}>
+          <div style={{ height: '100%', background: '#1B4F8A', borderRadius: 4, width: `${progressPercent}%`, transition: 'width 0.4s ease' }} />
         </div>
-
-        <div className="mb-8">{renderInput(question)}</div>
-
-        <div className="flex justify-between">
-          <Button variant="ghost" onClick={handlePrev} className="gap-1.5">
-            <ArrowLeft className="w-4 h-4" />
-            Tillbaka
-          </Button>
-          <Button
-            onClick={handleNext}
-            disabled={!canProceed}
-            className="gap-1.5 bg-primary text-primary-foreground hover:bg-primary/90"
-          >
-            {isLast ? 'Analysera' : 'Nästa'}
-            <ArrowRight className="w-4 h-4" />
-          </Button>
+        <div style={{ textAlign: 'right', marginTop: 8, fontSize: 13, color: '#9BA3AF' }}>
+          Fråga {currentQ + 1} av {questions.length}
         </div>
       </div>
-    </motion.div>
+
+      {/* Question header */}
+      <div style={{ marginBottom: 24 }}>
+        <div style={{ fontSize: 12, color: '#9BA3AF', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>
+          Fråga {currentQ + 1} av {questions.length}
+        </div>
+        <h3 style={{ fontSize: 22, fontWeight: 600, color: '#0F1F3D', lineHeight: 1.3, margin: 0 }}>
+          {question.label}
+        </h3>
+      </div>
+
+      {/* Input */}
+      <div style={{ marginBottom: 32 }}>{renderInput(question)}</div>
+
+      {/* Navigation */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 24, borderTop: '1px solid #F0F4F8' }}>
+        <button
+          onClick={handlePrev}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: '#6B7280',
+            fontSize: 14,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '8px 0',
+            transition: 'color 0.15s ease',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.color = '#1A2744'; }}
+          onMouseLeave={e => { e.currentTarget.style.color = '#6B7280'; }}
+        >
+          <ChevronLeft style={{ width: 16, height: 16 }} />
+          Tillbaka
+        </button>
+        <button
+          onClick={handleNext}
+          disabled={!canProceed}
+          style={{
+            background: canProceed ? '#1B4F8A' : '#E2E8F0',
+            color: canProceed ? '#FFFFFF' : '#9BA3AF',
+            border: 'none',
+            borderRadius: 10,
+            padding: '14px 28px',
+            fontSize: 15,
+            fontWeight: 600,
+            cursor: canProceed ? 'pointer' : 'not-allowed',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            transition: 'background 0.2s ease, transform 0.1s ease',
+          }}
+          onMouseEnter={e => { if (canProceed) e.currentTarget.style.background = '#163F6E'; }}
+          onMouseLeave={e => { if (canProceed) e.currentTarget.style.background = '#1B4F8A'; }}
+          onMouseDown={e => { if (canProceed) e.currentTarget.style.transform = 'scale(0.98)'; }}
+          onMouseUp={e => { e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          {isLast ? 'Analysera' : 'Nästa'}
+          <ChevronRight style={{ width: 16, height: 16 }} />
+        </button>
+      </div>
+
+      <style>{`
+        @keyframes stepIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .question-card { animation: stepIn 0.25s ease forwards; }
+      `}</style>
+    </div>
   );
 };
 

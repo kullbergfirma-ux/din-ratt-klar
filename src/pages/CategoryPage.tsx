@@ -101,7 +101,6 @@ const CategoryPage = () => {
         <section aria-label={category.title} className="py-16 sm:py-24">
           <div className="max-w-[860px] mx-auto px-4">
             <div className="mb-8">
-              <span className="text-5xl mb-4 block">{category.emoji}</span>
               <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-4">{category.seoTitle}</h1>
               <p className="text-lg text-muted-foreground max-w-xl">{category.seoDescription}</p>
             </div>
@@ -113,7 +112,6 @@ const CategoryPage = () => {
               Starta ditt ärende <ArrowRight className="w-5 h-5" />
             </button>
 
-            {/* Legal references */}
             {category.legalInfo.length > 0 && (
               <section aria-label="Lagstiftning" className="mt-16">
                 <h2 className="text-xl font-bold text-foreground mb-4">Det här säger lagen</h2>
@@ -128,7 +126,6 @@ const CategoryPage = () => {
               </section>
             )}
 
-            {/* Category FAQ */}
             {category.faqs.length > 0 && (
               <section aria-label="Vanliga frågor" className="mt-16">
                 <h2 className="text-xl font-bold text-foreground mb-4">Vanliga frågor</h2>
@@ -137,7 +134,7 @@ const CategoryPage = () => {
                     <details key={i} className="group">
                       <summary className="px-5 py-4 text-sm font-medium text-foreground cursor-pointer list-none flex items-center justify-between hover:bg-muted/30 transition-colors">
                         {faq.q}
-                        <span className="text-muted-foreground group-open:rotate-180 transition-transform">▾</span>
+                        <span className="text-muted-foreground group-open:rotate-180 transition-transform">&#9662;</span>
                       </summary>
                       <p className="px-5 pb-4 text-sm text-muted-foreground">{faq.a}</p>
                     </details>
@@ -146,7 +143,6 @@ const CategoryPage = () => {
               </section>
             )}
 
-            {/* Guides for this category */}
             <GuidesSection categorySlug={category.slug} categoryTitle={category.title} />
           </div>
         </section>
@@ -154,42 +150,58 @@ const CategoryPage = () => {
 
       {/* Flow */}
       {isInFlow && (
-        <div ref={toolRef} className="max-w-[860px] mx-auto px-4 py-8">
-          <ProgressBar current={stepIndex} total={4} />
+        <div ref={toolRef} style={{ background: '#F4F6F9', minHeight: '80vh', padding: '48px 16px' }}>
+          <div style={{ maxWidth: 640, margin: '0 auto' }}>
+            <ProgressBar current={stepIndex} total={4} />
 
-          <AnimatePresence mode="wait">
-            {step === 'userinfo' && (
-              <motion.div key="userinfo" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
-                <UserInfoForm categoryTitle={category.title} onSubmit={handleUserInfoSubmit} onBack={handleReset} />
-              </motion.div>
-            )}
+            <AnimatePresence mode="wait">
+              {step === 'userinfo' && (
+                <motion.div key="userinfo" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
+                  <UserInfoForm categoryTitle={category.title} onSubmit={handleUserInfoSubmit} onBack={handleReset} />
+                </motion.div>
+              )}
 
-            {step === 'questions' && (
-              <motion.div key="questions" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
-                <QuestionFlow category={category} onSubmit={handleQuestionsSubmit} onBack={() => setStep('userinfo')} />
-              </motion.div>
-            )}
+              {step === 'questions' && (
+                <motion.div key="questions" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
+                  <QuestionFlow category={category} onSubmit={handleQuestionsSubmit} onBack={() => setStep('userinfo')} />
+                </motion.div>
+              )}
 
-            {step === 'loading' && (
-              <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center justify-center py-20">
-                <div className="w-10 h-10 border-3 border-primary/30 border-t-primary rounded-full animate-spin mb-4" />
-                <p className="text-muted-foreground font-medium">Analyserar din situation mot gällande lagstiftning...</p>
-              </motion.div>
-            )}
+              {step === 'loading' && (
+                <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                  <div
+                    style={{
+                      background: '#FFFFFF',
+                      borderRadius: 16,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)',
+                      border: '1px solid rgba(0,0,0,0.06)',
+                      padding: '80px 48px',
+                      maxWidth: 640,
+                      margin: '0 auto',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <div style={{ width: 40, height: 40, border: '3px solid #E2E8F0', borderTopColor: '#1B4F8A', borderRadius: '50%', margin: '0 auto 16px', animation: 'spin 0.8s linear infinite' }} />
+                    <p style={{ color: '#6B7280', fontWeight: 500 }}>Analyserar din situation mot gällande lagstiftning...</p>
+                  </div>
+                  <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+                </motion.div>
+              )}
 
-            {step === 'assessment' && (
-              <motion.div key="assessment" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
-                <RightsAssessment
-                  assessment={assessment}
-                  sentiment={sentiment}
-                  tier={tier}
-                  letter={letter}
-                  onUnlock={handleUnlock}
-                  onBack={handleReset}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+              {step === 'assessment' && (
+                <motion.div key="assessment" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
+                  <RightsAssessment
+                    assessment={assessment}
+                    sentiment={sentiment}
+                    tier={tier}
+                    letter={letter}
+                    onUnlock={handleUnlock}
+                    onBack={handleReset}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       )}
     </main>

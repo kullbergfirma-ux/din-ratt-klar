@@ -16,61 +16,22 @@ const HeroResultCard = () => (
         transform: 'rotate(2deg)',
       }}
     >
-      {/* Category pill */}
-      <span
-        style={{
-          background: '#EEF4FF',
-          color: '#1B4F8A',
-          fontSize: 12,
-          borderRadius: 20,
-          padding: '4px 12px',
-          fontWeight: 500,
-        }}
-      >
+      <span style={{ background: '#EEF4FF', color: '#1B4F8A', fontSize: 12, borderRadius: 20, padding: '4px 12px', fontWeight: 500 }}>
         Resor — Flyg
       </span>
-
-      {/* Verdict */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 16 }}>
         <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#22C55E', flexShrink: 0 }} />
-        <span style={{ fontSize: 15, fontWeight: 600, color: '#0F1F3D' }}>
-          Du har troligtvis rätt till ersättning
-        </span>
+        <span style={{ fontSize: 15, fontWeight: 600, color: '#0F1F3D' }}>Du har troligtvis rätt till ersättning</span>
       </div>
-
       <div style={{ height: 1, background: '#F0F4F8', margin: '16px 0' }} />
-
-      {/* Amount */}
-      <span style={{ fontSize: 11, color: '#9BA3AF', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-        Uppskattad ersättning
-      </span>
+      <span style={{ fontSize: 11, color: '#9BA3AF', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Uppskattad ersättning</span>
       <div style={{ fontSize: 36, fontWeight: 800, color: '#0F1F3D', marginTop: 4 }}>400 €</div>
-
       <div style={{ height: 1, background: '#F0F4F8', margin: '16px 0' }} />
-
-      {/* Blurred legal lines */}
-      <span style={{ fontSize: 11, color: '#9BA3AF', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-        Juridisk grund
-      </span>
+      <span style={{ fontSize: 11, color: '#9BA3AF', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Juridisk grund</span>
       <div style={{ height: 10, background: '#E8ECF4', borderRadius: 4, marginTop: 8, width: '100%' }} />
       <div style={{ height: 10, background: '#E8ECF4', borderRadius: 4, marginTop: 8, width: '75%' }} />
       <div style={{ height: 10, background: '#E8ECF4', borderRadius: 4, marginTop: 8, width: '85%' }} />
-
-      {/* CTA button */}
-      <button
-        style={{
-          width: '100%',
-          background: '#1B4F8A',
-          color: '#FFFFFF',
-          borderRadius: 10,
-          padding: 12,
-          fontSize: 14,
-          fontWeight: 600,
-          border: 'none',
-          marginTop: 20,
-          cursor: 'pointer',
-        }}
-      >
+      <button style={{ width: '100%', background: '#1B4F8A', color: '#FFFFFF', borderRadius: 10, padding: 12, fontSize: 14, fontWeight: 600, border: 'none', marginTop: 20, cursor: 'pointer' }}>
         Lås upp fullständig analys
       </button>
     </div>
@@ -81,9 +42,7 @@ const HeroSection = () => {
   const handleScrollToCategories = (e: React.MouseEvent) => {
     e.preventDefault();
     const el = document.getElementById('kategorier');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -95,7 +54,6 @@ const HeroSection = () => {
 
       <div className="relative max-w-5xl mx-auto px-4 py-20 sm:py-28 lg:py-36">
         <div className="flex flex-col md:flex-row md:items-center md:gap-12">
-          {/* Left column — 55% */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -124,7 +82,7 @@ const HeroSection = () => {
             <div className="flex flex-col sm:flex-row gap-3">
               <a href="/#kategorier" onClick={handleScrollToCategories}>
                 <button className="bg-accent text-accent-foreground hover:bg-accent/90 text-base font-bold px-8 py-4 rounded-xl shadow-lg flex items-center gap-2 transition-colors">
-                  Kolla din rätt →
+                  Kolla din rätt
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </a>
@@ -136,13 +94,20 @@ const HeroSection = () => {
             </div>
 
             <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-white/60">
-              <span className="flex items-center gap-1.5">📋 9 kategorier</span>
-              <span className="flex items-center gap-1.5">⚡ Svar på 2 min</span>
-              <span className="flex items-center gap-1.5">💶 Upp till 600€</span>
+              <span className="flex items-center gap-1.5">
+                <Shield className="w-4 h-4" /> 9 kategorier
+              </span>
+              <span className="flex items-center gap-1.5">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Svar på 2 min
+              </span>
+              <span className="flex items-center gap-1.5">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Upp till 600€
+              </span>
             </div>
           </motion.div>
 
-          {/* Right column — 45% */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
