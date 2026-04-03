@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, BookOpen } from 'lucide-react';
 import { categories } from '@/lib/categories';
 import { guides } from '@/lib/guides';
 
@@ -29,7 +29,6 @@ const RelatedLinks = ({ categorySlugs = [], guideSlugs = [] }: Props) => {
             to={`/${cat!.slug}`}
             className="card-interactive p-4 flex items-center gap-3 group"
           >
-            <span className="text-2xl">{cat!.emoji}</span>
             <div className="flex-1 min-w-0">
               <span className="font-semibold text-foreground text-sm">{cat!.title}</span>
               <p className="text-xs text-muted-foreground truncate">{cat!.subtitle}</p>
@@ -43,7 +42,7 @@ const RelatedLinks = ({ categorySlugs = [], guideSlugs = [] }: Props) => {
             to={`/guide/${guide!.slug}`}
             className="card-interactive p-4 flex items-center gap-3 group"
           >
-            <span className="text-2xl">📖</span>
+            <BookOpen className="w-5 h-5 text-primary shrink-0" />
             <div className="flex-1 min-w-0">
               <span className="font-semibold text-foreground text-sm">{guide!.title}</span>
             </div>
