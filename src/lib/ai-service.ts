@@ -112,7 +112,7 @@ function analyzeResor(answers: Record<string, string>): { assessment: string; se
   if (travelType === 'Flyg' && issue === 'Inställt') {
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt EU-förordning 261/2004 har du vid inställt flyg rätt till:\n1. **Ombokning eller full återbetalning** av biljetten\n2. **Ekonomisk kompensation** (250–600 € beroende på sträcka) om du informerades mindre än 14 dagar före avgång\n3. **Assistans** — mat, dryck och vid behov hotell\n\n### Svagheter i ditt ärende\nKompensation utgår inte om du informerades mer än 14 dagar i förväg, eller om flygbolaget kan visa extraordinära omständigheter.\n\n### Nästa steg\n1. Kontakta flygbolaget skriftligt\n2. Vid avslag: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt ${LEGAL_LINKS.eu261} har du vid inställt flyg rätt till:\n1. **Ombokning eller full återbetalning** av biljetten\n2. **Ekonomisk kompensation** (250–600 € beroende på sträcka) om du informerades mindre än 14 dagar före avgång\n3. **Assistans** — mat, dryck och vid behov hotell\n\n### Juridiska referenser\n- Artikel 5: Inställda flygningar — rätt till återbetalning eller ombokning samt ersättning\n- Artikel 7: Ersättningsbelopp\n- Artikel 9: Rätt till måltider, förfriskningar och inkvartering\n\n### Svagheter i ditt ärende\nKompensation utgår inte om du informerades mer än 14 dagar i förväg, eller om flygbolaget kan visa extraordinära omständigheter.\n\n### Nästa steg\n1. Kontakta flygbolaget skriftligt\n2. Vid avslag: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
     };
   }
 
