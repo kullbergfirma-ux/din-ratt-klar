@@ -17,7 +17,6 @@ const CategorySelector = ({ onSelect }: Props) => {
           onClick={() => onSelect(cat)}
           className="card-interactive p-5 text-left flex flex-col gap-2"
         >
-          <span className="text-3xl">{cat.emoji}</span>
           <span className="font-semibold text-foreground text-sm">{cat.title}</span>
           <span className="text-xs text-muted-foreground leading-snug">{cat.subtitle}</span>
         </motion.button>

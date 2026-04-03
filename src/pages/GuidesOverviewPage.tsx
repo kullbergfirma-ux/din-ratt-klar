@@ -37,7 +37,7 @@ const GuidesOverviewPage = () => {
         {grouped.map(({ category, guides: catGuides }) => (
           <section key={category.slug} className="mb-12" aria-label={category.title}>
             <h2 className="text-xl font-bold text-foreground mb-4">
-              {category.emoji} {category.title}
+              {category.title}
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {catGuides.map(guide => (

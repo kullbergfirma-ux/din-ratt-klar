@@ -42,8 +42,21 @@ const AutocompleteInput = ({ value, onChange, suggestions, placeholder, onKeyDow
     }
   };
 
+  const highlightMatch = (text: string) => {
+    if (!value.trim()) return text;
+    const idx = text.toLowerCase().indexOf(value.toLowerCase());
+    if (idx === -1) return text;
+    return (
+      <>
+        {text.slice(0, idx)}
+        <strong style={{ color: '#1B4F8A' }}>{text.slice(idx, idx + value.length)}</strong>
+        {text.slice(idx + value.length)}
+      </>
+    );
+  };
+
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} style={{ position: 'relative' }}>
       <input
         type="text"
         value={value}
@@ -55,23 +68,63 @@ const AutocompleteInput = ({ value, onChange, suggestions, placeholder, onKeyDow
         onFocus={() => value && setOpen(true)}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+        style={{
+          width: '100%',
+          padding: '14px 16px',
+          border: '1.5px solid #E2E8F0',
+          borderRadius: 10,
+          fontSize: 15,
+          color: '#1A2744',
+          background: '#FAFBFC',
+          outline: 'none',
+          transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+        }}
+        onFocusCapture={e => {
+          e.currentTarget.style.borderColor = '#1B4F8A';
+          e.currentTarget.style.boxShadow = '0 0 0 3px rgba(27, 79, 138, 0.08)';
+          e.currentTarget.style.background = '#FFFFFF';
+        }}
+        onBlurCapture={e => {
+          e.currentTarget.style.borderColor = '#E2E8F0';
+          e.currentTarget.style.boxShadow = 'none';
+          e.currentTarget.style.background = '#FAFBFC';
+        }}
       />
       {open && matches.length > 0 && (
-        <ul className="absolute z-50 w-full mt-1 bg-card border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
+        <ul style={{
+          position: 'absolute',
+          width: '100%',
+          background: '#FFFFFF',
+          border: '1.5px solid #E2E8F0',
+          borderRadius: 10,
+          boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+          marginTop: 4,
+          maxHeight: 220,
+          overflowY: 'auto',
+          zIndex: 100,
+          listStyle: 'none',
+          padding: 0,
+          margin: 0,
+          marginBlockStart: 4,
+        }}>
           {matches.map((item, i) => (
             <li
               key={item}
-              className={`px-4 py-2.5 text-sm cursor-pointer transition-colors ${
-                i === highlighted ? 'bg-primary/10 text-foreground' : 'text-foreground hover:bg-muted/50'
-              }`}
+              style={{
+                padding: '12px 16px',
+                fontSize: 14,
+                color: i === highlighted ? '#1B4F8A' : '#1A2744',
+                background: i === highlighted ? '#F0F5FF' : 'transparent',
+                cursor: 'pointer',
+                transition: 'background 0.1s ease',
+              }}
               onMouseDown={() => {
                 onChange(item);
                 setOpen(false);
               }}
               onMouseEnter={() => setHighlighted(i)}
             >
-              {item}
+              {highlightMatch(item)}
             </li>
           ))}
         </ul>

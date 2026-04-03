@@ -204,7 +204,7 @@ Med vänliga hälsningar,
               </div>
 
               <div className="card-elevated p-6">
-                <h3 className="font-bold text-foreground mb-3">📋 Steg-för-steg: Anmäl till ARN</h3>
+                <h3 className="font-bold text-foreground mb-3">Steg-för-steg: Anmäl till ARN</h3>
                 <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
                   <li>Gå till <a href="https://www.arn.se" target="_blank" rel="noopener noreferrer" className="text-primary underline">arn.se</a></li>
                   <li>Klicka på "Anmäl ett ärende"</li>

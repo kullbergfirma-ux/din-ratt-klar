@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { ChevronLeft, ChevronRight, Lock } from 'lucide-react';
 
 export interface UserProfile {
   fullName: string;
@@ -18,7 +16,31 @@ interface Props {
   categoryTitle: string;
 }
 
-const UserInfoForm = ({ onSubmit, onBack, categoryTitle }: Props) => {
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  padding: '14px 16px',
+  border: '1.5px solid #E2E8F0',
+  borderRadius: 10,
+  fontSize: 15,
+  color: '#1A2744',
+  background: '#FAFBFC',
+  outline: 'none',
+  transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+};
+
+const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+  e.currentTarget.style.borderColor = '#1B4F8A';
+  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(27, 79, 138, 0.08)';
+  e.currentTarget.style.background = '#FFFFFF';
+};
+
+const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+  e.currentTarget.style.borderColor = '#E2E8F0';
+  e.currentTarget.style.boxShadow = 'none';
+  e.currentTarget.style.background = '#FAFBFC';
+};
+
+const UserInfoForm = ({ onSubmit, onBack }: Props) => {
   const [profile, setProfile] = useState<UserProfile>({
     fullName: '',
     email: '',
@@ -44,53 +66,141 @@ const UserInfoForm = ({ onSubmit, onBack, categoryTitle }: Props) => {
     if (validate()) onSubmit(profile);
   };
 
-  const field = (key: keyof UserProfile, label: string, required: boolean, placeholder: string, type = 'text') => (
+  const requiredDot = <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#1B4F8A', marginLeft: 6, verticalAlign: 'middle' }} />;
+
+  const field = (key: keyof UserProfile, label: string, required: boolean, placeholder: string, type = 'text', helperText?: string) => (
     <div>
-      <label className="block text-sm font-medium text-foreground mb-1.5">
-        {label}{required && <span className="text-destructive ml-0.5">*</span>}
+      <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#1A2744', marginBottom: 6 }}>
+        {label}{required && requiredDot}
       </label>
       <input
         type={type}
         value={profile[key]}
         onChange={(e) => setProfile({ ...profile, [key]: e.target.value })}
         placeholder={placeholder}
-        className={`w-full px-4 py-3 rounded-lg border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary ${
-          errors[key] ? 'border-destructive' : 'border-border'
-        }`}
+        style={{
+          ...inputStyle,
+          borderColor: errors[key] ? '#EF4444' : '#E2E8F0',
+        }}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
       />
-      {errors[key] && <p className="text-xs text-destructive mt-1">{errors[key]}</p>}
+      {helperText && <p style={{ fontSize: 12, color: '#9BA3AF', marginTop: 4 }}>{helperText}</p>}
+      {errors[key] && <p style={{ fontSize: 12, color: '#EF4444', marginTop: 4 }}>{errors[key]}</p>}
     </div>
   );
 
   return (
-    <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }}>
-      <div className="card-elevated p-6 sm:p-8">
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold text-foreground">Dina uppgifter</h3>
-          <p className="text-sm text-muted-foreground mt-1">
-            Dessa uppgifter används i ditt kravbrev. Fyll i innan vi går vidare till frågorna om ditt ärende.
-          </p>
+    <div
+      className="question-card"
+      style={{
+        background: '#FFFFFF',
+        borderRadius: 16,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)',
+        border: '1px solid rgba(0,0,0,0.06)',
+        padding: '40px 48px',
+        maxWidth: 640,
+        margin: '0 auto',
+      }}
+    >
+      <div style={{ marginBottom: 24 }}>
+        <div style={{ fontSize: 12, color: '#9BA3AF', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>
+          DINA UPPGIFTER
         </div>
+        <h3 style={{ fontSize: 22, fontWeight: 600, color: '#0F1F3D', lineHeight: 1.3, margin: 0 }}>
+          Fyll i dina uppgifter
+        </h3>
+        <p style={{ fontSize: 14, color: '#6B7280', marginTop: 8 }}>
+          Dessa uppgifter används i ditt kravbrev. Fyll i innan vi går vidare till frågorna om ditt ärende.
+        </p>
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit}>
+        {/* Two columns: name + email */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
           {field('fullName', 'Förnamn och efternamn', true, 'Anna Andersson')}
           {field('email', 'E-postadress', true, 'anna@exempel.se', 'email')}
+        </div>
+
+        {/* Two columns: phone + postal */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
           {field('phone', 'Telefonnummer', false, '070-123 45 67', 'tel')}
           {field('postalAddress', 'Postnummer och ort', true, '114 33 Stockholm')}
-          {field('streetAddress', 'Gatuadress', false, 'Storgatan 1')}
-          {field('counterparty', 'Vilket företag gäller ärendet?', true, `T.ex. SAS, IKEA, Telia`)}
+        </div>
 
-          <div className="flex justify-between pt-4">
-            <Button type="button" variant="ghost" onClick={onBack} className="gap-1.5">
-              Tillbaka
-            </Button>
-            <Button type="submit" className="gap-1.5 bg-primary text-primary-foreground hover:bg-primary/90">
-              Nästa <ArrowRight className="w-4 h-4" />
-            </Button>
-          </div>
-        </form>
-      </div>
-    </motion.div>
+        {/* Full width: street */}
+        <div style={{ marginBottom: 16 }}>
+          {field('streetAddress', 'Gatuadress', false, 'Storgatan 1')}
+        </div>
+
+        {/* Full width: counterparty */}
+        <div style={{ marginBottom: 24 }}>
+          {field('counterparty', 'Vilket företag gäller ärendet?', true, 'T.ex. SAS, IKEA, Telia', 'text', 'Används för att adressera kravbrevet korrekt')}
+        </div>
+
+        {/* Trust message */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 24 }}>
+          <Lock style={{ width: 14, height: 14, color: '#6B7280' }} />
+          <span style={{ fontSize: 12, color: '#6B7280' }}>
+            Dina uppgifter används enbart för att generera ditt kravbrev och delas aldrig med tredje part.
+          </span>
+        </div>
+
+        {/* Navigation */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 24, borderTop: '1px solid #F0F4F8' }}>
+          <button
+            type="button"
+            onClick={onBack}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: '#6B7280',
+              fontSize: 14,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '8px 0',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.color = '#1A2744'; }}
+            onMouseLeave={e => { e.currentTarget.style.color = '#6B7280'; }}
+          >
+            <ChevronLeft style={{ width: 16, height: 16 }} />
+            Tillbaka
+          </button>
+          <button
+            type="submit"
+            style={{
+              background: '#1B4F8A',
+              color: '#FFFFFF',
+              border: 'none',
+              borderRadius: 10,
+              padding: '14px 28px',
+              fontSize: 15,
+              fontWeight: 600,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              transition: 'background 0.2s ease',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#163F6E'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = '#1B4F8A'; }}
+          >
+            Nästa
+            <ChevronRight style={{ width: 16, height: 16 }} />
+          </button>
+        </div>
+      </form>
+
+      <style>{`
+        @keyframes stepIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .question-card { animation: stepIn 0.25s ease forwards; }
+      `}</style>
+    </div>
   );
 };
 
