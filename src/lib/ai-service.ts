@@ -224,7 +224,7 @@ function analyzeAbonnemang(answers: Record<string, string>): { assessment: strin
     }
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nOm du har skriftlig bekräftelse på uppsägning har företaget ingen rätt att fortsätta debitera. Alla belopp debiterade efter uppsägningsdatumet ska återbetalas.\n\n### Juridisk grund\nDistansavtalslagen (2005:59) 25 § — uppsägning ska bekräftas skriftligt. Avtalslagen 36 § — oskäliga villkor kan jämkas.\n\n### Svagheter i ditt ärende\nFöretaget kan hävda att uppsägningstiden inte löpt ut. Kontrollera avtalsvillkoren.\n\n### Nästa steg\n1. Skicka skriftligt krav med kopia av uppsägningsbekräftelsen\n2. Sätt 14 dagars tidsfrist\n3. Kontakta banken för att stoppa framtida debiteringar\n4. Vid utebliven respons: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nOm du har skriftlig bekräftelse på uppsägning har företaget ingen rätt att fortsätta debitera. Alla belopp debiterade efter uppsägningsdatumet ska återbetalas.\n\n### Juridiska referenser\n${LEGAL_LINKS.distansavtalslagen} 25 § — uppsägning ska bekräftas skriftligt. ${LEGAL_LINKS.avtalslagen} 36 § — oskäliga villkor kan jämkas.\n\n### Svagheter i ditt ärende\nFöretaget kan hävda att uppsägningstiden inte löpt ut. Kontrollera avtalsvillkoren.\n\n### Nästa steg\n1. Skicka skriftligt krav med kopia av uppsägningsbekräftelsen\n2. Sätt 14 dagars tidsfrist\n3. Kontakta banken för att stoppa framtida debiteringar\n4. Vid utebliven respons: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
     };
   }
 
