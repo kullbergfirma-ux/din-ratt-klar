@@ -231,7 +231,7 @@ function analyzeAbonnemang(answers: Record<string, string>): { assessment: strin
   if (issue === 'Kan inte säga upp') {
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till åtgärd.\n\nEnligt Lagen om avtalsvillkor i konsumentförhållanden (1994:1512) 3 § är villkor som gör det orimligt svårt att säga upp ett abonnemang potentiellt **ogiltiga**.\n\n### Juridisk grund\nAvtalsvillkorslagen 3 § samt Avtalslagen 36 § om oskäliga avtalsvillkor.\n\n### Nästa steg\n1. Säg upp skriftligt via e-post och behåll bekräftelse\n2. Om företaget hindrar uppsägning: anmäl till [Konsumentverket](https://www.konsumentverket.se)\n3. Kontakta banken för att stoppa framtida betalningar${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till åtgärd.\n\nEnligt Lagen om avtalsvillkor i konsumentförhållanden (1994:1512) 3 § är villkor som gör det orimligt svårt att säga upp ett abonnemang potentiellt **ogiltiga**.\n\n### Juridiska referenser\nAvtalsvillkorslagen 3 § samt ${LEGAL_LINKS.avtalslagen} 36 § om oskäliga avtalsvillkor.\n\n### Nästa steg\n1. Säg upp skriftligt via e-post och behåll bekräftelse\n2. Om företaget hindrar uppsägning: anmäl till [Konsumentverket](https://www.konsumentverket.se)\n3. Kontakta banken för att stoppa framtida betalningar${DISCLAIMER}`,
     };
   }
 
