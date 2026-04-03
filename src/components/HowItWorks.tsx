@@ -1,26 +1,25 @@
 import { motion } from 'framer-motion';
-import { ClipboardList, Brain, FileText } from 'lucide-react';
 
 const steps = [
   {
-    icon: ClipboardList,
+    number: 1,
     title: 'Beskriv din situation',
-    description: 'Välj kategori och svara på några enkla frågor om ditt ärende. Det tar bara ett par minuter.',
+    description: 'Välj kategori och svara på några enkla frågor.',
   },
   {
-    icon: Brain,
+    number: 2,
     title: 'Få en juridisk bedömning',
-    description: 'Vår AI analyserar din situation mot gällande svensk och EU-lagstiftning och ger dig ett tydligt svar.',
+    description: 'Vår AI analyserar mot gällande lagstiftning.',
   },
   {
-    icon: FileText,
+    number: 3,
     title: 'Generera kravbrev',
-    description: 'Få ett formellt kravbrev redo att skicka — med rätt lagparagrafer, belopp och tidsfrister.',
+    description: 'Få ett formellt kravbrev redo att skicka.',
   },
 ];
 
 const HowItWorks = () => (
-  <section id="hur-fungerar" aria-label="Så fungerar det" className="py-20 sm:py-28 bg-background">
+  <section id="hur-fungerar" aria-label="Så fungerar det" className="bg-background" style={{ padding: '80px 0' }}>
     <div className="max-w-5xl mx-auto px-4">
       <div className="text-center mb-14">
         <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-3">
@@ -31,29 +30,46 @@ const HowItWorks = () => (
         </p>
       </div>
 
-      <ol className="grid md:grid-cols-3 gap-8 list-none p-0">
-        {steps.map((step, i) => (
-          <motion.li
-            key={i}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.15, duration: 0.5 }}
-            className="relative"
-          >
-            <div className="card-elevated p-8 h-full text-center">
-              <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-5">
-                <step.icon className="w-7 h-7" />
+      <div className="relative">
+        {/* Connecting line */}
+        <div
+          className="hidden md:block absolute top-[26px] left-[calc(8.33%+26px)] right-[calc(8.33%+26px)]"
+          style={{ height: 1, background: '#D1D9E6' }}
+        />
+
+        <ol className="grid md:grid-cols-3 gap-12 md:gap-8 list-none p-0">
+          {steps.map((step, i) => (
+            <motion.li
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.15, duration: 0.5 }}
+              className="text-center"
+            >
+              {/* Step number */}
+              <div
+                className="mx-auto mb-5 flex items-center justify-center relative z-[1]"
+                style={{
+                  width: 52,
+                  height: 52,
+                  borderRadius: '50%',
+                  background: '#EEF4FF',
+                  color: '#1B4F8A',
+                  fontSize: 20,
+                  fontWeight: 700,
+                }}
+              >
+                {step.number}
               </div>
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-primary text-primary-foreground text-sm font-bold flex items-center justify-center">
-                {i + 1}
-              </div>
-              <h3 className="font-bold text-foreground text-lg mb-2">{step.title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">{step.description}</p>
-            </div>
-          </motion.li>
-        ))}
-      </ol>
+              <h3 className="font-semibold text-foreground text-lg mb-2">{step.title}</h3>
+              <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>
+                {step.description}
+              </p>
+            </motion.li>
+          ))}
+        </ol>
+      </div>
     </div>
   </section>
 );

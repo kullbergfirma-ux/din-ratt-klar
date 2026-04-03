@@ -3,6 +3,7 @@ import { WebSiteSchema, FAQSchema } from '@/components/StructuredData';
 import HeroSection from '@/components/HeroSection';
 import HowItWorks from '@/components/HowItWorks';
 import CategoriesSection from '@/components/CategoriesSection';
+import WhatCanYouClaim from '@/components/WhatCanYouClaim';
 import ReviewsSection from '@/components/ReviewsSection';
 import FeaturesSection from '@/components/FeaturesSection';
 import PricingSection from '@/components/PricingSection';
@@ -27,11 +28,12 @@ const HomePage = () => (
     <HeroSection />
     <HowItWorks />
     <CategoriesSection />
+    <WhatCanYouClaim />
     <ReviewsSection />
     <FeaturesSection />
     <PricingSection />
 
-    <section id="faq" aria-label="Vanliga frågor" className="py-20 sm:py-28 bg-background">
+    <section id="faq" aria-label="Vanliga frågor" className="bg-background" style={{ padding: '80px 0' }}>
       <div className="max-w-3xl mx-auto px-4">
         <div className="text-center mb-10">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-3">Vanliga frågor</h2>
@@ -50,7 +52,6 @@ const HomePage = () => (
       </div>
     </section>
 
-    {/* Trust signals */}
     <section aria-label="Förtroendesignaler" className="py-16 bg-muted/30">
       <div className="max-w-4xl mx-auto px-4 flex flex-wrap justify-center gap-8 text-center">
         {[
