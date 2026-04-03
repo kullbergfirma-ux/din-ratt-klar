@@ -12,13 +12,22 @@ export function validateBeforeAnalysis(category: Category, answers: Record<strin
     }
   }
 
-  // Check for description length — find any freetext field with a description-like purpose
-  const descriptionFields = ['description', 'problem', 'what_happened', 'issue', 'defect'];
-  for (const fieldId of descriptionFields) {
-    const val = answers[fieldId];
-    if (val !== undefined && typeof val === 'string' && val.trim().length > 0 && val.trim().length < 30) {
-      return 'Beskriv ditt ärende mer detaljerat så att vi kan göra en korrekt bedömning.';
-    }
+  // Check for description length only on actual narrative text questions
+  const narrativeQuestionIds = category.questions
+    .filter((question) => question.type === 'text')
+    .filter((question) => {
+      const content = `${question.label} ${question.placeholder ?? ''}`.toLowerCase();
+      return /(beskriv|vad hände|vad är felet|vad är problemet|situationen|problemet|vad sa de|kontaktat)/.test(content);
+    })
+    .map((question) => question.id);
+
+  const hasShortNarrativeAnswer = narrativeQuestionIds.some((fieldId) => {
+    const value = answers[fieldId];
+    return typeof value === 'string' && value.trim().length > 0 && value.trim().length < 30;
+  });
+
+  if (hasShortNarrativeAnswer) {
+    return 'Beskriv ditt ärende mer detaljerat så att vi kan göra en korrekt bedömning.';
   }
 
   // Check for "no problem" keywords across all answers

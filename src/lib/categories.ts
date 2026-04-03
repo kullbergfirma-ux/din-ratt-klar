@@ -57,6 +57,7 @@ export const categories: Category[] = [
       { id: 'issue', label: 'Vad hände?', type: 'select', options: ['Försening', 'Inställt', 'Överbookning', 'Ej som utlovat', 'Annat'] },
       { id: 'delay_duration', label: 'Hur många minuter/timmar var förseningen?', type: 'text', placeholder: 'T.ex. 3 timmar', showWhen: { questionId: 'issue', values: ['Försening'] } },
       { id: 'compensation_offered', label: 'Fick du någon ersättning eller hjälp på plats?', type: 'select', options: ['Ja', 'Nej', 'Delvis'] },
+      { id: 'description', label: 'Beskriv kort vad som hände', type: 'text', placeholder: 'T.ex. Flyget blev 4 timmar försenat och jag fick ingen hjälp på plats' },
     ],
   },
   {
