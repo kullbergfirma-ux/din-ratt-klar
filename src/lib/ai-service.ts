@@ -189,7 +189,7 @@ function analyzeKopEhandel(answers: Record<string, string>): { assessment: strin
       if (daysSincePurchase > 14) {
         return {
           sentiment: 'negative',
-          assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ångerrätt i detta fall.\n\nEnligt Distansavtalslagen (2005:59) 14 § gäller ångerrätten i **14 dagar** från det att du mottog varan. Det har gått ${daysSincePurchase} dagar sedan köpet, vilket innebär att ångerfristen har löpt ut.\n\n### Svagheter i ditt ärende\nÅngerrätten är absolut — efter 14 dagar kan säljaren neka utan juridisk grund för krav.\n\n### Nästa steg\nOm varan är felaktig kan du istället reklamera enligt Konsumentköplagen. Reklamationsrätten gäller i 3 år.${DISCLAIMER}`,
+          assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ångerrätt i detta fall.\n\nEnligt ${LEGAL_LINKS.distansavtalslagen} 14 § gäller ångerrätten i **14 dagar** från det att du mottog varan. Det har gått ${daysSincePurchase} dagar sedan köpet, vilket innebär att ångerfristen har löpt ut.\n\n### Svagheter i ditt ärende\nÅngerrätten är absolut — efter 14 dagar kan säljaren neka utan juridisk grund för krav.\n\n### Nästa steg\nOm varan är felaktig kan du istället reklamera enligt ${LEGAL_LINKS.konsumentkoplagen}. Reklamationsrätten gäller i 3 år.${DISCLAIMER}`,
         };
       }
     }
