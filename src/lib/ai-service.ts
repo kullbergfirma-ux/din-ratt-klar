@@ -195,7 +195,7 @@ function analyzeKopEhandel(answers: Record<string, string>): { assessment: strin
     }
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt Distansavtalslagen (2005:59) 14 § har du **14 dagars ångerrätt** vid köp på distans (online, telefon). Du kan returnera varan utan att ange skäl.\n\n### Juridisk grund\nDistansavtalslagen 14 §. Säljaren ska återbetala inom 14 dagar efter att de mottagit den returnerade varan.\n\n### Svagheter i ditt ärende\nUndantag finns för bland annat: specialtillverkade varor, förseglad mjukvara/hygienartiklar som öppnats, och digitalt innehåll om nedladdning påbörjats.\n\n### Nästa steg\n1. Meddela säljaren skriftligt att du vill använda din ångerrätt\n2. Returnera varan inom 14 dagar${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt ${LEGAL_LINKS.distansavtalslagen} 14 § har du **14 dagars ångerrätt** vid köp på distans (online, telefon). Du kan returnera varan utan att ange skäl.\n\n### Juridiska referenser\n${LEGAL_LINKS.distansavtalslagen} 14 §. Säljaren ska återbetala inom 14 dagar efter att de mottagit den returnerade varan.\n\n### Svagheter i ditt ärende\nUndantag finns för bland annat: specialtillverkade varor, förseglad mjukvara/hygienartiklar som öppnats, och digitalt innehåll om nedladdning påbörjats.\n\n### Nästa steg\n1. Meddela säljaren skriftligt att du vill använda din ångerrätt\n2. Returnera varan inom 14 dagar${DISCLAIMER}`,
     };
   }
 
