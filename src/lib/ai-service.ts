@@ -84,7 +84,7 @@ function analyzeResor(answers: Record<string, string>): { assessment: string; se
   if (travelType === 'Flyg' && flightDate && yearsBetween(flightDate) > 3) {
     return {
       sentiment: 'negative',
-      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ersättning i detta fall.\n\nFlygresan ägde rum ${flightDate}, vilket är ${formatElapsed(flightDate)} sedan. I Sverige är preskriptionstiden för krav enligt EU-förordning 261/2004 **3 år**. Ditt krav har därmed preskriberats.\n\n### Beräkning\nResan genomfördes ${flightDate}. Preskriptionstiden löpte ut 3 år därefter. Denna situation **faller utanför** den tillåtna tidsfristen.${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ersättning i detta fall.\n\nFlygresan ägde rum ${flightDate}, vilket är ${formatElapsed(flightDate)} sedan. I Sverige är preskriptionstiden för krav enligt ${LEGAL_LINKS.eu261} **3 år**. Ditt krav har därmed preskriberats.\n\n### Beräkning\nResan genomfördes ${flightDate}. Preskriptionstiden löpte ut 3 år därefter. Denna situation **faller utanför** den tillåtna tidsfristen.${DISCLAIMER}`,
     };
   }
 
