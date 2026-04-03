@@ -338,7 +338,7 @@ function analyzeLeverans(answers: Record<string, string>): { assessment: string;
   if (issue === 'Försenat' || issue === 'Borttappat') {
     return {
       sentiment: 'positive',
-      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt Konsumentköplagen (2022:260) ansvarar **säljaren** för varan tills den levererats till dig. Om paketet är försenat eller försvunnet har du rätt att kräva ny leverans eller häva köpet.\n\n### Juridisk grund\nKonsumentköplagen 2 kap 5 § (riskens övergång) samt Distansavtalslagen.\n\n### Svagheter i ditt ärende\nSäljaren kan hävda att leverans skett om de har spårningsbevis. Kontrollera spårningsinformationen.\n\n### Nästa steg\n1. Kontakta säljaren — inte transportföretaget (säljaren ansvarar)\n2. Kräv ny leverans eller återbetalning\n3. Sätt 14 dagars tidsfrist${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nEnligt ${LEGAL_LINKS.konsumentkoplagen} ansvarar **säljaren** för varan tills den levererats till dig. Om paketet är försenat eller försvunnet har du rätt att kräva ny leverans eller häva köpet.\n\n### Juridiska referenser\n${LEGAL_LINKS.konsumentkoplagen} 2 kap 5 § (riskens övergång) samt ${LEGAL_LINKS.distansavtalslagen}.\n\n### Svagheter i ditt ärende\nSäljaren kan hävda att leverans skett om de har spårningsbevis. Kontrollera spårningsinformationen.\n\n### Nästa steg\n1. Kontakta säljaren — inte transportföretaget (säljaren ansvarar)\n2. Kräv ny leverans eller återbetalning\n3. Sätt 14 dagars tidsfrist${DISCLAIMER}`,
     };
   }
 
