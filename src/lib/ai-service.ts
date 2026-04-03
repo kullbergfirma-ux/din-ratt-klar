@@ -305,7 +305,7 @@ function analyzeBilkop(answers: Record<string, string>): { assessment: string; s
   if (sellerType === 'Privatperson') {
     return {
       sentiment: 'uncertain',
-      assessment: `## Bedömning\n\nSituationen är oklar — privatköp ger väsentligt sämre skydd.\n\nVid köp av bil från privatperson gäller **Köplagen (1990:931)**, inte Konsumentköplagen. Vid köp i "befintligt skick" (vanligt vid privatköp) krävs att felet **väsentligt avviker** från vad du som köpare kunde förutsätta.\n\n### Juridisk grund\nKöplagen 17–19 §§. Bevisbördan ligger på dig som köpare.\n\n### Svagheter i ditt ärende\nPrivatköp i befintligt skick innebär höga krav på vad du som köpare borde ha undersökt innan köpet. Undersökningsplikten är omfattande.\n\n### Nästa steg\n1. Dokumentera felet — gärna med oberoende besiktningsprotokoll\n2. Kontakta säljaren skriftligt med krav\n3. Vid tvist: tingsrätten (ARN prövar inte privatköp)${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nSituationen är oklar — privatköp ger väsentligt sämre skydd.\n\nVid köp av bil från privatperson gäller **${LEGAL_LINKS.koplagen}**, inte Konsumentköplagen. Vid köp i "befintligt skick" (vanligt vid privatköp) krävs att felet **väsentligt avviker** från vad du som köpare kunde förutsätta.\n\n### Juridiska referenser\n${LEGAL_LINKS.koplagen} 17–19 §§. Bevisbördan ligger på dig som köpare.\n\n### Svagheter i ditt ärende\nPrivatköp i befintligt skick innebär höga krav på vad du som köpare borde ha undersökt innan köpet. Undersökningsplikten är omfattande.\n\n### Nästa steg\n1. Dokumentera felet — gärna med oberoende besiktningsprotokoll\n2. Kontakta säljaren skriftligt med krav\n3. Vid tvist: tingsrätten (ARN prövar inte privatköp)${DISCLAIMER}`,
     };
   }
 
