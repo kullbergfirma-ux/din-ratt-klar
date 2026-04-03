@@ -298,7 +298,7 @@ function analyzeBilkop(answers: Record<string, string>): { assessment: string; s
   if (sellerType === 'Handlare' && purchaseDate && yearsBetween(purchaseDate) > 3) {
     return {
       sentiment: 'negative',
-      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsrätten på tre år har löpt ut enligt Konsumentköplagen 32 §.\n\n### Beräkning\nKöpet gjordes ${purchaseDate}, vilket är ${formatElapsed(purchaseDate)} sedan. Reklamationsrätten löpte ut 3 år efter köpdatumet. Denna situation **faller utanför** reklamationsrätten.${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsrätten på tre år har löpt ut enligt ${LEGAL_LINKS.konsumentkoplagen} 32 §.\n\n### Beräkning\nKöpet gjordes ${purchaseDate}, vilket är ${formatElapsed(purchaseDate)} sedan. Reklamationsrätten löpte ut 3 år efter köpdatumet. Denna situation **faller utanför** reklamationsrätten.${DISCLAIMER}`,
     };
   }
 
