@@ -257,7 +257,7 @@ function analyzeHantverkare(answers: Record<string, string>): { assessment: stri
   if (!defect || defect.trim().length < 10) {
     return {
       sentiment: 'uncertain',
-      assessment: `## Bedömning\n\nSituationen är oklar — mer information behövs.\n\nDu har inte beskrivit tillräckligt detaljerat vad felet är. Konsumenttjänstlagen (1985:716) kräver att felet avviker från **fackmässig standard** — inte bara från dina personliga preferenser.\n\n### Nästa steg\nBeskriv exakt vad som är felaktigt med det utförda arbetet och hur det avviker från vad som avtalades.${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nSituationen är oklar — mer information behövs.\n\nDu har inte beskrivit tillräckligt detaljerat vad felet är. ${LEGAL_LINKS.konsumenttjanstlagen} kräver att felet avviker från **fackmässig standard** — inte bara från dina personliga preferenser.\n\n### Nästa steg\nBeskriv exakt vad som är felaktigt med det utförda arbetet och hur det avviker från vad som avtalades.${DISCLAIMER}`,
     };
   }
 
