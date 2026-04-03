@@ -167,7 +167,7 @@ function analyzeBetalning(answers: Record<string, string>): { assessment: string
 
   return {
     sentiment: 'uncertain',
-    assessment: `## Bedömning\n\nSituationen är oklar — mer information behövs.\n\nDu har angett "${issue}" med ett belopp på ${parsed} kr, men det framgår inte tillräckligt tydligt om det rör sig om en obehörig transaktion eller ett köp du själv genomfört. Betaltjänstlagen skyddar mot **obehöriga** transaktioner — inte mot köp du är missnöjd med i efterhand.\n\n### Nästa steg\nFörtydliga om transaktionen genomfördes av dig eller utan ditt godkännande. Det avgör vilken lag som är tillämplig.${DISCLAIMER}`,
+    assessment: `## Bedömning\n\nSituationen är oklar — mer information behövs.\n\nDu har angett "${issue}" med ett belopp på ${parsed} kr, men det framgår inte tillräckligt tydligt om det rör sig om en obehörig transaktion eller ett köp du själv genomfört. ${LEGAL_LINKS.betaltjanstlagen} skyddar mot **obehöriga** transaktioner — inte mot köp du är missnöjd med i efterhand.\n\n### Nästa steg\nFörtydliga om transaktionen genomfördes av dig eller utan ditt godkännande. Det avgör vilken lag som är tillämplig.${DISCLAIMER}`,
   };
 }
 
