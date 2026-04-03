@@ -264,7 +264,7 @@ function analyzeHantverkare(answers: Record<string, string>): { assessment: stri
   if (contacted && contacted.toLowerCase().includes('nej')) {
     return {
       sentiment: 'uncertain',
-      assessment: `## Bedömning\n\nDu har sannolikt rättigheter, men du behöver ge hantverkaren möjlighet att avhjälpa felet först.\n\nEnligt Konsumenttjänstlagen (1985:716) 20 § har hantverkaren rätt att **avhjälpa felet** innan du kan kräva prisavdrag eller hävning. Du måste därför kontakta hantverkaren och ge dem en rimlig tidsfrist.\n\n### Juridisk grund\nKonsumenttjänstlagen 4 § (fackmässighet), 20 § (avhjälpande), 16 § (rätt att hålla inne betalning).\n\n### Nästa steg\n1. Kontakta hantverkaren skriftligt och beskriv felet\n2. Ge en rimlig tidsfrist (2–4 veckor) för avhjälpande\n3. Du har rätt att hålla inne del av betalningen som säkerhet${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har sannolikt rättigheter, men du behöver ge hantverkaren möjlighet att avhjälpa felet först.\n\nEnligt ${LEGAL_LINKS.konsumenttjanstlagen} 20 § har hantverkaren rätt att **avhjälpa felet** innan du kan kräva prisavdrag eller hävning. Du måste därför kontakta hantverkaren och ge dem en rimlig tidsfrist.\n\n### Juridiska referenser\n${LEGAL_LINKS.konsumenttjanstlagen}:\n- 4 §: Fackmässighet\n- 16 §: Rätt att hålla inne betalning\n- 20 §: Avhjälpande\n\n### Nästa steg\n1. Kontakta hantverkaren skriftligt och beskriv felet\n2. Ge en rimlig tidsfrist (2–4 veckor) för avhjälpande\n3. Du har rätt att hålla inne del av betalningen som säkerhet${DISCLAIMER}`,
     };
   }
 
