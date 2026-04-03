@@ -100,7 +100,7 @@ function analyzeResor(answers: Record<string, string>): { assessment: string; se
     if (hours < 3) {
       return {
         sentiment: 'negative',
-        assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ersättning i detta fall.\n\nEnligt EU-förordning 261/2004 uppstår rätt till ekonomisk kompensation först när ankomsten till slutdestinationen är försenad med **mer än 3 timmar**. Du har angett en försening på ${hours} timmar, vilket understiger tröskeln.\n\n### Svagheter i ditt ärende\nFörseningar under 3 timmar ger inte rätt till standardiserad kompensation enligt förordningen, även om de är irriterande.\n\n### Nästa steg\nOm flygbolaget erbjöd mat, dryck eller annan assistans som uteblev, kan du ha rätt till ersättning för utlägg du haft under väntetiden.${DISCLAIMER}`,
+        assessment: `## Bedömning\n\nDu har troligtvis inte rätt till ersättning i detta fall.\n\nEnligt ${LEGAL_LINKS.eu261} uppstår rätt till ekonomisk kompensation först när ankomsten till slutdestinationen är försenad med **mer än 3 timmar**. Du har angett en försening på ${hours} timmar, vilket understiger tröskeln.\n\n### Juridiska referenser\n- Artikel 7: Ersättningsbelopp\n- Artikel 5–6: Villkor för kompensation\n\n### Svagheter i ditt ärende\nFörseningar under 3 timmar ger inte rätt till standardiserad kompensation enligt förordningen, även om de är irriterande.\n\n### Nästa steg\nOm flygbolaget erbjöd mat, dryck eller annan assistans som uteblev, kan du ha rätt till ersättning för utlägg du haft under väntetiden.${DISCLAIMER}`,
       };
     }
     return {
