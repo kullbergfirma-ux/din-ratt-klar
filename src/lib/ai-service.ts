@@ -322,7 +322,7 @@ function analyzeGaranti(answers: Record<string, string>): { assessment: string; 
   if (purchaseDate && yearsBetween(purchaseDate) > 3) {
     return {
       sentiment: 'negative',
-      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsrätten på tre år har löpt ut enligt Konsumentköplagen 32 §.\n\n### Beräkning\nKöpet gjordes ${purchaseDate}, vilket är ${formatElapsed(purchaseDate)} sedan. Reklamationsrätten löpte ut 3 år efter köpdatumet. Denna situation **faller utanför** reklamationsrätten.\n\nOm du har en separat garanti från tillverkaren som fortfarande är giltig, kontrollera garantivillkoren separat.${DISCLAIMER}`,
+      assessment: `## Bedömning\n\nDu har troligtvis inte rätt till reklamation — reklamationsrätten på tre år har löpt ut enligt ${LEGAL_LINKS.konsumentkoplagen} 32 §.\n\n### Beräkning\nKöpet gjordes ${purchaseDate}, vilket är ${formatElapsed(purchaseDate)} sedan. Reklamationsrätten löpte ut 3 år efter köpdatumet. Denna situation **faller utanför** reklamationsrätten.\n\nOm du har en separat garanti från tillverkaren som fortfarande är giltig, kontrollera garantivillkoren separat.${DISCLAIMER}`,
     };
   }
 
