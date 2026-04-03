@@ -311,7 +311,7 @@ function analyzeBilkop(answers: Record<string, string>): { assessment: string; s
 
   return {
     sentiment: 'positive',
-    assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nVid köp av bil från bilhandlare gäller **Konsumentköplagen (2022:260)**. Du har 3 års reklamationsrätt och fel som visar sig inom 2 år presumeras ha funnits vid köpet.\n\n### Juridisk grund\nKonsumentköplagen 4 kap. Säljaren har bevisbördan de första 2 åren.\n\n### Svagheter i ditt ärende\nSäljaren kan hävda normalt slitage, att felet uppstått efter leverans, eller att du kände till felet vid köpet.\n\n### Nästa steg\n1. Reklamera skriftligt till bilhandlaren\n2. Begär avhjälpande i första hand\n3. Vid avslag: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
+    assessment: `## Bedömning\n\nDu har troligtvis rätt till ersättning eller åtgärd.\n\nVid köp av bil från bilhandlare gäller **${LEGAL_LINKS.konsumentkoplagen}**. Du har 3 års reklamationsrätt och fel som visar sig inom 2 år presumeras ha funnits vid köpet.\n\n### Juridiska referenser\n${LEGAL_LINKS.konsumentkoplagen}:\n- 26 §: Rätt till avhjälpande eller omleverans\n- 28 §: Prisavdrag\n- 29 §: Hävning vid väsentligt fel\n- 32 §: Tre års reklamationsrätt\n- 33 §: Bevisbörda inom två år\n\n### Svagheter i ditt ärende\nSäljaren kan hävda normalt slitage, att felet uppstått efter leverans, eller att du kände till felet vid köpet.\n\n### Nästa steg\n1. Reklamera skriftligt till bilhandlaren\n2. Begär avhjälpande i första hand\n3. Vid avslag: anmäl till [ARN](https://www.arn.se)${DISCLAIMER}`,
   };
 }
 
