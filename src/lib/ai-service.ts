@@ -57,6 +57,21 @@ function formatElapsed(dateStr: string): string {
 
 const DISCLAIMER = '\n\n*OBS: Detta är juridisk vägledning baserad på angiven information och gällande lagstiftning. Det ersätter inte rådgivning från en jurist. Vid komplexa ärenden rekommenderas kontakt med Konsumentverket eller en kvalificerad jurist.*';
 
+// --- Verified legal references with riksdagen.se links ---
+const LEGAL_LINKS = {
+  konsumentkoplagen: '[Konsumentköplagen (2022:260)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/konsumentkoplag-2022260_sfs-2022-260/)',
+  konsumenttjanstlagen: '[Konsumenttjänstlagen (1985:716)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/konsumenttjanstlag-1985716_sfs-1985-716/)',
+  distansavtalslagen: '[Distansavtalslagen (2005:59)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-200559-om-distansavtal-och-avtal-utanfor_sfs-2005-59/)',
+  koplagen: '[Köplagen (1990:931)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/koplag-1990931_sfs-1990-931/)',
+  avtalslagen: '[Avtalslagen (1915:218)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-1915218-om-avtal-och-andra-rattshandlingar_sfs-1915-218/)',
+  betaltjanstlagen: '[Betaltjänstlagen (2010:751)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-2010751-om-betaltjanster_sfs-2010-751/)',
+  jordabalken: '[Jordabalken (1970:994)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/jordabalk-1970994_sfs-1970-994/)',
+  eu261: '[EU-förordning 261/2004](https://eur-lex.europa.eu/legal-content/SV/TXT/?uri=CELEX%3A32004R0261)',
+  eu1371: '[EU-förordning 1371/2007](https://eur-lex.europa.eu/legal-content/SV/TXT/?uri=CELEX%3A32007R1371)',
+  eu181: '[EU-förordning 181/2011](https://eur-lex.europa.eu/legal-content/SV/TXT/?uri=CELEX%3A32011R0181)',
+  eu1177: '[EU-förordning 1177/2010](https://eur-lex.europa.eu/legal-content/SV/TXT/?uri=CELEX%3A32010R1177)',
+};
+
 // --- Category analyzers with strict deadline enforcement ---
 
 function analyzeResor(answers: Record<string, string>): { assessment: string; sentiment: 'positive' | 'uncertain' | 'negative' } {
