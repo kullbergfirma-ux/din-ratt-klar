@@ -1,6 +1,10 @@
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 
+const scrollToCategories = () => {
+  document.getElementById('kategorier')?.scrollIntoView({ behavior: 'smooth' });
+};
+
 const PricingSection = () => (
   <section id="priser" className="py-20 sm:py-28 bg-muted/50">
     <div className="max-w-5xl mx-auto px-4">
@@ -20,7 +24,7 @@ const PricingSection = () => (
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0 }}
-          className="card-elevated p-6 text-center"
+          className="card-elevated p-6 text-center flex flex-col"
         >
           <div className="text-lg font-bold text-foreground mb-1">Gratis</div>
           <div className="text-3xl font-extrabold text-foreground mb-4">0 kr</div>
@@ -28,6 +32,12 @@ const PricingSection = () => (
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Enkel rättighetsbedömning</li>
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Rättighetsstatus</li>
           </ul>
+          <button
+            onClick={scrollToCategories}
+            style={{ width: '100%', padding: '10px 16px', borderRadius: 8, border: '1.5px solid #E2E8F0', background: 'transparent', cursor: 'pointer', fontSize: 14, marginTop: 'auto' }}
+          >
+            Börja gratis
+          </button>
         </motion.div>
 
         {/* Bas */}
@@ -36,7 +46,7 @@ const PricingSection = () => (
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="card-elevated p-6 text-center"
+          className="card-elevated p-6 text-center flex flex-col"
         >
           <div className="text-lg font-bold text-foreground mb-1">Bas</div>
           <div className="text-3xl font-extrabold text-foreground mb-4">39 kr</div>
@@ -45,6 +55,12 @@ const PricingSection = () => (
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Fullständig juridisk analys</li>
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Färdigt kravbrev</li>
           </ul>
+          <button
+            onClick={scrollToCategories}
+            style={{ width: '100%', padding: '10px 16px', borderRadius: 8, border: 'none', background: '#1B4F8A', color: 'white', cursor: 'pointer', fontSize: 14, fontWeight: 600, marginTop: 'auto' }}
+          >
+            Kom igång — 39 kr
+          </button>
         </motion.div>
 
         {/* Komplett */}
@@ -53,7 +69,7 @@ const PricingSection = () => (
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="card-elevated p-6 text-center ring-2 ring-primary relative"
+          className="card-elevated p-6 text-center ring-2 ring-primary relative flex flex-col"
         >
           <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
             Bäst värde
@@ -67,6 +83,12 @@ const PricingSection = () => (
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> ARN-guide</li>
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> PDF-export</li>
           </ul>
+          <button
+            onClick={scrollToCategories}
+            style={{ width: '100%', padding: '10px 16px', borderRadius: 8, border: 'none', background: '#F59E0B', color: 'white', cursor: 'pointer', fontSize: 14, fontWeight: 600, marginTop: 'auto' }}
+          >
+            Kom igång — 99 kr
+          </button>
         </motion.div>
       </div>
 

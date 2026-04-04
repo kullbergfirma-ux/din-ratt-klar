@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '@/components/ui/button';
-import { Lock, ArrowLeft, Check, Copy, Download, FileText, BookOpen, Mail } from 'lucide-react';
+import { Lock, ArrowLeft, Check, Copy, Download, FileText, BookOpen, Mail, Loader2 } from 'lucide-react';
 import { SITE_CONFIG } from '@/config/site';
 import { type Tier } from '@/lib/pricing';
 import { useState } from 'react';
@@ -11,7 +11,7 @@ interface Props {
   sentiment: 'positive' | 'uncertain' | 'negative';
   tier: Tier;
   letter: string;
-  onUnlock: (tier: Tier) => void;
+  onUnlock: (tier: Tier) => Promise<void> | void;
   onBack: () => void;
 }
 
@@ -29,6 +29,7 @@ const sentimentLabels = {
 
 const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBack }: Props) => {
   const [copied, setCopied] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const isLocked = tier === 'free';
 
   const handleCopy = async () => {
@@ -47,13 +48,21 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
     URL.revokeObjectURL(url);
   };
 
+  const handleUnlockClick = async (t: Tier) => {
+    setIsGenerating(true);
+    try {
+      await onUnlock(t);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
       {/* Verdict banner */}
       <div className={`card-elevated p-6 sm:p-8 ${sentimentStyles[sentiment]}`}>
         <h2 className="text-xl font-bold text-foreground mb-2">Din rättighetsbedömning</h2>
 
-        {/* Always visible: simple verdict */}
         <div className="flex items-center gap-2 mb-4">
           <span className={`text-lg font-bold ${
             sentiment === 'positive' ? 'text-success' : sentiment === 'uncertain' ? 'text-warning' : 'text-destructive'
@@ -62,7 +71,6 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
           </span>
         </div>
 
-        {/* Blurred content when free tier */}
         <div className="relative">
           <div className={`prose prose-sm max-w-none text-foreground/90 ${isLocked ? 'select-none' : ''}`} style={isLocked ? { filter: 'blur(6px)' } : undefined}>
             <ReactMarkdown>{assessment}</ReactMarkdown>
@@ -84,36 +92,11 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
         {SITE_CONFIG.disclaimer}
       </div>
 
-      {/* Pricing cards when free */}
+      {/* Pricing cards when free — reordered: Komplett, Bas, Gratis */}
       {isLocked && (
         <div className="mt-8">
           <div className="grid sm:grid-cols-3 gap-4">
-            {/* Gratis */}
-            <div className="card-elevated p-6">
-              <h3 className="font-bold text-foreground mb-1">Gratis</h3>
-              <div className="text-2xl font-extrabold text-foreground mb-3">0 kr</div>
-              <ul className="space-y-2 text-sm text-muted-foreground mb-5">
-                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Enkel bedömning</li>
-                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Rättighetsstatus</li>
-              </ul>
-              <Button variant="outline" className="w-full" disabled>Nuvarande</Button>
-            </div>
-
-            {/* Bas */}
-            <div className="card-elevated p-6">
-              <h3 className="font-bold text-foreground mb-1">Bas</h3>
-              <div className="text-2xl font-extrabold text-foreground mb-3">39 kr</div>
-              <ul className="space-y-2 text-sm text-muted-foreground mb-5">
-                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Exakt ersättningsbelopp</li>
-                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Fullständig juridisk analys</li>
-                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Färdigt kravbrev</li>
-              </ul>
-              <Button onClick={() => onUnlock('bas')} className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                Lås upp för 39 kr
-              </Button>
-            </div>
-
-            {/* Komplett */}
+            {/* Komplett first */}
             <div className="card-elevated p-6 ring-2 ring-primary relative">
               <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
                 Bäst värde
@@ -127,9 +110,35 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
                 <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Steg-för-steg ARN-guide</li>
                 <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Ladda ner som PDF</li>
               </ul>
-              <Button onClick={() => onUnlock('komplett')} className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-bold">
-                Lås upp för 99 kr
+              <Button onClick={() => handleUnlockClick('komplett')} disabled={isGenerating} className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-bold">
+                {isGenerating ? <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Genererar...</> : 'Lås upp för 99 kr'}
               </Button>
+            </div>
+
+            {/* Bas second */}
+            <div className="card-elevated p-6">
+              <h3 className="font-bold text-foreground mb-1">Bas</h3>
+              <div className="text-2xl font-extrabold text-foreground mb-3">39 kr</div>
+              <ul className="space-y-2 text-sm text-muted-foreground mb-5">
+                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Exakt ersättningsbelopp</li>
+                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Fullständig juridisk analys</li>
+                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Färdigt kravbrev</li>
+              </ul>
+              <Button onClick={() => handleUnlockClick('bas')} disabled={isGenerating} className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                {isGenerating ? <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Genererar...</> : 'Lås upp för 39 kr'}
+              </Button>
+            </div>
+
+            {/* Gratis third */}
+            <div className="card-elevated p-6">
+              <h3 className="font-bold text-foreground mb-1">Gratis</h3>
+              <div className="text-2xl font-extrabold text-foreground mb-3">0 kr</div>
+              <ul className="space-y-2 text-sm text-muted-foreground mb-5">
+                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Enkel bedömning</li>
+                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Rättighetsstatus</li>
+              </ul>
+              <Button variant="outline" className="w-full" disabled>Nuvarande</Button>
+              <p className="text-center text-xs text-muted-foreground mt-2">Du ser redan gratisnivån</p>
             </div>
           </div>
           <p className="text-center text-xs text-muted-foreground mt-4">
@@ -141,7 +150,6 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
       {/* Unlocked content */}
       {!isLocked && (
         <>
-          {/* Letter */}
           {letter && (
             <div className="mt-8">
               <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
@@ -163,7 +171,6 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
             </div>
           )}
 
-          {/* Komplett extras */}
           {tier === 'komplett' && (
             <div className="mt-8 space-y-6">
               <div className="card-elevated p-6">
@@ -216,7 +223,9 @@ Med vänliga hälsningar,
               </div>
 
               <div className="card-elevated p-6">
-                <h3 className="font-bold text-foreground mb-3">⏰ E-postpåminnelse</h3>
+                <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
+                  <Mail className="w-5 h-5 text-primary" /> E-postpåminnelse
+                </h3>
                 <p className="text-sm text-muted-foreground mb-3">Vill du bli påmind om att följa upp?</p>
                 <div className="flex gap-3">
                   <input
@@ -233,7 +242,6 @@ Med vänliga hälsningar,
         </>
       )}
 
-      {/* Back button */}
       <div className="mt-6">
         <Button variant="ghost" onClick={onBack} className="gap-1.5">
           <ArrowLeft className="w-4 h-4" />

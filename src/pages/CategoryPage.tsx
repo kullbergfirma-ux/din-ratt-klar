@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getCategoryBySlug } from '@/lib/categories';
-import { getMockAssessment, getMockLetter, validateBeforeAnalysis } from '@/lib/ai-service';
+import { getAIAssessment, getAILetter, validateBeforeAnalysis } from '@/lib/ai-service';
 import { generateCaseId, getTier, setTier, type Tier } from '@/lib/pricing';
 import { toast } from 'sonner';
 
@@ -12,12 +12,24 @@ import UserInfoForm, { type UserProfile } from '@/components/UserInfoForm';
 import QuestionFlow from '@/components/QuestionFlow';
 import ProgressBar from '@/components/ProgressBar';
 import RightsAssessment from '@/components/RightsAssessment';
-import LetterDisplay from '@/components/LetterDisplay';
 import GuidesSection from '@/components/GuidesSection';
 import NotFound from '@/pages/NotFound';
 import { ArrowRight } from 'lucide-react';
+import { Globe, ShoppingBag, Shield, Package, CreditCard, Smartphone, Car, Home, Wrench } from 'lucide-react';
 
-type Step = 'info' | 'userinfo' | 'questions' | 'loading' | 'assessment' | 'letter';
+type Step = 'info' | 'userinfo' | 'questions' | 'loading' | 'assessment';
+
+const categoryIconMap: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
+  'resor': Globe,
+  'kop-ehandel': ShoppingBag,
+  'garanti-dolda-fel': Shield,
+  'leverans': Package,
+  'betalning-aterkrav': CreditCard,
+  'abonnemang': Smartphone,
+  'bilkop': Car,
+  'hyra': Home,
+  'hantverkare': Wrench,
+};
 
 const CategoryPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -30,9 +42,12 @@ const CategoryPage = () => {
   const [letter, setLetter] = useState('');
   const [caseId, setCaseId] = useState('');
   const [tier, setLocalTier] = useState<Tier>('free');
+  const [loadingMessage, setLoadingMessage] = useState('Analyserar din situation mot gällande lagstiftning...');
   const toolRef = useRef<HTMLDivElement>(null);
 
   if (!category) return <NotFound />;
+
+  const IconComponent = categoryIconMap[category.id];
 
   const handleStartFlow = () => {
     const newCaseId = generateCaseId();
@@ -47,28 +62,40 @@ const CategoryPage = () => {
     setStep('questions');
   };
 
-  const handleQuestionsSubmit = (ans: Record<string, string>) => {
+  const handleQuestionsSubmit = async (ans: Record<string, string>) => {
     const validationError = validateBeforeAnalysis(category, ans);
     if (validationError) {
       toast.error(validationError);
       return;
     }
     setAnswers(ans);
+    setLoadingMessage('Analyserar din situation mot gällande lagstiftning...');
     setStep('loading');
-    setTimeout(() => {
-      const result = getMockAssessment(category, ans);
+    try {
+      const result = await getAIAssessment(category, ans);
       setAssessment(result.assessment);
       setSentiment(result.sentiment);
       setStep('assessment');
-    }, 2000);
+    } catch {
+      toast.error('Något gick fel vid analysen. Försök igen.');
+      setStep('questions');
+    }
   };
 
-  const handleUnlock = (newTier: Tier) => {
+  const handleUnlock = async (newTier: Tier) => {
     setTier(caseId, newTier);
     setLocalTier(newTier);
     if (newTier === 'bas' || newTier === 'komplett') {
-      const generatedLetter = getMockLetter(category, answers, assessment, userProfile || undefined);
-      setLetter(generatedLetter);
+      setLoadingMessage('Genererar ditt kravbrev...');
+      setStep('loading');
+      try {
+        const generatedLetter = await getAILetter(category, answers, assessment, userProfile || undefined);
+        setLetter(generatedLetter);
+        setStep('assessment');
+      } catch {
+        toast.error('Kunde inte generera kravbrev. Försök igen.');
+        setStep('assessment');
+      }
     }
   };
 
@@ -96,11 +123,11 @@ const CategoryPage = () => {
       <ServiceSchema name={category.title} description={category.seoDescription} />
       {category.faqs.length > 0 && <FAQSchema items={category.faqs} />}
 
-      {/* Category intro */}
       {!isInFlow && (
         <section aria-label={category.title} className="py-16 sm:py-24">
           <div className="max-w-[860px] mx-auto px-4">
             <div className="mb-8">
+              {IconComponent && <IconComponent className="w-8 h-8 mb-3" style={{ color: '#1B4F8A', strokeWidth: 1.5 }} />}
               <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-4">{category.seoTitle}</h1>
               <p className="text-lg text-muted-foreground max-w-xl">{category.seoDescription}</p>
             </div>
@@ -148,7 +175,6 @@ const CategoryPage = () => {
         </section>
       )}
 
-      {/* Flow */}
       {isInFlow && (
         <div ref={toolRef} style={{ background: '#F4F6F9', minHeight: '80vh', padding: '48px 16px' }}>
           <div style={{ maxWidth: 640, margin: '0 auto' }}>
@@ -182,7 +208,7 @@ const CategoryPage = () => {
                     }}
                   >
                     <div style={{ width: 40, height: 40, border: '3px solid #E2E8F0', borderTopColor: '#1B4F8A', borderRadius: '50%', margin: '0 auto 16px', animation: 'spin 0.8s linear infinite' }} />
-                    <p style={{ color: '#6B7280', fontWeight: 500 }}>Analyserar din situation mot gällande lagstiftning...</p>
+                    <p style={{ color: '#6B7280', fontWeight: 500 }}>{loadingMessage}</p>
                   </div>
                   <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
                 </motion.div>
