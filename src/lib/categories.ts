@@ -30,7 +30,6 @@ export const categories: Category[] = [
   {
     id: 'resor',
     slug: 'resor',
-    emoji: '🌍',
     title: 'Resor',
     subtitle: 'Flyg, tåg, buss, färja, hotell och paketresor',
     seoTitle: 'Försenat flyg, tåg eller buss? Kräv ersättning',
@@ -54,7 +53,7 @@ export const categories: Category[] = [
       { id: 'company', label: 'Transportbolag eller arrangör?', type: 'text', placeholder: 'T.ex. SAS, SJ, FlixBus, Stena Line' },
       { id: 'date', label: 'Datum för resan?', type: 'date' },
       { id: 'issue', label: 'Vad hände?', type: 'select', options: ['Försening', 'Inställt', 'Överbookning', 'Ej som utlovat', 'Annat'] },
-      { id: 'delay_duration', label: 'Hur många minuter/timmar var förseningen?', type: 'text', placeholder: 'T.ex. 3 timmar', showWhen: { questionId: 'issue', values: ['Försening'] } },
+      { id: 'delay_duration', label: 'Hur många timmar var förseningen?', type: 'text', placeholder: 'Ange i timmar, t.ex. 3 eller 3.5', showWhen: { questionId: 'issue', values: ['Försening'] } },
       { id: 'compensation_offered', label: 'Fick du någon ersättning eller hjälp på plats?', type: 'select', options: ['Ja', 'Nej', 'Delvis'] },
       { id: 'description', label: 'Beskriv kort vad som hände', type: 'text', placeholder: 'T.ex. Flyget blev 4 timmar försenat och jag fick ingen hjälp på plats' },
     ],
@@ -62,7 +61,6 @@ export const categories: Category[] = [
   {
     id: 'kop-ehandel',
     slug: 'kop-ehandel',
-    emoji: '🛍️',
     title: 'Köp & e-handel',
     subtitle: 'Trasig vara, fel produkt, retur och ångerrätt',
     seoTitle: 'Trasig eller fel vara? Så reklamerar du',
@@ -71,6 +69,7 @@ export const categories: Category[] = [
       { id: 'product_type', label: 'Vilken typ av produkt?', type: 'text', placeholder: 'T.ex. mobiltelefon, tvättmaskin' },
       { id: 'purchase_date', label: 'När köpte du den?', type: 'date' },
       { id: 'purchase_place', label: 'Var köpte du den?', type: 'select', options: ['Butik', 'Online'] },
+      { id: 'issue', label: 'Vad vill du göra?', type: 'select', options: ['Reklamera fel på vara', 'Returnera / ångerrätt', 'Fel produkt levererad', 'Vara ej levererad'] },
       { id: 'defect', label: 'Vad är felet?', type: 'text', placeholder: 'Beskriv felet' },
       { id: 'contacted_seller', label: 'Har du kontaktat säljaren? Vad sa de?', type: 'text', placeholder: 'Beskriv kontakten' },
     ],
@@ -91,7 +90,6 @@ export const categories: Category[] = [
   {
     id: 'garanti-dolda-fel',
     slug: 'garanti-dolda-fel',
-    emoji: '🔧',
     title: 'Garanti & dolda fel',
     subtitle: 'Vad täcker garantin och dolda fel vid köp?',
     seoTitle: 'Garanti och dolda fel — vad har du rätt till?',
@@ -119,13 +117,13 @@ export const categories: Category[] = [
   {
     id: 'leverans',
     slug: 'leverans',
-    emoji: '📦',
     title: 'Leverans & onlineköp',
     subtitle: 'Försenat, skadat eller försvunnet paket',
     seoTitle: 'Försenat eller skadat paket? Kräv ersättning',
     seoDescription: 'Ditt paket är försenat, skadat eller försvunnet? Lär dig dina rättigheter och hur du kräver ersättning.',
     questions: [
-      { id: 'company', label: 'Vilket företag?', type: 'text', placeholder: 'T.ex. PostNord, DHL' },
+      { id: 'company', label: 'Vilket företag köpte du från?', type: 'text', placeholder: 'T.ex. Zalando, IKEA, NetOnNet (säljaren — inte transportören)' },
+      { id: 'purchase_date', label: 'När beställde du varan?', type: 'date' },
       { id: 'order_date', label: 'Beställningsdatum och utlovat leveransdatum?', type: 'text', placeholder: 'T.ex. beställt 1 jan, utlovat 5 jan' },
       { id: 'issue', label: 'Vad hände?', type: 'select', options: ['Försenat', 'Skadat', 'Borttappat'] },
       { id: 'contacted', label: 'Har du kontaktat säljaren/transportören?', type: 'select', options: ['Ja', 'Nej'] },
@@ -135,6 +133,7 @@ export const categories: Category[] = [
       'Försenad vara: rätt att häva köpet om leveransen dröjer oskäligt',
       'Skadad vara vid leverans: reklamera direkt till säljaren',
       'Rätt till återbetalning inom 14 dagar vid hävning',
+      'Det är alltid säljaren som ansvarar, inte PostNord eller DHL',
     ],
     faqs: [
       { q: 'Vem ansvarar för mitt paket?', a: 'Säljaren ansvarar för att varan kommer fram till dig. Det är alltså säljaren du ska kontakta, inte transportföretaget.' },
@@ -146,7 +145,6 @@ export const categories: Category[] = [
   {
     id: 'betalning-aterkrav',
     slug: 'betalning-aterkrav',
-    emoji: '💳',
     title: 'Betalning & återkrav',
     subtitle: 'Kortbedrägeri, obehöriga transaktioner och chargeback',
     seoTitle: 'Betalning & återkrav — få tillbaka dina pengar',
@@ -173,7 +171,6 @@ export const categories: Category[] = [
   {
     id: 'abonnemang',
     slug: 'abonnemang',
-    emoji: '📱',
     title: 'Abonnemang & feldebitering',
     subtitle: 'Gym, streaming, telefon och tjänster som fortsätter debitera',
     seoTitle: 'Abonnemang som inte går att avsluta? Så gör du',
@@ -205,7 +202,6 @@ export const categories: Category[] = [
   {
     id: 'bilkop',
     slug: 'bilkop',
-    emoji: '🚗',
     title: 'Bilköp',
     subtitle: 'Dolda fel, garanti och reklamation vid bilköp',
     seoTitle: 'Fel på bilen? Så reklamerar du ett bilköp',
@@ -216,6 +212,7 @@ export const categories: Category[] = [
       { id: 'purchase_date', label: 'Inköpsdatum?', type: 'date' },
       { id: 'defect', label: 'Vad är felet?', type: 'text', placeholder: 'Beskriv felet' },
       { id: 'defect_timing', label: 'När uppstod felet?', type: 'select', options: ['Inom 6 månader från köp', 'Efter 6 månader'] },
+      { id: 'contacted_seller', label: 'Har du kontaktat säljaren om felet? Vad sa de?', type: 'text', placeholder: 'Beskriv kontakten eller skriv "Nej, inte ännu"' },
     ],
     legalInfo: [
       'Konsumentköplagen: 3 års reklamationsrätt vid köp av handlare',
@@ -233,7 +230,6 @@ export const categories: Category[] = [
   {
     id: 'hyra',
     slug: 'hyra',
-    emoji: '🏠',
     title: 'Hyra',
     subtitle: 'Ockerhyra, olaglig hyreshöjning och otillåtna villkor',
     seoTitle: 'Ockerhyra eller olagliga villkor? Kräv din rätt',
@@ -260,7 +256,6 @@ export const categories: Category[] = [
   {
     id: 'hantverkare',
     slug: 'hantverkare',
-    emoji: '🔨',
     title: 'Hantverkare & tjänster',
     subtitle: 'Felmonterat, oavslutat eller felaktigt utfört arbete',
     seoTitle: 'Fel på hantverksarbete? Så kräver du rättelse',
