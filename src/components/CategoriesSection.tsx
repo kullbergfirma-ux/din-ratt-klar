@@ -29,7 +29,7 @@ const CategoriesSection = () => (
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {categories.map((cat, i) => {
-          const IconComponent = categoryIcons[cat.slug] || Scale;
+          const IconComponent = categoryIcons[cat.slug] || Globe;
           return (
             <motion.div
               key={cat.id}
