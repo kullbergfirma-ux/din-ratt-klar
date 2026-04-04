@@ -15,7 +15,6 @@ export interface CategoryFAQ {
 export interface Category {
   id: string;
   slug: string;
-  emoji: string;
   title: string;
   subtitle: string;
   seoTitle: string;
