@@ -247,11 +247,8 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
         </div>
       </div>
 
-      {/* Question header */}
+      {/* Question header — only the question text, no duplicate counter */}
       <div style={{ marginBottom: 24 }}>
-        <div style={{ fontSize: 12, color: '#9BA3AF', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>
-          Fråga {currentQ + 1} av {questions.length}
-        </div>
         <h3 style={{ fontSize: 22, fontWeight: 600, color: '#0F1F3D', lineHeight: 1.3, margin: 0 }}>
           {question.label}
         </h3>
