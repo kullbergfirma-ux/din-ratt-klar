@@ -1,18 +1,18 @@
 import { categories } from '@/lib/categories';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ChevronRight, Plane, ShoppingCart, CreditCard, Repeat, Home, Wrench, Car, Scale, Wifi } from 'lucide-react';
+import { ChevronRight, Globe, ShoppingBag, Shield, Package, CreditCard, Smartphone, Car, Home, Wrench } from 'lucide-react';
 
 const categoryIcons: Record<string, React.ComponentType<{ className?: string }>> = {
-  resor: Plane,
-  'kop-ehandel': ShoppingCart,
-  'reklamation-garanti': Repeat,
-  abonnemang: Wifi,
+  resor: Globe,
+  'kop-ehandel': ShoppingBag,
+  'garanti-dolda-fel': Shield,
+  leverans: Package,
+  'betalning-aterkrav': CreditCard,
+  abonnemang: Smartphone,
+  bilkop: Car,
   hyra: Home,
   hantverkare: Wrench,
-  bilkop: Car,
-  'betalning-aterkrav': CreditCard,
-  'offentlig-service': Scale,
 };
 
 const CategoriesSection = () => (
