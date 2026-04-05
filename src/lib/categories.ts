@@ -66,12 +66,12 @@ export const categories: Category[] = [
     seoTitle: 'Trasig eller fel vara? Så reklamerar du',
     seoDescription: 'Lär dig dina rättigheter vid köp online eller i butik. Reklamation, ångerrätt och retur enligt konsumentköplagen.',
     questions: [
-      { id: 'product_type', label: 'Vilken typ av produkt?', type: 'text', placeholder: 'T.ex. mobiltelefon, tvättmaskin' },
+      { id: 'product_type', label: 'Vilken typ av produkt?', type: 'text', placeholder: 'Beskriv produkten' },
       { id: 'purchase_date', label: 'När köpte du den?', type: 'date' },
       { id: 'purchase_place', label: 'Var köpte du den?', type: 'select', options: ['Butik', 'Online'] },
       { id: 'issue', label: 'Vad vill du göra?', type: 'select', options: ['Reklamera fel på vara', 'Returnera / ångerrätt', 'Fel produkt levererad', 'Vara ej levererad'] },
-      { id: 'defect', label: 'Vad är felet?', type: 'text', placeholder: 'Beskriv felet' },
-      { id: 'contacted_seller', label: 'Har du kontaktat säljaren? Vad sa de?', type: 'text', placeholder: 'Beskriv kontakten' },
+      { id: 'defect', label: 'Vad är felet?', type: 'text', placeholder: 'Beskriv felet med egna ord' },
+      { id: 'contacted_seller', label: 'Har du kontaktat säljaren? Vad sa de?', type: 'text', placeholder: 'Beskriv vad som sades' },
     ],
     legalInfo: [
       'Konsumentköplagen (2022:260): 3 års reklamationsrätt från köpdatum',
