@@ -122,9 +122,9 @@ export const categories: Category[] = [
     seoTitle: 'Försenat eller skadat paket? Kräv ersättning',
     seoDescription: 'Ditt paket är försenat, skadat eller försvunnet? Lär dig dina rättigheter och hur du kräver ersättning.',
     questions: [
-      { id: 'company', label: 'Vilket företag köpte du från?', type: 'text', placeholder: 'T.ex. Zalando, IKEA, NetOnNet (säljaren — inte transportören)' },
+      { id: 'company', label: 'Vilket företag köpte du från?', type: 'text', placeholder: 'Skriv företagets namn' },
       { id: 'purchase_date', label: 'När beställde du varan?', type: 'date' },
-      { id: 'order_date', label: 'Beställningsdatum och utlovat leveransdatum?', type: 'text', placeholder: 'T.ex. beställt 1 jan, utlovat 5 jan' },
+      { id: 'order_date', label: 'Beställningsdatum och utlovat leveransdatum?', type: 'text', placeholder: 'Beställt och utlovat leveransdatum' },
       { id: 'issue', label: 'Vad hände?', type: 'select', options: ['Försenat', 'Skadat', 'Borttappat'] },
       { id: 'contacted', label: 'Har du kontaktat säljaren/transportören?', type: 'select', options: ['Ja', 'Nej'] },
     ],
