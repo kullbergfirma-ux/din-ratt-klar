@@ -46,7 +46,7 @@ export const TextEditorProvider = ({ children }: { children: ReactNode }) => {
 
   const saveText = async (key: string, value: string) => {
     setTexts(prev => ({ ...prev, [key]: value }));
-    await supabase.from('site_texts').upsert({ key, value, updated_at: new Date().toISOString() } as any, { onConflict: 'key' });
+    await (supabase.from('site_texts' as any) as any).upsert({ key, value, updated_at: new Date().toISOString() }, { onConflict: 'key' });
   };
 
   const getText = (key: string, fallback: string) => texts[key] ?? fallback;
