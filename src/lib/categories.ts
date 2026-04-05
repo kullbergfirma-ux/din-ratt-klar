@@ -262,11 +262,11 @@ export const categories: Category[] = [
     seoDescription: 'Har hantverkaren gjort ett dåligt jobb? Lär dig om konsumenttjänstlagen och hur du kräver avhjälpande.',
     questions: [
       { id: 'service_type', label: 'Vilken typ av tjänst?', type: 'select', options: ['VVS', 'El', 'Målning', 'Renovering', 'Flytt', 'Trädgård', 'Annat'] },
-      { id: 'company', label: 'Vilket företag eller person utförde arbetet?', type: 'text', placeholder: 'T.ex. Rörmokare AB' },
+      { id: 'company', label: 'Vilket företag eller person utförde arbetet?', type: 'text', placeholder: 'Skriv företagets eller personens namn' },
       { id: 'work_date', label: 'När utfördes arbetet?', type: 'date' },
-      { id: 'defect', label: 'Vad är felet eller problemet?', type: 'text', placeholder: 'Beskriv problemet' },
+      { id: 'defect', label: 'Vad är felet eller problemet?', type: 'text', placeholder: 'Beskriv felet eller problemet med egna ord' },
       { id: 'payment_status', label: 'Har du betalat hela beloppet eller håller du inne något?', type: 'select', options: ['Betalat allt', 'Håller inne del', 'Inte betalat'] },
-      { id: 'contacted', label: 'Har du kontaktat hantverkaren om problemet? Vad sa de?', type: 'text', placeholder: 'Beskriv kontakten' },
+      { id: 'contacted', label: 'Har du kontaktat hantverkaren om problemet? Vad sa de?', type: 'text', placeholder: 'Beskriv kontakten eller skriv att du inte hört av dig ännu' },
     ],
     legalInfo: [
       'Konsumenttjänstlagen (1985:716) 4 §: Tjänsten ska utföras fackmässigt',
