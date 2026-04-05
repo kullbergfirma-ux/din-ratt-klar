@@ -50,12 +50,12 @@ export const categories: Category[] = [
     relatedSlugs: ['leverans', 'betalning-aterkrav', 'kop-ehandel'],
     questions: [
       { id: 'travel_type', label: 'Typ av resa?', type: 'select', options: ['Flyg', 'Tåg', 'Buss', 'Färja', 'Hotell', 'Paketresa', 'Hyrbil'] },
-      { id: 'company', label: 'Transportbolag eller arrangör?', type: 'text', placeholder: 'T.ex. SAS, SJ, FlixBus, Stena Line' },
+      { id: 'company', label: 'Transportbolag eller arrangör?', type: 'text', placeholder: 'Skriv transportbolagets namn' },
       { id: 'date', label: 'Datum för resan?', type: 'date' },
       { id: 'issue', label: 'Vad hände?', type: 'select', options: ['Försening', 'Inställt', 'Överbookning', 'Ej som utlovat', 'Annat'] },
-      { id: 'delay_duration', label: 'Hur många timmar var förseningen?', type: 'text', placeholder: 'Ange i timmar, t.ex. 3 eller 3.5', showWhen: { questionId: 'issue', values: ['Försening'] } },
+      { id: 'delay_duration', label: 'Hur många timmar var förseningen?', type: 'text', placeholder: 'Ange antal timmar, t.ex. 3', showWhen: { questionId: 'issue', values: ['Försening'] } },
       { id: 'compensation_offered', label: 'Fick du någon ersättning eller hjälp på plats?', type: 'select', options: ['Ja', 'Nej', 'Delvis'] },
-      { id: 'description', label: 'Beskriv kort vad som hände', type: 'text', placeholder: 'T.ex. Flyget blev 4 timmar försenat och jag fick ingen hjälp på plats' },
+      { id: 'description', label: 'Beskriv kort vad som hände', type: 'text', placeholder: 'Beskriv vad som hände med egna ord' },
     ],
   },
   {
