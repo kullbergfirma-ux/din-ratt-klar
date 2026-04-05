@@ -29,8 +29,8 @@ const PricingSection = () => (
           <div className="text-lg font-bold text-foreground mb-1">Gratis</div>
           <div className="text-3xl font-extrabold text-foreground mb-4">0 kr</div>
           <ul className="text-left space-y-2 text-sm text-muted-foreground mb-5">
-            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Enkel rättighetsbedömning</li>
-            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Rättighetsstatus</li>
+            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Enkel ja/nej-bedömning</li>
+            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Se om du troligtvis har rätt</li>
           </ul>
           <button
             onClick={scrollToCategories}
