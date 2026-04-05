@@ -81,8 +81,7 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
     const days = Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'));
 
     const update = (y: string, m: string, d: string) => {
-      if (y && m && d) onChange(`${y}-${m}-${d}`);
-      else onChange('');
+      onChange(`${y || ''}-${m || ''}-${d || ''}`);
     };
 
     const selectStyle: React.CSSProperties = {
