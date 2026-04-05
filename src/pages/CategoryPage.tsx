@@ -17,7 +17,7 @@ import NotFound from '@/pages/NotFound';
 import { ArrowRight } from 'lucide-react';
 import { Globe, ShoppingBag, Shield, Package, CreditCard, Smartphone, Car, Home, Wrench } from 'lucide-react';
 
-type Step = 'info' | 'userinfo' | 'questions' | 'loading' | 'assessment';
+type Step = 'info' | 'questions' | 'userinfo' | 'loading' | 'assessment';
 
 const categoryIconMap: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
   'resor': Globe,
@@ -53,13 +53,8 @@ const CategoryPage = () => {
     const newCaseId = generateCaseId();
     setCaseId(newCaseId);
     setLocalTier(getTier(newCaseId));
-    setStep('userinfo');
-    setTimeout(() => toolRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
-  };
-
-  const handleUserInfoSubmit = (profile: UserProfile) => {
-    setUserProfile(profile);
     setStep('questions');
+    setTimeout(() => toolRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
   };
 
   const handleQuestionsSubmit = async (ans: Record<string, string>) => {
@@ -69,16 +64,21 @@ const CategoryPage = () => {
       return;
     }
     setAnswers(ans);
+    setStep('userinfo');
+  };
+
+  const handleUserInfoSubmit = async (profile: UserProfile) => {
+    setUserProfile(profile);
     setLoadingMessage('Analyserar din situation mot gällande lagstiftning...');
     setStep('loading');
     try {
-      const result = await getAIAssessment(category, ans);
+      const result = await getAIAssessment(category, answers);
       setAssessment(result.assessment);
       setSentiment(result.sentiment);
       setStep('assessment');
     } catch {
       toast.error('Något gick fel vid analysen. Försök igen.');
-      setStep('questions');
+      setStep('userinfo');
     }
   };
 
@@ -97,7 +97,6 @@ const CategoryPage = () => {
         setStep('assessment');
       }
     }
-    // bas tier only unlocks assessment display — no letter generation needed
   };
 
   const handleReset = () => {
@@ -112,7 +111,7 @@ const CategoryPage = () => {
   };
 
   const isInFlow = step !== 'info';
-  const stepIndex = step === 'userinfo' ? 1 : step === 'questions' ? 2 : 3;
+  const stepIndex = step === 'questions' ? 1 : step === 'userinfo' ? 2 : 3;
 
   return (
     <main className="min-h-screen">
@@ -182,15 +181,15 @@ const CategoryPage = () => {
             <ProgressBar current={stepIndex} total={4} />
 
             <AnimatePresence mode="wait">
-              {step === 'userinfo' && (
-                <motion.div key="userinfo" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
-                  <UserInfoForm categoryTitle={category.title} onSubmit={handleUserInfoSubmit} onBack={handleReset} />
+              {step === 'questions' && (
+                <motion.div key="questions" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
+                  <QuestionFlow category={category} onSubmit={handleQuestionsSubmit} onBack={handleReset} />
                 </motion.div>
               )}
 
-              {step === 'questions' && (
-                <motion.div key="questions" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
-                  <QuestionFlow category={category} onSubmit={handleQuestionsSubmit} onBack={() => setStep('userinfo')} />
+              {step === 'userinfo' && (
+                <motion.div key="userinfo" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
+                  <UserInfoForm categoryTitle={category.title} onSubmit={handleUserInfoSubmit} onBack={() => setStep('questions')} />
                 </motion.div>
               )}
 
