@@ -95,9 +95,9 @@ export const categories: Category[] = [
     seoTitle: 'Garanti och dolda fel — vad har du rätt till?',
     seoDescription: 'Förstå skillnaden mellan garanti och reklamationsrätt. Lär dig vad som täcks vid dolda fel på produkter.',
     questions: [
-      { id: 'product', label: 'Produkt?', type: 'text', placeholder: 'T.ex. laptop, kylskåp' },
+      { id: 'product', label: 'Produkt?', type: 'text', placeholder: 'Beskriv produkten' },
       { id: 'purchase_date', label: 'Inköpsdatum?', type: 'date' },
-      { id: 'problem', label: 'Vad är problemet?', type: 'text', placeholder: 'Beskriv problemet' },
+      { id: 'problem', label: 'Vad är problemet?', type: 'text', placeholder: 'Beskriv problemet med egna ord' },
       { id: 'receipt', label: 'Har du kvitto/garantibevis?', type: 'select', options: ['Ja', 'Nej'] },
     ],
     legalInfo: [
