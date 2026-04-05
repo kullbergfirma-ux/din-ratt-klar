@@ -46,7 +46,9 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
   if (!question) return null;
 
   const isLast = currentQ === questions.length - 1;
-  const canProceed = !!answers[question.id]?.trim();
+  const canProceed = question.type === 'date'
+    ? /^\d{4}-\d{2}-\d{2}$/.test(answers[question.id] || '')
+    : !!answers[question.id]?.trim();
   const progressPercent = ((currentQ + 1) / questions.length) * 100;
 
   const handleNext = () => {
