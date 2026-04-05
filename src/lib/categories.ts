@@ -150,9 +150,9 @@ export const categories: Category[] = [
     seoTitle: 'Betalning & återkrav — få tillbaka dina pengar',
     seoDescription: 'Har du blivit utsatt för kortbedrägeri eller obehöriga transaktioner? Lär dig om chargeback och dina rättigheter.',
     questions: [
-      { id: 'bank', label: 'Bank/kortutgivare?', type: 'text', placeholder: 'T.ex. Nordea, SEB, Klarna' },
-      { id: 'amount', label: 'Belopp?', type: 'text', placeholder: 'T.ex. 2500 kr' },
-      { id: 'issue', label: 'Vad hände?', type: 'text', placeholder: 'Beskriv situationen' },
+      { id: 'bank', label: 'Bank/kortutgivare?', type: 'text', placeholder: 'Skriv bankens eller kortutgivarens namn' },
+      { id: 'amount', label: 'Belopp?', type: 'text', placeholder: 'Ange belopp i kronor' },
+      { id: 'issue', label: 'Vad hände?', type: 'text', placeholder: 'Beskriv vad som hände' },
       { id: 'contacted_seller', label: 'Har du försökt kontakta säljaren?', type: 'select', options: ['Ja', 'Nej'] },
     ],
     legalInfo: [
