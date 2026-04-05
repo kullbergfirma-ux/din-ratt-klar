@@ -210,7 +210,7 @@ export const categories: Category[] = [
       { id: 'car_type', label: 'Ny eller begagnad bil?', type: 'select', options: ['Ny', 'Begagnad'] },
       { id: 'seller_type', label: 'Köpt av handlare eller privatperson?', type: 'select', options: ['Handlare', 'Privatperson'] },
       { id: 'purchase_date', label: 'Inköpsdatum?', type: 'date' },
-      { id: 'defect', label: 'Vad är felet?', type: 'text', placeholder: 'Beskriv felet' },
+      { id: 'defect', label: 'Vad är felet?', type: 'text', placeholder: 'Beskriv felet med egna ord' },
       { id: 'defect_timing', label: 'När uppstod felet?', type: 'select', options: ['Inom 6 månader från köp', 'Efter 6 månader'] },
       { id: 'contacted_seller', label: 'Har du kontaktat säljaren om felet? Vad sa de?', type: 'text', placeholder: 'Beskriv kontakten eller skriv "Nej, inte ännu"' },
     ],
