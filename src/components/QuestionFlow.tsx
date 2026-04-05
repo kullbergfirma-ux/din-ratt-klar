@@ -46,7 +46,9 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
   if (!question) return null;
 
   const isLast = currentQ === questions.length - 1;
-  const canProceed = !!answers[question.id]?.trim();
+  const canProceed = question.type === 'date'
+    ? /^\d{4}-\d{2}-\d{2}$/.test(answers[question.id] || '')
+    : !!answers[question.id]?.trim();
   const progressPercent = ((currentQ + 1) / questions.length) * 100;
 
   const handleNext = () => {
@@ -81,8 +83,7 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
     const days = Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'));
 
     const update = (y: string, m: string, d: string) => {
-      if (y && m && d) onChange(`${y}-${m}-${d}`);
-      else onChange('');
+      onChange(`${y || ''}-${m || ''}-${d || ''}`);
     };
 
     const selectStyle: React.CSSProperties = {
