@@ -236,8 +236,8 @@ export const categories: Category[] = [
     seoDescription: 'Problem med hög hyra, olagliga villkor eller felaktiga hyreshöjningar? Lär dig dina rättigheter som hyresgäst.',
     questions: [
       { id: 'rental_type', label: 'Förstahand eller andrahand?', type: 'select', options: ['Förstahand', 'Andrahand'] },
-      { id: 'rent_amount', label: 'Månadshyra?', type: 'text', placeholder: 'T.ex. 8500 kr' },
-      { id: 'issue', label: 'Vad anser du är fel/orimligt?', type: 'text', placeholder: 'Beskriv situationen' },
+      { id: 'rent_amount', label: 'Månadshyra?', type: 'text', placeholder: 'Ange månadshyra i kronor' },
+      { id: 'issue', label: 'Vad anser du är fel/orimligt?', type: 'text', placeholder: 'Beskriv vad du anser är fel eller orimligt' },
       { id: 'contract', label: 'Har du skriftligt kontrakt?', type: 'select', options: ['Ja', 'Nej'] },
     ],
     legalInfo: [
