@@ -87,7 +87,7 @@ const PricingSection = () => (
             onClick={scrollToCategories}
             style={{ width: '100%', padding: '10px 16px', borderRadius: 8, border: 'none', background: '#F59E0B', color: 'white', cursor: 'pointer', fontSize: 14, fontWeight: 600, marginTop: 'auto' }}
           >
-            Kom igång — 99 kr
+            Kom igång — 79 kr
           </button>
         </motion.div>
       </div>

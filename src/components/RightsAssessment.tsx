@@ -33,8 +33,10 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
   const [isEditing, setIsEditing] = useState(false);
   const [editedLetter, setEditedLetter] = useState('');
 
-  const isLocked = tier === 'free' && sentiment !== 'negative';
-  const showPricing = isLocked;
+  const isAssessmentLocked = tier === 'free' && sentiment !== 'negative';
+  const isLetterLocked = tier === 'free' || tier === 'bas';
+  const showAssessmentPricing = isAssessmentLocked;
+  const showLetterPricing = !isAssessmentLocked && isLetterLocked && sentiment !== 'negative';
 
   useEffect(() => {
     if (letter && !editedLetter) setEditedLetter(letter);
@@ -99,8 +101,8 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
 
         <div className="relative">
           <div
-            className={`prose prose-sm max-w-none text-foreground/90 ${isLocked ? 'select-none' : ''}`}
-            style={isLocked ? { filter: 'blur(6px)' } : undefined}
+            className={`prose prose-sm max-w-none text-foreground/90 ${isAssessmentLocked ? 'select-none' : ''}`}
+            style={isAssessmentLocked ? { filter: 'blur(6px)' } : undefined}
           >
             <ReactMarkdown
               components={{
@@ -140,7 +142,7 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
             </ReactMarkdown>
           </div>
 
-          {isLocked && (
+          {isAssessmentLocked && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="bg-card/90 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg border border-border">
                 <Lock className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
@@ -167,65 +169,20 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
         </div>
       )}
 
-      <div className="mt-4 text-xs text-muted-foreground bg-muted/50 rounded-lg p-3">
-        {SITE_CONFIG.disclaimer}
+      <div style={{ marginTop: 12, fontSize: 12, color: '#6B7280', background: '#F9FAFB', borderRadius: 8, padding: '10px 14px' }}>
+        {SITE_CONFIG.disclaimer} — Bedömningen kostar 39 kr. Kravbrev och handlingsplan är ytterligare 40 kr.
       </div>
 
-      {/* Pricing cards — only Bas and Komplett */}
-      {showPricing && (
-        <div style={{ marginTop: 32 }}>
-          <p style={{ fontSize: 15, fontWeight: 600, color: '#0F1F3D', marginBottom: 4, textAlign: 'center' }}>
+      {/* Assessment unlock card */}
+      {showAssessmentPricing && (
+        <div style={{ marginTop: 24 }}>
+          <p style={{ fontSize: 15, fontWeight: 600, color: '#0F1F3D', textAlign: 'center', marginBottom: 4 }}>
             Lås upp för att se hela bedömningen
           </p>
           <p style={{ fontSize: 13, color: '#6B7280', textAlign: 'center', marginBottom: 20 }}>
-            Välj det paket som passar ditt ärende
+            Se exakt belopp, lagparagrafer och juridisk analys
           </p>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, maxWidth: 500, margin: '0 auto' }}>
-            {/* Bas */}
-            <div style={{
-              background: '#FFFFFF',
-              border: '1.5px solid #E2E8F0',
-              borderRadius: 14,
-              padding: '24px 20px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 12,
-            }}>
-              <div>
-                <p style={{ fontSize: 13, color: '#6B7280', margin: 0 }}>Bas</p>
-                <p style={{ fontSize: 26, fontWeight: 700, color: '#0F1F3D', margin: '4px 0 0' }}>39 kr</p>
-              </div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
-                {['Exakt ersättningsbelopp', 'Fullständig juridisk analys', 'Färdigt kravbrev'].map(item => (
-                  <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: '#374151' }}>
-                    <span style={{ color: '#1D9E75', marginTop: 1, flexShrink: 0 }}>✓</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => handleUnlockClick('bas')}
-                disabled={isGenerating}
-                style={{
-                  marginTop: 'auto',
-                  width: '100%',
-                  padding: '11px 16px',
-                  borderRadius: 10,
-                  border: 'none',
-                  background: '#1B4F8A',
-                  color: 'white',
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: isGenerating ? 'wait' : 'pointer',
-                  opacity: isGenerating ? 0.7 : 1,
-                }}
-              >
-                {isGenerating ? 'Genererar...' : 'Lås upp för 39 kr'}
-              </button>
-            </div>
-
-            {/* Komplett */}
+          <div style={{ maxWidth: 320, margin: '0 auto' }}>
             <div style={{
               background: '#FFFFFF',
               border: '2px solid #1B4F8A',
@@ -234,65 +191,107 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
               display: 'flex',
               flexDirection: 'column',
               gap: 12,
-              position: 'relative',
             }}>
-              <div style={{
-                position: 'absolute',
-                top: -12,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                background: '#1B4F8A',
-                color: 'white',
-                fontSize: 11,
-                fontWeight: 700,
-                padding: '3px 12px',
-                borderRadius: 20,
-                whiteSpace: 'nowrap',
-              }}>
-                Bäst värde
-              </div>
               <div>
-                <p style={{ fontSize: 13, color: '#6B7280', margin: 0 }}>Komplett</p>
-                <p style={{ fontSize: 26, fontWeight: 700, color: '#0F1F3D', margin: '4px 0 0' }}>99 kr</p>
+                <p style={{ fontSize: 13, color: '#6B7280', margin: 0 }}>Bedömning</p>
+                <p style={{ fontSize: 28, fontWeight: 700, color: '#0F1F3D', margin: '4px 0 0' }}>39 kr</p>
+                <p style={{ fontSize: 12, color: '#9BA3AF', margin: '2px 0 0' }}>Engångsbetalning</p>
               </div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
-                {['Allt i Bas', 'Strategisk vägledning', 'Uppföljningsbrev', 'Steg-för-steg ARN-guide', 'Nästa steg i ditt ärende'].map(item => (
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 7 }}>
+                {[
+                  'Exakt ersättningsbelopp i SEK eller EUR',
+                  'Fullständig juridisk analys',
+                  'Verifierade lagparagrafer med källhänvisningar',
+                  'Bedömning av ärendets svagheter',
+                ].map(item => (
                   <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: '#374151' }}>
-                    <span style={{ color: '#1D9E75', marginTop: 1, flexShrink: 0 }}>✓</span>
+                    <span style={{ color: '#1D9E75', flexShrink: 0, marginTop: 1 }}>✓</span>
                     {item}
                   </li>
                 ))}
               </ul>
               <button
-                onClick={() => handleUnlockClick('komplett')}
+                onClick={() => handleUnlockClick('bas')}
                 disabled={isGenerating}
                 style={{
-                  marginTop: 'auto',
                   width: '100%',
-                  padding: '11px 16px',
+                  padding: '13px 16px',
                   borderRadius: 10,
                   border: 'none',
-                  background: '#F59E0B',
+                  background: '#1B4F8A',
                   color: 'white',
-                  fontSize: 14,
+                  fontSize: 15,
                   fontWeight: 600,
                   cursor: isGenerating ? 'wait' : 'pointer',
+                  marginTop: 4,
                   opacity: isGenerating ? 0.7 : 1,
                 }}
               >
-                {isGenerating ? 'Genererar...' : 'Lås upp för 99 kr'}
+                {isGenerating ? 'Genererar...' : 'Lås upp för 39 kr'}
               </button>
             </div>
           </div>
-
-          <p style={{ textAlign: 'center', fontSize: 12, color: '#9BA3AF', marginTop: 16 }}>
-            Ingen prenumeration. Engångsbetalning per ärende.
+          <p style={{ textAlign: 'center', fontSize: 12, color: '#9BA3AF', marginTop: 12 }}>
+            Ingen prenumeration. Betala bara när du vill ha mer.
           </p>
         </div>
       )}
 
-      {/* Unlocked content */}
-      {!isLocked && (
+      {/* Letter unlock card */}
+      {showLetterPricing && (
+        <div style={{
+          marginTop: 28,
+          padding: '24px',
+          background: '#F8FAFF',
+          border: '1.5px solid #D4E2F4',
+          borderRadius: 14,
+        }}>
+          <p style={{ fontSize: 15, fontWeight: 600, color: '#0F1F3D', marginBottom: 4 }}>
+            Vill du agera på bedömningen?
+          </p>
+          <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 16 }}>
+            Lås upp kravbrevet och få vägledning om hur du går vidare — för ytterligare 40 kr.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+            {[
+              'Färdigt kravbrev anpassat till ditt ärende',
+              'Nästa steg — konkret handlingsplan',
+              'Steg-för-steg ARN-anmälningsguide',
+              'Uppföljningsbrev om motparten inte svarar',
+              'Strategisk vägledning — vad du bör säga och undvika',
+            ].map(item => (
+              <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: '#374151' }}>
+                <span style={{ color: '#1D9E75', flexShrink: 0, marginTop: 1 }}>✓</span>
+                {item}
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={() => handleUnlockClick('komplett')}
+            disabled={isGenerating}
+            style={{
+              width: '100%',
+              padding: '13px 16px',
+              borderRadius: 10,
+              border: 'none',
+              background: '#F59E0B',
+              color: 'white',
+              fontSize: 15,
+              fontWeight: 600,
+              cursor: isGenerating ? 'wait' : 'pointer',
+              opacity: isGenerating ? 0.7 : 1,
+            }}
+          >
+            {isGenerating ? 'Genererar...' : 'Lås upp kravbrev för 40 kr till'}
+          </button>
+          <p style={{ fontSize: 12, color: '#9BA3AF', textAlign: 'center', marginTop: 10 }}>
+            Du har redan betalat 39 kr. Totalt 79 kr för fullständigt paket.
+          </p>
+        </div>
+      )}
+
+      {/* Unlocked letter content — only when komplett */}
+      {tier === 'komplett' && (
         <>
           {displayLetter && (
             <div className="mt-8">
@@ -325,27 +324,26 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
             </div>
           )}
 
-          {tier === 'komplett' && (
-            <div className="mt-8 space-y-6">
-              <div className="card-elevated p-6">
-                <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
-                  <BookOpen className="w-5 h-5 text-primary" /> Strategisk vägledning
-                </h3>
-                <div className="text-sm text-muted-foreground leading-relaxed space-y-2">
-                  <p><strong className="text-foreground">Gör:</strong> Var saklig och hänvisa alltid till specifik lagparagraf. Dokumentera all kommunikation skriftligt.</p>
-                  <p><strong className="text-foreground">Undvik:</strong> Hotfulla formuleringar eller överdrivna krav. Håll dig till fakta och lagstiftning.</p>
-                  <p><strong className="text-foreground">Tips:</strong> Skicka brevet via rekommenderat brev eller e-post med läskvittens för att kunna bevisa att motparten fått kravet.</p>
-                </div>
+          <div className="mt-8 space-y-6">
+            <div className="card-elevated p-6">
+              <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-primary" /> Strategisk vägledning
+              </h3>
+              <div className="text-sm text-muted-foreground leading-relaxed space-y-2">
+                <p><strong className="text-foreground">Gör:</strong> Var saklig och hänvisa alltid till specifik lagparagraf. Dokumentera all kommunikation skriftligt.</p>
+                <p><strong className="text-foreground">Undvik:</strong> Hotfulla formuleringar eller överdrivna krav. Håll dig till fakta och lagstiftning.</p>
+                <p><strong className="text-foreground">Tips:</strong> Skicka brevet via rekommenderat brev eller e-post med läskvittens för att kunna bevisa att motparten fått kravet.</p>
               </div>
+            </div>
 
-              <div className="card-elevated p-6">
-                <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
-                  <Mail className="w-5 h-5 text-primary" /> Uppföljningsbrev (mall)
-                </h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Om motparten inte svarar inom 14 dagar, skicka detta uppföljningsbrev:
-                </p>
-                <div className="paper-card p-4 text-xs leading-relaxed whitespace-pre-wrap text-foreground/90">
+            <div className="card-elevated p-6">
+              <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
+                <Mail className="w-5 h-5 text-primary" /> Uppföljningsbrev (mall)
+              </h3>
+              <p className="text-sm text-muted-foreground mb-3">
+                Om motparten inte svarar inom 14 dagar, skicka detta uppföljningsbrev:
+              </p>
+              <div className="paper-card p-4 text-xs leading-relaxed whitespace-pre-wrap text-foreground/90">
 {`[DITT NAMN]
 [DIN ADRESS]
 
@@ -361,38 +359,37 @@ Om jag inte erhåller ett tillfredsställande svar senast [DATUM] kommer jag att
 
 Med vänliga hälsningar,
 [DITT NAMN]`}
-                </div>
-              </div>
-
-              <div className="card-elevated p-6">
-                <h3 className="font-bold text-foreground mb-3">Steg-för-steg: Anmäl till ARN</h3>
-                <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
-                  <li>Gå till <a href="https://www.arn.se" target="_blank" rel="noopener noreferrer" className="text-primary underline">arn.se</a></li>
-                  <li>Klicka på "Anmäl ett ärende"</li>
-                  <li>Fyll i dina uppgifter och motpartens information</li>
-                  <li>Bifoga kravbrevet och eventuell dokumentation</li>
-                  <li>Skicka in — ARN:s prövning är kostnadsfri</li>
-                  <li>ARN ger normalt besked inom 3–6 månader</li>
-                </ol>
-              </div>
-
-              <div className="card-elevated p-6">
-                <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
-                  <Mail className="w-5 h-5 text-primary" /> E-postpåminnelse
-                </h3>
-                <p className="text-sm text-muted-foreground mb-3">Vill du bli påmind om att följa upp?</p>
-                <div className="flex gap-3">
-                  <input
-                    type="email"
-                    placeholder="din@epost.se"
-                    className="flex-1 px-4 py-2 rounded-lg border border-border bg-card text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
-                  />
-                  <Button variant="outline" className="text-sm">Påminn mig om 14 dagar</Button>
-                </div>
-                <p className="text-xs text-muted-foreground mt-2">Funktionen är simulerad i denna version.</p>
               </div>
             </div>
-          )}
+
+            <div className="card-elevated p-6">
+              <h3 className="font-bold text-foreground mb-3">Steg-för-steg: Anmäl till ARN</h3>
+              <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
+                <li>Gå till <a href="https://www.arn.se" target="_blank" rel="noopener noreferrer" className="text-primary underline">arn.se</a></li>
+                <li>Klicka på "Anmäl ett ärende"</li>
+                <li>Fyll i dina uppgifter och motpartens information</li>
+                <li>Bifoga kravbrevet och eventuell dokumentation</li>
+                <li>Skicka in — ARN:s prövning är kostnadsfri</li>
+                <li>ARN ger normalt besked inom 3–6 månader</li>
+              </ol>
+            </div>
+
+            <div className="card-elevated p-6">
+              <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
+                <Mail className="w-5 h-5 text-primary" /> E-postpåminnelse
+              </h3>
+              <p className="text-sm text-muted-foreground mb-3">Vill du bli påmind om att följa upp?</p>
+              <div className="flex gap-3">
+                <input
+                  type="email"
+                  placeholder="din@epost.se"
+                  className="flex-1 px-4 py-2 rounded-lg border border-border bg-card text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+                />
+                <Button variant="outline" className="text-sm">Påminn mig om 14 dagar</Button>
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">Funktionen är simulerad i denna version.</p>
+            </div>
+          </div>
         </>
       )}
 
