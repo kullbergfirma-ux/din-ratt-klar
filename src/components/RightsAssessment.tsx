@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '@/components/ui/button';
-import { Lock, ArrowLeft, Check, Copy, Download, FileText, BookOpen, Mail, Loader2 } from 'lucide-react';
+import { Lock, ArrowLeft, Check, Copy, FileText, BookOpen, Mail, Loader2 } from 'lucide-react';
 import { SITE_CONFIG } from '@/config/site';
 import { type Tier } from '@/lib/pricing';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Props {
   assessment: string;
@@ -30,22 +30,48 @@ const sentimentLabels = {
 const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBack }: Props) => {
   const [copied, setCopied] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
-  const isLocked = tier === 'free';
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedLetter, setEditedLetter] = useState('');
+
+  const isLocked = tier === 'free' && sentiment !== 'negative';
+  const showPricing = isLocked;
+
+  useEffect(() => {
+    if (letter && !editedLetter) setEditedLetter(letter);
+  }, [letter]);
+
+  const displayLetter = editedLetter || letter;
+
+  const displayAssessment = tier === 'komplett'
+    ? assessment
+    : assessment.replace(/###\s*Nästa steg[\s\S]*?(?=###|##|$)/gi, '').trim();
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(letter);
+    await navigator.clipboard.writeText(displayLetter);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleDownload = () => {
-    const blob = new Blob([letter], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'kravbrev.txt';
-    a.click();
-    URL.revokeObjectURL(url);
+  const handleDownloadPDF = () => {
+    const content = displayLetter;
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Kravbrev</title>
+          <style>
+            body { font-family: Arial, sans-serif; font-size: 14px; line-height: 1.7; padding: 40px; max-width: 700px; margin: 0 auto; color: #1a1a1a; }
+            pre { white-space: pre-wrap; word-wrap: break-word; }
+          </style>
+        </head>
+        <body>
+          <pre>${content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+          <script>window.onload = () => { window.print(); window.close(); }<\/script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
   };
 
   const handleUnlockClick = async (t: Tier) => {
@@ -72,8 +98,46 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
         </div>
 
         <div className="relative">
-          <div className={`prose prose-sm max-w-none text-foreground/90 ${isLocked ? 'select-none' : ''}`} style={isLocked ? { filter: 'blur(6px)' } : undefined}>
-            <ReactMarkdown>{assessment}</ReactMarkdown>
+          <div
+            className={`prose prose-sm max-w-none text-foreground/90 ${isLocked ? 'select-none' : ''}`}
+            style={isLocked ? { filter: 'blur(6px)' } : undefined}
+          >
+            <ReactMarkdown
+              components={{
+                h2: ({ children }) => (
+                  <h2 style={{ fontSize: 16, fontWeight: 700, color: '#0F1F3D', marginTop: 28, marginBottom: 8 }}>
+                    {children}
+                  </h2>
+                ),
+                h3: ({ children }) => (
+                  <h3 style={{ fontSize: 14, fontWeight: 600, color: '#1A2744', marginTop: 20, marginBottom: 6 }}>
+                    {children}
+                  </h3>
+                ),
+                p: ({ children }) => (
+                  <p style={{ fontSize: 14, lineHeight: 1.7, color: '#374151', marginBottom: 12 }}>
+                    {children}
+                  </p>
+                ),
+                li: ({ children }) => (
+                  <li style={{ fontSize: 14, lineHeight: 1.7, marginBottom: 4 }}>
+                    {children}
+                  </li>
+                ),
+                ul: ({ children }) => (
+                  <ul style={{ paddingLeft: 20, marginBottom: 12 }}>
+                    {children}
+                  </ul>
+                ),
+                ol: ({ children }) => (
+                  <ol style={{ paddingLeft: 20, marginBottom: 12 }}>
+                    {children}
+                  </ol>
+                ),
+              }}
+            >
+              {displayAssessment}
+            </ReactMarkdown>
           </div>
 
           {isLocked && (
@@ -88,60 +152,140 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
         </div>
       </div>
 
+      {/* Negative verdict info box */}
+      {sentiment === 'negative' && tier === 'free' && (
+        <div style={{
+          background: '#FEF2F2',
+          border: '1px solid #FECACA',
+          borderRadius: 10,
+          padding: '12px 16px',
+          marginTop: 16,
+          fontSize: 13,
+          color: '#991B1B',
+        }}>
+          Baserat på din beskrivning finns det troligtvis inte grund för ett krav i detta fall. Läs förklaringen ovan noggrant. Om du anser att situationen är mer komplex kan du kontakta <a href="https://www.konsumentverket.se" target="_blank" rel="noopener noreferrer" style={{ color: '#991B1B', textDecoration: 'underline' }}>Konsumentverket</a> för kostnadsfri rådgivning.
+        </div>
+      )}
+
       <div className="mt-4 text-xs text-muted-foreground bg-muted/50 rounded-lg p-3">
         {SITE_CONFIG.disclaimer}
       </div>
 
-      {/* Pricing cards when free — reordered: Komplett, Bas, Gratis */}
-      {isLocked && (
-        <div className="mt-8">
-          <div className="grid sm:grid-cols-3 gap-4">
-            {/* Komplett first */}
-            <div className="card-elevated p-6 ring-2 ring-primary relative">
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
+      {/* Pricing cards — only Bas and Komplett */}
+      {showPricing && (
+        <div style={{ marginTop: 32 }}>
+          <p style={{ fontSize: 15, fontWeight: 600, color: '#0F1F3D', marginBottom: 4, textAlign: 'center' }}>
+            Lås upp för att se hela bedömningen
+          </p>
+          <p style={{ fontSize: 13, color: '#6B7280', textAlign: 'center', marginBottom: 20 }}>
+            Välj det paket som passar ditt ärende
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, maxWidth: 500, margin: '0 auto' }}>
+            {/* Bas */}
+            <div style={{
+              background: '#FFFFFF',
+              border: '1.5px solid #E2E8F0',
+              borderRadius: 14,
+              padding: '24px 20px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12,
+            }}>
+              <div>
+                <p style={{ fontSize: 13, color: '#6B7280', margin: 0 }}>Bas</p>
+                <p style={{ fontSize: 26, fontWeight: 700, color: '#0F1F3D', margin: '4px 0 0' }}>39 kr</p>
+              </div>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {['Exakt ersättningsbelopp', 'Fullständig juridisk analys', 'Färdigt kravbrev'].map(item => (
+                  <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: '#374151' }}>
+                    <span style={{ color: '#1D9E75', marginTop: 1, flexShrink: 0 }}>✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => handleUnlockClick('bas')}
+                disabled={isGenerating}
+                style={{
+                  marginTop: 'auto',
+                  width: '100%',
+                  padding: '11px 16px',
+                  borderRadius: 10,
+                  border: 'none',
+                  background: '#1B4F8A',
+                  color: 'white',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: isGenerating ? 'wait' : 'pointer',
+                  opacity: isGenerating ? 0.7 : 1,
+                }}
+              >
+                {isGenerating ? 'Genererar...' : 'Lås upp för 39 kr'}
+              </button>
+            </div>
+
+            {/* Komplett */}
+            <div style={{
+              background: '#FFFFFF',
+              border: '2px solid #1B4F8A',
+              borderRadius: 14,
+              padding: '24px 20px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12,
+              position: 'relative',
+            }}>
+              <div style={{
+                position: 'absolute',
+                top: -12,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                background: '#1B4F8A',
+                color: 'white',
+                fontSize: 11,
+                fontWeight: 700,
+                padding: '3px 12px',
+                borderRadius: 20,
+                whiteSpace: 'nowrap',
+              }}>
                 Bäst värde
-              </span>
-              <h3 className="font-bold text-foreground mb-1">Komplett</h3>
-              <div className="text-2xl font-extrabold text-foreground mb-3">99 kr</div>
-              <ul className="space-y-2 text-sm text-muted-foreground mb-5">
-                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Allt i Bas</li>
-                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Strategisk vägledning</li>
-                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Uppföljningsbrev</li>
-                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Steg-för-steg ARN-guide</li>
-                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Ladda ner som PDF</li>
+              </div>
+              <div>
+                <p style={{ fontSize: 13, color: '#6B7280', margin: 0 }}>Komplett</p>
+                <p style={{ fontSize: 26, fontWeight: 700, color: '#0F1F3D', margin: '4px 0 0' }}>99 kr</p>
+              </div>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {['Allt i Bas', 'Strategisk vägledning', 'Uppföljningsbrev', 'Steg-för-steg ARN-guide', 'Nästa steg i ditt ärende'].map(item => (
+                  <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: '#374151' }}>
+                    <span style={{ color: '#1D9E75', marginTop: 1, flexShrink: 0 }}>✓</span>
+                    {item}
+                  </li>
+                ))}
               </ul>
-              <Button onClick={() => handleUnlockClick('komplett')} disabled={isGenerating} className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-bold">
-                {isGenerating ? <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Genererar...</> : 'Lås upp för 99 kr'}
-              </Button>
-            </div>
-
-            {/* Bas second */}
-            <div className="card-elevated p-6">
-              <h3 className="font-bold text-foreground mb-1">Bas</h3>
-              <div className="text-2xl font-extrabold text-foreground mb-3">39 kr</div>
-              <ul className="space-y-2 text-sm text-muted-foreground mb-5">
-                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Exakt ersättningsbelopp</li>
-                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Fullständig juridisk analys</li>
-                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Färdigt kravbrev</li>
-              </ul>
-              <Button onClick={() => handleUnlockClick('bas')} disabled={isGenerating} className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                {isGenerating ? <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Genererar...</> : 'Lås upp för 39 kr'}
-              </Button>
-            </div>
-
-            {/* Gratis third */}
-            <div className="card-elevated p-6">
-              <h3 className="font-bold text-foreground mb-1">Gratis</h3>
-              <div className="text-2xl font-extrabold text-foreground mb-3">0 kr</div>
-              <ul className="space-y-2 text-sm text-muted-foreground mb-5">
-                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Enkel bedömning</li>
-                <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Rättighetsstatus</li>
-              </ul>
-              <Button variant="outline" className="w-full" disabled>Nuvarande</Button>
-              <p className="text-center text-xs text-muted-foreground mt-2">Du ser redan gratisnivån</p>
+              <button
+                onClick={() => handleUnlockClick('komplett')}
+                disabled={isGenerating}
+                style={{
+                  marginTop: 'auto',
+                  width: '100%',
+                  padding: '11px 16px',
+                  borderRadius: 10,
+                  border: 'none',
+                  background: '#F59E0B',
+                  color: 'white',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: isGenerating ? 'wait' : 'pointer',
+                  opacity: isGenerating ? 0.7 : 1,
+                }}
+              >
+                {isGenerating ? 'Genererar...' : 'Lås upp för 99 kr'}
+              </button>
             </div>
           </div>
-          <p className="text-center text-xs text-muted-foreground mt-4">
+
+          <p style={{ textAlign: 'center', fontSize: 12, color: '#9BA3AF', marginTop: 16 }}>
             Ingen prenumeration. Engångsbetalning per ärende.
           </p>
         </div>
@@ -150,23 +294,33 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
       {/* Unlocked content */}
       {!isLocked && (
         <>
-          {letter && (
+          {displayLetter && (
             <div className="mt-8">
               <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
                 <FileText className="w-5 h-5" /> Ditt kravbrev
               </h2>
               <div className="paper-card p-6 sm:p-8 text-sm leading-relaxed whitespace-pre-wrap text-foreground/90 max-h-[500px] overflow-y-auto">
-                {letter}
+                {displayLetter}
               </div>
-              <div className="flex flex-wrap gap-3 mt-4">
-                <Button onClick={handleCopy} variant="outline" className="gap-2">
-                  {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 16 }}>
+                <button
+                  onClick={() => { setEditedLetter(displayLetter); setIsEditing(true); }}
+                  style={{ padding: '10px 16px', borderRadius: 8, border: '1.5px solid #E2E8F0', background: 'white', fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+                >
+                  Redigera kravbrev
+                </button>
+                <button
+                  onClick={handleCopy}
+                  style={{ padding: '10px 16px', borderRadius: 8, border: '1.5px solid #E2E8F0', background: 'white', fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+                >
                   {copied ? 'Kopierat!' : 'Kopiera'}
-                </Button>
-                <Button onClick={handleDownload} className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90">
-                  <Download className="w-4 h-4" />
-                  Ladda ner .txt
-                </Button>
+                </button>
+                <button
+                  onClick={handleDownloadPDF}
+                  style={{ padding: '10px 16px', borderRadius: 8, border: 'none', background: '#1B4F8A', color: 'white', fontSize: 14, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+                >
+                  Ladda ner PDF
+                </button>
               </div>
             </div>
           )}
@@ -248,6 +402,74 @@ Med vänliga hälsningar,
           Ny sökning
         </Button>
       </div>
+
+      {/* Edit letter modal */}
+      {isEditing && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0,0,0,0.5)',
+          zIndex: 1000,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 16,
+        }}>
+          <div style={{
+            background: 'white',
+            borderRadius: 16,
+            padding: 28,
+            width: '100%',
+            maxWidth: 640,
+            maxHeight: '90vh',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 16,
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0F1F3D', margin: 0 }}>Redigera kravbrev</h3>
+              <button
+                onClick={() => setIsEditing(false)}
+                style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: '#6B7280', lineHeight: 1 }}
+              >
+                ×
+              </button>
+            </div>
+            <textarea
+              value={editedLetter}
+              onChange={e => setEditedLetter(e.target.value)}
+              style={{
+                width: '100%',
+                flex: 1,
+                minHeight: 320,
+                padding: '14px 16px',
+                border: '1.5px solid #E2E8F0',
+                borderRadius: 10,
+                fontSize: 13,
+                lineHeight: 1.7,
+                fontFamily: 'inherit',
+                resize: 'vertical',
+                outline: 'none',
+                color: '#1A2744',
+              }}
+            />
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+              <button
+                onClick={() => { setEditedLetter(letter); setIsEditing(false); }}
+                style={{ padding: '10px 16px', borderRadius: 8, border: '1.5px solid #E2E8F0', background: 'white', fontSize: 14, cursor: 'pointer' }}
+              >
+                Återställ original
+              </button>
+              <button
+                onClick={() => setIsEditing(false)}
+                style={{ padding: '10px 16px', borderRadius: 8, border: 'none', background: '#1B4F8A', color: 'white', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
+              >
+                Spara ändringar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 };
