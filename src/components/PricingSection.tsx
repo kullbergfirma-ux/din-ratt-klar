@@ -13,7 +13,7 @@ const PricingSection = () => (
           Enkel och transparent prissättning
         </h2>
         <p className="text-muted-foreground text-lg max-w-lg mx-auto">
-          Bedömningen är alltid gratis. Betala bara för fullständig analys och kravbrev.
+          Betala steg för steg — börja med bedömningen, lägg till kravbrevet om du vill agera.
         </p>
       </div>
 
@@ -40,7 +40,7 @@ const PricingSection = () => (
           </button>
         </motion.div>
 
-        {/* Bas */}
+        {/* Bedömning */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -48,12 +48,13 @@ const PricingSection = () => (
           transition={{ delay: 0.1 }}
           className="card-elevated p-6 text-center flex flex-col"
         >
-          <div className="text-lg font-bold text-foreground mb-1">Bas</div>
+          <div className="text-lg font-bold text-foreground mb-1">Bedömning</div>
           <div className="text-3xl font-extrabold text-foreground mb-4">39 kr</div>
           <ul className="text-left space-y-2 text-sm text-muted-foreground mb-5">
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Exakt ersättningsbelopp</li>
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Fullständig juridisk analys</li>
-            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Färdigt kravbrev</li>
+            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Verifierade lagparagrafer</li>
+            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Ärendets svagheter</li>
           </ul>
           <button
             onClick={scrollToCategories}
@@ -75,13 +76,14 @@ const PricingSection = () => (
             Bäst värde
           </span>
           <div className="text-lg font-bold text-foreground mb-1">Komplett</div>
-          <div className="text-3xl font-extrabold text-foreground mb-4">99 kr</div>
+          <div className="text-3xl font-extrabold text-foreground mb-4">79 kr</div>
           <ul className="text-left space-y-2 text-sm text-muted-foreground mb-5">
-            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Allt i Bas</li>
-            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Strategisk vägledning</li>
+            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Allt i Bedömning</li>
+            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Färdigt kravbrev</li>
+            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Nästa steg och handlingsplan</li>
+            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> ARN-anmälningsguide</li>
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Uppföljningsbrev</li>
-            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> ARN-guide</li>
-            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> PDF-export</li>
+            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Strategisk vägledning</li>
           </ul>
           <button
             onClick={scrollToCategories}
