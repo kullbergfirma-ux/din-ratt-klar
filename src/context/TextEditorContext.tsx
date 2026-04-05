@@ -33,10 +33,10 @@ export const TextEditorProvider = ({ children }: { children: ReactNode }) => {
       setIsAdmin(!!data.session);
     });
 
-    supabase.from('site_texts').select('*').then(({ data }) => {
+    (supabase.from('site_texts' as any).select('*') as any).then(({ data }: { data: { key: string; value: string }[] | null }) => {
       if (data) {
         const map: Record<string, string> = {};
-        (data as { key: string; value: string }[]).forEach((row) => { map[row.key] = row.value; });
+        data.forEach((row) => { map[row.key] = row.value; });
         setTexts(map);
       }
     });
