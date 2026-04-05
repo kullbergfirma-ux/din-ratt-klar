@@ -11,7 +11,7 @@ import { SITE_CONFIG } from '@/config/site';
 import { Scale, Zap, CheckCircle } from 'lucide-react';
 
 const homeFaqs = [
-  { q: 'Vad kostar det?', a: 'Att se din rättighetsbedömning är helt gratis. Vill du se fullständig analys och kravbrev kostar det 39 kr (Bas) eller 99 kr (Komplett). Engångsbetalning per ärende — ingen prenumeration.' },
+  { q: 'Vad kostar det?', a: 'Att se din ja/nej-bedömning är helt gratis. Fullständig juridisk analys med belopp och lagparagrafer kostar 39 kr. Vill du även ha ett färdigt kravbrev och handlingsplan kostar det 40 kr till — totalt 79 kr. Engångsbetalning, ingen prenumeration.' },
   { q: 'Hur säker är bedömningen?', a: 'Bedömningen baseras på gällande svensk och EU-lagstiftning och ger dig en god uppfattning om dina rättigheter. Vid komplexa ärenden rekommenderar vi att du kontaktar Konsumentverket eller en jurist.' },
   { q: 'Vad gör jag om motparten vägrar?', a: 'Om motparten inte svarar eller vägrar kan du anmäla ärendet till ARN (Allmänna reklamationsnämnden) som gör en kostnadsfri prövning.' },
 ];

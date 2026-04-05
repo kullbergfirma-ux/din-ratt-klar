@@ -85,18 +85,19 @@ const CategoryPage = () => {
   const handleUnlock = async (newTier: Tier) => {
     setTier(caseId, newTier);
     setLocalTier(newTier);
-    if (newTier === 'bas' || newTier === 'komplett') {
+    if (newTier === 'komplett') {
       setLoadingMessage('Genererar ditt kravbrev...');
       setStep('loading');
       try {
         const generatedLetter = await getAILetter(category, answers, assessment, userProfile || undefined);
         setLetter(generatedLetter);
-        setStep('assessment');
       } catch {
         toast.error('Kunde inte generera kravbrev. Försök igen.');
+      } finally {
         setStep('assessment');
       }
     }
+    // bas tier only unlocks assessment display — no letter generation needed
   };
 
   const handleReset = () => {
