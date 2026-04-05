@@ -117,6 +117,11 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
     );
   };
 
+  const isNarrativeQuestion = (q: CategoryQuestion): boolean => {
+    const label = q.label.toLowerCase();
+    return /(beskriv|vad hände|vad är felet|vad är problemet|situationen|kontaktat|kontakten)/.test(label);
+  };
+
   const renderInput = (q: CategoryQuestion) => {
     const value = answers[q.id] || '';
     const onChange = (val: string) => setAnswers({ ...answers, [q.id]: val });
@@ -189,6 +194,45 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
           suggestions={suggestions}
           placeholder={q.placeholder}
           onKeyDown={(e) => e.key === 'Enter' && canProceed && handleNext()}
+        />
+      );
+    }
+
+    if (isNarrativeQuestion(q) || isLast) {
+      return (
+        <textarea
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={q.placeholder}
+          rows={5}
+          style={{
+            width: '100%',
+            padding: '14px 16px',
+            border: '1.5px solid #E2E8F0',
+            borderRadius: 10,
+            fontSize: 15,
+            color: '#1A2744',
+            background: '#FAFBFC',
+            outline: 'none',
+            transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+            resize: 'vertical',
+            minHeight: 120,
+            lineHeight: 1.6,
+            fontFamily: 'inherit',
+          }}
+          onFocus={e => {
+            e.currentTarget.style.borderColor = '#1B4F8A';
+            e.currentTarget.style.boxShadow = '0 0 0 3px rgba(27, 79, 138, 0.08)';
+            e.currentTarget.style.background = '#FFFFFF';
+          }}
+          onBlur={e => {
+            e.currentTarget.style.borderColor = '#E2E8F0';
+            e.currentTarget.style.boxShadow = 'none';
+            e.currentTarget.style.background = '#FAFBFC';
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && e.metaKey && canProceed) handleNext();
+          }}
         />
       );
     }
