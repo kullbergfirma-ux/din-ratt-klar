@@ -177,10 +177,10 @@ export const categories: Category[] = [
     seoDescription: 'Problem med abonnemang som fortsätter debitera? Lär dig dina rättigheter vid feldebitering och uppsägning.',
     questions: [
       { id: 'service_type', label: 'Vilken typ av tjänst?', type: 'select', options: ['Streaming', 'Gym', 'Telefon', 'Internet', 'Annat'] },
-      { id: 'company', label: 'Vilket företag?', type: 'text', placeholder: 'T.ex. Netflix, SATS, Telia' },
+      { id: 'company', label: 'Vilket företag?', type: 'text', placeholder: 'Skriv företagets namn' },
       { id: 'issue', label: 'Vad hände?', type: 'select', options: ['Fortsätter debitera efter uppsägning', 'Felaktigt belopp', 'Kan inte säga upp', 'Automatisk förlängning', 'Annat'] },
       { id: 'problem_date', label: 'När sade du upp eller när uppstod problemet?', type: 'date' },
-      { id: 'total_amount', label: 'Hur mycket pengar handlar det om totalt?', type: 'text', placeholder: 'T.ex. 1200 kr' },
+      { id: 'total_amount', label: 'Hur mycket pengar handlar det om totalt?', type: 'text', placeholder: 'Ange totalt belopp i kronor' },
       { id: 'written_confirmation', label: 'Har du skriftlig bekräftelse på uppsägning?', type: 'select', options: ['Ja', 'Nej'] },
     ],
     legalInfo: [
