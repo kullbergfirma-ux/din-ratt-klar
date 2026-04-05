@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Shield } from 'lucide-react';
 import { SITE_CONFIG } from '@/config/site';
+import EditableText from '@/components/EditableText';
 
 const HeroResultCard = () => (
   <div
@@ -62,27 +63,27 @@ const HeroSection = () => {
           >
             <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-full px-4 py-1.5 text-sm font-medium mb-6">
               <Shield className="w-4 h-4" />
-              Baserat på svensk & EU-lagstiftning
+              <EditableText textKey="hero.badge" fallback="Baserat på svensk & EU-lagstiftning" />
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-4">
-              {SITE_CONFIG.tagline.split(' och ')[0]}.
+              <EditableText textKey="hero.heading" fallback="Kräv din rätt." />
               <br />
-              <span className="text-white/80">Få ersättning du har rätt till.</span>
+              <span className="text-white/80"><EditableText textKey="hero.subheading" fallback="Få ersättning du har rätt till." /></span>
             </h1>
 
             <p className="text-base sm:text-lg text-white/70 font-medium mb-6">
-              Redan 2 400 ärenden hjälpta — genomsnittlig ersättning 3 200 kr
+              <EditableText textKey="hero.stats" fallback="Redan 2 400 ärenden hjälpta — genomsnittlig ersättning 3 200 kr" />
             </p>
 
             <p className="text-lg sm:text-xl text-white/75 leading-relaxed mb-8 max-w-xl">
-              {SITE_CONFIG.description}
+              <EditableText textKey="hero.description" fallback={SITE_CONFIG.description} />
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3">
               <a href="/#kategorier" onClick={handleScrollToCategories}>
                 <button className="bg-accent text-accent-foreground hover:bg-accent/90 text-base font-bold px-8 py-4 rounded-xl shadow-lg flex items-center gap-2 transition-colors">
-                  Kolla din rätt
+                  <EditableText textKey="hero.cta" fallback="Kolla din rätt" />
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </a>
@@ -95,15 +96,15 @@ const HeroSection = () => {
 
             <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-white/60">
               <span className="flex items-center gap-1.5">
-                <Shield className="w-4 h-4" /> 9 kategorier
+                <Shield className="w-4 h-4" /> <EditableText textKey="hero.trust1" fallback="9 kategorier" />
               </span>
               <span className="flex items-center gap-1.5">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                Svar på 2 min
+                <EditableText textKey="hero.trust2" fallback="Svar på 2 min" />
               </span>
               <span className="flex items-center gap-1.5">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                Upp till 600€
+                <EditableText textKey="hero.trust3" fallback="Upp till 600€" />
               </span>
             </div>
           </motion.div>

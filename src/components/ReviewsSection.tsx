@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import EditableText from '@/components/EditableText';
 
 const reviews = [
   { text: 'Fick 400€ från flygbolaget efter att ha fått nej två gånger. Brevet övertygade dem direkt.', name: 'Anna K.', category: 'Resor' },
@@ -29,7 +30,7 @@ const ReviewsSection = () => {
         <div className="flex items-end justify-between mb-10">
           <div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-3">
-              Vad våra användare säger
+              <EditableText textKey="reviews.title" fallback="Vad våra användare säger" />
             </h2>
           </div>
           <div className="hidden sm:flex gap-2">
@@ -99,7 +100,6 @@ const ReviewsSection = () => {
         ))}
       </div>
 
-      {/* Hide scrollbar CSS */}
       <style>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { scrollbar-width: none; }

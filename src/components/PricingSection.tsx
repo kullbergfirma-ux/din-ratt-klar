@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
+import EditableText from '@/components/EditableText';
 
 const scrollToCategories = () => {
   document.getElementById('kategorier')?.scrollIntoView({ behavior: 'smooth' });
@@ -10,10 +11,10 @@ const PricingSection = () => (
     <div className="max-w-5xl mx-auto px-4">
       <div className="text-center mb-14">
         <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-3">
-          Enkel och transparent prissättning
+          <EditableText textKey="pricing.title" fallback="Enkel och transparent prissättning" />
         </h2>
         <p className="text-muted-foreground text-lg max-w-lg mx-auto">
-          Betala steg för steg — börja med bedömningen, lägg till kravbrevet om du vill agera.
+          <EditableText textKey="pricing.subtitle" fallback="Betala steg för steg — börja med bedömningen, lägg till kravbrevet om du vill agera." />
         </p>
       </div>
 
@@ -26,8 +27,8 @@ const PricingSection = () => (
           transition={{ delay: 0 }}
           className="card-elevated p-6 text-center flex flex-col"
         >
-          <div className="text-lg font-bold text-foreground mb-1">Gratis</div>
-          <div className="text-3xl font-extrabold text-foreground mb-4">0 kr</div>
+          <div className="text-lg font-bold text-foreground mb-1"><EditableText textKey="pricing.gratis.title" fallback="Gratis" /></div>
+          <div className="text-3xl font-extrabold text-foreground mb-4"><EditableText textKey="pricing.gratis.price" fallback="0 kr" /></div>
           <ul className="text-left space-y-2 text-sm text-muted-foreground mb-5">
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Enkel ja/nej-bedömning</li>
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Se om du troligtvis har rätt</li>
@@ -48,8 +49,8 @@ const PricingSection = () => (
           transition={{ delay: 0.1 }}
           className="card-elevated p-6 text-center flex flex-col"
         >
-          <div className="text-lg font-bold text-foreground mb-1">Bedömning</div>
-          <div className="text-3xl font-extrabold text-foreground mb-4">39 kr</div>
+          <div className="text-lg font-bold text-foreground mb-1"><EditableText textKey="pricing.bas.title" fallback="Bedömning" /></div>
+          <div className="text-3xl font-extrabold text-foreground mb-4"><EditableText textKey="pricing.bas.price" fallback="39 kr" /></div>
           <ul className="text-left space-y-2 text-sm text-muted-foreground mb-5">
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Exakt ersättningsbelopp</li>
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Fullständig juridisk analys</li>
@@ -75,8 +76,8 @@ const PricingSection = () => (
           <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
             Bäst värde
           </span>
-          <div className="text-lg font-bold text-foreground mb-1">Komplett</div>
-          <div className="text-3xl font-extrabold text-foreground mb-4">79 kr</div>
+          <div className="text-lg font-bold text-foreground mb-1"><EditableText textKey="pricing.komplett.title" fallback="Komplett" /></div>
+          <div className="text-3xl font-extrabold text-foreground mb-4"><EditableText textKey="pricing.komplett.price" fallback="79 kr" /></div>
           <ul className="text-left space-y-2 text-sm text-muted-foreground mb-5">
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Allt i Bedömning</li>
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Färdigt kravbrev</li>
@@ -95,7 +96,7 @@ const PricingSection = () => (
       </div>
 
       <p className="text-center text-sm text-muted-foreground mt-6">
-        Ingen prenumeration. Engångsbetalning per ärende.
+        <EditableText textKey="pricing.footer" fallback="Ingen prenumeration. Engångsbetalning per ärende." />
       </p>
     </div>
   </section>

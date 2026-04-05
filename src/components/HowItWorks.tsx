@@ -1,20 +1,27 @@
 import { motion } from 'framer-motion';
+import EditableText from '@/components/EditableText';
 
 const steps = [
   {
     number: 1,
-    title: 'Beskriv din situation',
-    description: 'Välj kategori och svara på några enkla frågor.',
+    titleKey: 'how.step1.title',
+    titleFallback: 'Beskriv din situation',
+    descKey: 'how.step1.desc',
+    descFallback: 'Välj kategori och svara på några enkla frågor.',
   },
   {
     number: 2,
-    title: 'Få en juridisk bedömning',
-    description: 'Vår AI analyserar mot gällande lagstiftning.',
+    titleKey: 'how.step2.title',
+    titleFallback: 'Få en juridisk bedömning',
+    descKey: 'how.step2.desc',
+    descFallback: 'Vår AI analyserar mot gällande lagstiftning.',
   },
   {
     number: 3,
-    title: 'Generera kravbrev',
-    description: 'Få ett formellt kravbrev redo att skicka.',
+    titleKey: 'how.step3.title',
+    titleFallback: 'Generera kravbrev',
+    descKey: 'how.step3.desc',
+    descFallback: 'Få ett formellt kravbrev redo att skicka.',
   },
 ];
 
@@ -23,15 +30,14 @@ const HowItWorks = () => (
     <div className="max-w-5xl mx-auto px-4">
       <div className="text-center mb-14">
         <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-3">
-          Så fungerar det
+          <EditableText textKey="how.title" fallback="Så fungerar det" />
         </h2>
         <p className="text-muted-foreground text-lg max-w-lg mx-auto">
-          Tre enkla steg från problem till lösning
+          <EditableText textKey="how.subtitle" fallback="Tre enkla steg från problem till lösning" />
         </p>
       </div>
 
       <div className="relative">
-        {/* Connecting line */}
         <div
           className="hidden md:block absolute top-[26px] left-[calc(8.33%+26px)] right-[calc(8.33%+26px)]"
           style={{ height: 1, background: '#D1D9E6' }}
@@ -47,7 +53,6 @@ const HowItWorks = () => (
               transition={{ delay: i * 0.15, duration: 0.5 }}
               className="text-center"
             >
-              {/* Step number */}
               <div
                 className="mx-auto mb-5 flex items-center justify-center relative z-[1]"
                 style={{
@@ -62,9 +67,11 @@ const HowItWorks = () => (
               >
                 {step.number}
               </div>
-              <h3 className="font-semibold text-foreground text-lg mb-2">{step.title}</h3>
+              <h3 className="font-semibold text-foreground text-lg mb-2">
+                <EditableText textKey={step.titleKey} fallback={step.titleFallback} />
+              </h3>
               <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>
-                {step.description}
+                <EditableText textKey={step.descKey} fallback={step.descFallback} />
               </p>
             </motion.li>
           ))}
