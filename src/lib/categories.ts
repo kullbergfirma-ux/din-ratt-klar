@@ -50,12 +50,12 @@ export const categories: Category[] = [
     relatedSlugs: ['leverans', 'betalning-aterkrav', 'kop-ehandel'],
     questions: [
       { id: 'travel_type', label: 'Typ av resa?', type: 'select', options: ['Flyg', 'Tåg', 'Buss', 'Färja', 'Hotell', 'Paketresa', 'Hyrbil'] },
-      { id: 'company', label: 'Transportbolag eller arrangör?', type: 'text', placeholder: 'T.ex. SAS, SJ, FlixBus, Stena Line' },
+      { id: 'company', label: 'Transportbolag eller arrangör?', type: 'text', placeholder: 'Skriv transportbolagets namn' },
       { id: 'date', label: 'Datum för resan?', type: 'date' },
       { id: 'issue', label: 'Vad hände?', type: 'select', options: ['Försening', 'Inställt', 'Överbookning', 'Ej som utlovat', 'Annat'] },
-      { id: 'delay_duration', label: 'Hur många timmar var förseningen?', type: 'text', placeholder: 'Ange i timmar, t.ex. 3 eller 3.5', showWhen: { questionId: 'issue', values: ['Försening'] } },
+      { id: 'delay_duration', label: 'Hur många timmar var förseningen?', type: 'text', placeholder: 'Ange antal timmar, t.ex. 3', showWhen: { questionId: 'issue', values: ['Försening'] } },
       { id: 'compensation_offered', label: 'Fick du någon ersättning eller hjälp på plats?', type: 'select', options: ['Ja', 'Nej', 'Delvis'] },
-      { id: 'description', label: 'Beskriv kort vad som hände', type: 'text', placeholder: 'T.ex. Flyget blev 4 timmar försenat och jag fick ingen hjälp på plats' },
+      { id: 'description', label: 'Beskriv kort vad som hände', type: 'text', placeholder: 'Beskriv vad som hände med egna ord' },
     ],
   },
   {
@@ -66,12 +66,12 @@ export const categories: Category[] = [
     seoTitle: 'Trasig eller fel vara? Så reklamerar du',
     seoDescription: 'Lär dig dina rättigheter vid köp online eller i butik. Reklamation, ångerrätt och retur enligt konsumentköplagen.',
     questions: [
-      { id: 'product_type', label: 'Vilken typ av produkt?', type: 'text', placeholder: 'T.ex. mobiltelefon, tvättmaskin' },
+      { id: 'product_type', label: 'Vilken typ av produkt?', type: 'text', placeholder: 'Beskriv produkten' },
       { id: 'purchase_date', label: 'När köpte du den?', type: 'date' },
       { id: 'purchase_place', label: 'Var köpte du den?', type: 'select', options: ['Butik', 'Online'] },
       { id: 'issue', label: 'Vad vill du göra?', type: 'select', options: ['Reklamera fel på vara', 'Returnera / ångerrätt', 'Fel produkt levererad', 'Vara ej levererad'] },
-      { id: 'defect', label: 'Vad är felet?', type: 'text', placeholder: 'Beskriv felet' },
-      { id: 'contacted_seller', label: 'Har du kontaktat säljaren? Vad sa de?', type: 'text', placeholder: 'Beskriv kontakten' },
+      { id: 'defect', label: 'Vad är felet?', type: 'text', placeholder: 'Beskriv felet med egna ord' },
+      { id: 'contacted_seller', label: 'Har du kontaktat säljaren? Vad sa de?', type: 'text', placeholder: 'Beskriv vad som sades' },
     ],
     legalInfo: [
       'Konsumentköplagen (2022:260): 3 års reklamationsrätt från köpdatum',
@@ -95,9 +95,9 @@ export const categories: Category[] = [
     seoTitle: 'Garanti och dolda fel — vad har du rätt till?',
     seoDescription: 'Förstå skillnaden mellan garanti och reklamationsrätt. Lär dig vad som täcks vid dolda fel på produkter.',
     questions: [
-      { id: 'product', label: 'Produkt?', type: 'text', placeholder: 'T.ex. laptop, kylskåp' },
+      { id: 'product', label: 'Produkt?', type: 'text', placeholder: 'Beskriv produkten' },
       { id: 'purchase_date', label: 'Inköpsdatum?', type: 'date' },
-      { id: 'problem', label: 'Vad är problemet?', type: 'text', placeholder: 'Beskriv problemet' },
+      { id: 'problem', label: 'Vad är problemet?', type: 'text', placeholder: 'Beskriv problemet med egna ord' },
       { id: 'receipt', label: 'Har du kvitto/garantibevis?', type: 'select', options: ['Ja', 'Nej'] },
     ],
     legalInfo: [
@@ -122,9 +122,9 @@ export const categories: Category[] = [
     seoTitle: 'Försenat eller skadat paket? Kräv ersättning',
     seoDescription: 'Ditt paket är försenat, skadat eller försvunnet? Lär dig dina rättigheter och hur du kräver ersättning.',
     questions: [
-      { id: 'company', label: 'Vilket företag köpte du från?', type: 'text', placeholder: 'T.ex. Zalando, IKEA, NetOnNet (säljaren — inte transportören)' },
+      { id: 'company', label: 'Vilket företag köpte du från?', type: 'text', placeholder: 'Skriv företagets namn' },
       { id: 'purchase_date', label: 'När beställde du varan?', type: 'date' },
-      { id: 'order_date', label: 'Beställningsdatum och utlovat leveransdatum?', type: 'text', placeholder: 'T.ex. beställt 1 jan, utlovat 5 jan' },
+      { id: 'order_date', label: 'Beställningsdatum och utlovat leveransdatum?', type: 'text', placeholder: 'Beställt och utlovat leveransdatum' },
       { id: 'issue', label: 'Vad hände?', type: 'select', options: ['Försenat', 'Skadat', 'Borttappat'] },
       { id: 'contacted', label: 'Har du kontaktat säljaren/transportören?', type: 'select', options: ['Ja', 'Nej'] },
     ],
@@ -150,9 +150,9 @@ export const categories: Category[] = [
     seoTitle: 'Betalning & återkrav — få tillbaka dina pengar',
     seoDescription: 'Har du blivit utsatt för kortbedrägeri eller obehöriga transaktioner? Lär dig om chargeback och dina rättigheter.',
     questions: [
-      { id: 'bank', label: 'Bank/kortutgivare?', type: 'text', placeholder: 'T.ex. Nordea, SEB, Klarna' },
-      { id: 'amount', label: 'Belopp?', type: 'text', placeholder: 'T.ex. 2500 kr' },
-      { id: 'issue', label: 'Vad hände?', type: 'text', placeholder: 'Beskriv situationen' },
+      { id: 'bank', label: 'Bank/kortutgivare?', type: 'text', placeholder: 'Skriv bankens eller kortutgivarens namn' },
+      { id: 'amount', label: 'Belopp?', type: 'text', placeholder: 'Ange belopp i kronor' },
+      { id: 'issue', label: 'Vad hände?', type: 'text', placeholder: 'Beskriv vad som hände' },
       { id: 'contacted_seller', label: 'Har du försökt kontakta säljaren?', type: 'select', options: ['Ja', 'Nej'] },
     ],
     legalInfo: [
@@ -177,10 +177,10 @@ export const categories: Category[] = [
     seoDescription: 'Problem med abonnemang som fortsätter debitera? Lär dig dina rättigheter vid feldebitering och uppsägning.',
     questions: [
       { id: 'service_type', label: 'Vilken typ av tjänst?', type: 'select', options: ['Streaming', 'Gym', 'Telefon', 'Internet', 'Annat'] },
-      { id: 'company', label: 'Vilket företag?', type: 'text', placeholder: 'T.ex. Netflix, SATS, Telia' },
+      { id: 'company', label: 'Vilket företag?', type: 'text', placeholder: 'Skriv företagets namn' },
       { id: 'issue', label: 'Vad hände?', type: 'select', options: ['Fortsätter debitera efter uppsägning', 'Felaktigt belopp', 'Kan inte säga upp', 'Automatisk förlängning', 'Annat'] },
       { id: 'problem_date', label: 'När sade du upp eller när uppstod problemet?', type: 'date' },
-      { id: 'total_amount', label: 'Hur mycket pengar handlar det om totalt?', type: 'text', placeholder: 'T.ex. 1200 kr' },
+      { id: 'total_amount', label: 'Hur mycket pengar handlar det om totalt?', type: 'text', placeholder: 'Ange totalt belopp i kronor' },
       { id: 'written_confirmation', label: 'Har du skriftlig bekräftelse på uppsägning?', type: 'select', options: ['Ja', 'Nej'] },
     ],
     legalInfo: [
@@ -210,7 +210,7 @@ export const categories: Category[] = [
       { id: 'car_type', label: 'Ny eller begagnad bil?', type: 'select', options: ['Ny', 'Begagnad'] },
       { id: 'seller_type', label: 'Köpt av handlare eller privatperson?', type: 'select', options: ['Handlare', 'Privatperson'] },
       { id: 'purchase_date', label: 'Inköpsdatum?', type: 'date' },
-      { id: 'defect', label: 'Vad är felet?', type: 'text', placeholder: 'Beskriv felet' },
+      { id: 'defect', label: 'Vad är felet?', type: 'text', placeholder: 'Beskriv felet med egna ord' },
       { id: 'defect_timing', label: 'När uppstod felet?', type: 'select', options: ['Inom 6 månader från köp', 'Efter 6 månader'] },
       { id: 'contacted_seller', label: 'Har du kontaktat säljaren om felet? Vad sa de?', type: 'text', placeholder: 'Beskriv kontakten eller skriv "Nej, inte ännu"' },
     ],
@@ -236,8 +236,8 @@ export const categories: Category[] = [
     seoDescription: 'Problem med hög hyra, olagliga villkor eller felaktiga hyreshöjningar? Lär dig dina rättigheter som hyresgäst.',
     questions: [
       { id: 'rental_type', label: 'Förstahand eller andrahand?', type: 'select', options: ['Förstahand', 'Andrahand'] },
-      { id: 'rent_amount', label: 'Månadshyra?', type: 'text', placeholder: 'T.ex. 8500 kr' },
-      { id: 'issue', label: 'Vad anser du är fel/orimligt?', type: 'text', placeholder: 'Beskriv situationen' },
+      { id: 'rent_amount', label: 'Månadshyra?', type: 'text', placeholder: 'Ange månadshyra i kronor' },
+      { id: 'issue', label: 'Vad anser du är fel/orimligt?', type: 'text', placeholder: 'Beskriv vad du anser är fel eller orimligt' },
       { id: 'contract', label: 'Har du skriftligt kontrakt?', type: 'select', options: ['Ja', 'Nej'] },
     ],
     legalInfo: [
@@ -262,11 +262,11 @@ export const categories: Category[] = [
     seoDescription: 'Har hantverkaren gjort ett dåligt jobb? Lär dig om konsumenttjänstlagen och hur du kräver avhjälpande.',
     questions: [
       { id: 'service_type', label: 'Vilken typ av tjänst?', type: 'select', options: ['VVS', 'El', 'Målning', 'Renovering', 'Flytt', 'Trädgård', 'Annat'] },
-      { id: 'company', label: 'Vilket företag eller person utförde arbetet?', type: 'text', placeholder: 'T.ex. Rörmokare AB' },
+      { id: 'company', label: 'Vilket företag eller person utförde arbetet?', type: 'text', placeholder: 'Skriv företagets eller personens namn' },
       { id: 'work_date', label: 'När utfördes arbetet?', type: 'date' },
-      { id: 'defect', label: 'Vad är felet eller problemet?', type: 'text', placeholder: 'Beskriv problemet' },
+      { id: 'defect', label: 'Vad är felet eller problemet?', type: 'text', placeholder: 'Beskriv felet eller problemet med egna ord' },
       { id: 'payment_status', label: 'Har du betalat hela beloppet eller håller du inne något?', type: 'select', options: ['Betalat allt', 'Håller inne del', 'Inte betalat'] },
-      { id: 'contacted', label: 'Har du kontaktat hantverkaren om problemet? Vad sa de?', type: 'text', placeholder: 'Beskriv kontakten' },
+      { id: 'contacted', label: 'Har du kontaktat hantverkaren om problemet? Vad sa de?', type: 'text', placeholder: 'Beskriv kontakten eller skriv att du inte hört av dig ännu' },
     ],
     legalInfo: [
       'Konsumenttjänstlagen (1985:716) 4 §: Tjänsten ska utföras fackmässigt',

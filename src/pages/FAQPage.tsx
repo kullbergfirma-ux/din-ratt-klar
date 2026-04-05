@@ -1,6 +1,7 @@
 import SEOHead from '@/components/SEOHead';
 import { FAQSchema } from '@/components/StructuredData';
 import { SITE_CONFIG } from '@/config/site';
+import EditableText from '@/components/EditableText';
 
 const faqGroups = [
   {
@@ -44,7 +45,7 @@ const FAQPage = () => (
 
     <div className="max-w-3xl mx-auto px-4">
       <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-10">
-        Vanliga frågor om konsumenträtt och dina rättigheter
+        <EditableText textKey="faq.title" fallback="Vanliga frågor om konsumenträtt och dina rättigheter" />
       </h1>
 
       {faqGroups.map((group, gi) => (

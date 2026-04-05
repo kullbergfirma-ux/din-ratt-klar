@@ -1,5 +1,6 @@
 import SEOHead from '@/components/SEOHead';
 import { SITE_CONFIG } from '@/config/site';
+import EditableText from '@/components/EditableText';
 
 const AboutPage = () => (
   <main className="py-16 sm:py-24">
@@ -15,14 +16,14 @@ const AboutPage = () => (
       </h1>
 
       <section className="mb-10" aria-label="Vårt uppdrag">
-        <h2 className="text-xl font-bold text-foreground mb-3">Vårt uppdrag</h2>
+        <h2 className="text-xl font-bold text-foreground mb-3"><EditableText textKey="about.mission.title" fallback="Vårt uppdrag" /></h2>
         <p className="text-muted-foreground leading-relaxed">
-          {SITE_CONFIG.name} finns för att göra juridiken tillgänglig för alla. Vi hjälper svenska privatpersoner att förstå och kräva sina rättigheter — snabbt, enkelt och baserat på gällande svensk och EU-lagstiftning.
+          <EditableText textKey="about.mission.text" fallback={`${SITE_CONFIG.name} finns för att göra juridiken tillgänglig för alla. Vi hjälper svenska privatpersoner att förstå och kräva sina rättigheter — snabbt, enkelt och baserat på gällande svensk och EU-lagstiftning.`} />
         </p>
       </section>
 
       <section className="mb-10" aria-label="Så fungerar det">
-        <h2 className="text-xl font-bold text-foreground mb-3">Så fungerar det</h2>
+        <h2 className="text-xl font-bold text-foreground mb-3"><EditableText textKey="about.how.title" fallback="Så fungerar det" /></h2>
         <ol className="list-decimal list-inside space-y-2 text-muted-foreground leading-relaxed">
           <li><strong className="text-foreground">Beskriv din situation</strong> — Välj kategori och svara på några enkla frågor om ditt ärende.</li>
           <li><strong className="text-foreground">Få en juridisk bedömning</strong> — Vår AI analyserar din situation mot gällande lagstiftning och ger dig ett tydligt svar.</li>
@@ -31,16 +32,16 @@ const AboutPage = () => (
       </section>
 
       <section className="mb-10" aria-label="Vilka ärenden hanterar vi">
-        <h2 className="text-xl font-bold text-foreground mb-3">Vilka ärenden hanterar vi?</h2>
+        <h2 className="text-xl font-bold text-foreground mb-3"><EditableText textKey="about.cases.title" fallback="Vilka ärenden hanterar vi?" /></h2>
         <p className="text-muted-foreground leading-relaxed">
-          Vi hjälper dig med resor (flyg, tåg, buss, färja, hotell), köp och e-handel, garanti och dolda fel, leveransproblem, betalningstvister, abonnemang och feldebitering, bilköp, hyrestvister samt hantverkartvister.
+          <EditableText textKey="about.cases.text" fallback="Vi hjälper dig med resor (flyg, tåg, buss, färja, hotell), köp och e-handel, garanti och dolda fel, leveransproblem, betalningstvister, abonnemang och feldebitering, bilköp, hyrestvister samt hantverkartvister." />
         </p>
       </section>
 
       <section aria-label="Viktig information">
-        <h2 className="text-xl font-bold text-foreground mb-3">Viktig information</h2>
+        <h2 className="text-xl font-bold text-foreground mb-3"><EditableText textKey="about.disclaimer.title" fallback="Viktig information" /></h2>
         <p className="text-muted-foreground leading-relaxed">
-          {SITE_CONFIG.disclaimer} Vid komplexa ärenden rekommenderar vi kontakt med Konsumentverket eller en jurist.
+          <EditableText textKey="about.disclaimer.text" fallback={`${SITE_CONFIG.disclaimer} Vid komplexa ärenden rekommenderar vi kontakt med Konsumentverket eller en jurist.`} />
         </p>
       </section>
     </div>

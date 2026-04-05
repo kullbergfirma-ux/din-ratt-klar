@@ -55,25 +55,67 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
   };
 
   const handleDownloadPDF = () => {
-    const content = displayLetter;
-    const printWindow = window.open('', '_blank');
-    if (!printWindow) return;
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>Kravbrev</title>
-          <style>
-            body { font-family: Arial, sans-serif; font-size: 14px; line-height: 1.7; padding: 40px; max-width: 700px; margin: 0 auto; color: #1a1a1a; }
-            pre { white-space: pre-wrap; word-wrap: break-word; }
-          </style>
-        </head>
-        <body>
-          <pre>${content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
-          <script>window.onload = () => { window.print(); window.close(); }<\/script>
-        </body>
-      </html>
-    `);
-    printWindow.document.close();
+    const content = displayLetter
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+<title>Kravbrev</title>
+<style>
+  @page {
+    margin: 40px;
+    size: A4;
+  }
+  @media print {
+    html, body {
+      -webkit-print-color-adjust: exact;
+    }
+  }
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #1a1a1a;
+    padding: 0;
+    margin: 0;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+<pre>${content}</pre>
+</body>
+</html>`;
+
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'fixed';
+    iframe.style.right = '0';
+    iframe.style.bottom = '0';
+    iframe.style.width = '0';
+    iframe.style.height = '0';
+    iframe.style.border = 'none';
+    document.body.appendChild(iframe);
+
+    const doc = iframe.contentWindow?.document;
+    if (!doc) return;
+    doc.open();
+    doc.write(html);
+    doc.close();
+
+    iframe.contentWindow?.focus();
+    setTimeout(() => {
+      iframe.contentWindow?.print();
+      setTimeout(() => document.body.removeChild(iframe), 1000);
+    }, 500);
   };
 
   const handleUnlockClick = async (t: Tier) => {

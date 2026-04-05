@@ -2,6 +2,7 @@ import { categories } from '@/lib/categories';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronRight, Globe, ShoppingBag, Shield, Package, CreditCard, Smartphone, Car, Home, Wrench } from 'lucide-react';
+import EditableText from '@/components/EditableText';
 
 const categoryIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   resor: Globe,
@@ -20,10 +21,10 @@ const CategoriesSection = () => (
     <div className="max-w-5xl mx-auto px-4">
       <div className="text-center mb-14">
         <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-3">
-          Vad gäller ditt ärende?
+          <EditableText textKey="categories.title" fallback="Vad gäller ditt ärende?" />
         </h2>
         <p className="text-muted-foreground text-lg max-w-lg mx-auto">
-          Välj en kategori för att komma igång
+          <EditableText textKey="categories.subtitle" fallback="Välj en kategori för att komma igång" />
         </p>
       </div>
 
@@ -68,7 +69,6 @@ const CategoriesSection = () => (
                 <ChevronRight
                   className="absolute bottom-5 right-5 w-4 h-4 transition-all duration-200 group-hover:translate-x-[3px]"
                   style={{ color: '#9BA3AF' }}
-                  onMouseEnter={() => {}}
                 />
                 <style>{`
                   .group:hover .absolute.bottom-5.right-5 { color: #1B4F8A !important; }

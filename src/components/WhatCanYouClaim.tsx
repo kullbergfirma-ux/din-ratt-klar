@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
+import EditableText from '@/components/EditableText';
 
 const rights = [
   'Upp till 600 € vid försenat eller inställt flyg',
@@ -13,7 +14,6 @@ const WhatCanYouClaim = () => (
   <section aria-label="Vad kan du kräva" className="bg-background" style={{ padding: '80px 0' }}>
     <div className="max-w-5xl mx-auto px-4">
       <div className="flex flex-col-reverse md:flex-row md:items-center" style={{ gap: 64 }}>
-        {/* Left column */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -25,10 +25,10 @@ const WhatCanYouClaim = () => (
             DINA RÄTTIGHETER
           </span>
           <h2 style={{ fontSize: 32, fontWeight: 700, color: '#0F1F3D', marginTop: 8, marginBottom: 12, lineHeight: 1.25 }}>
-            Du har mer rätt än du tror
+            <EditableText textKey="claim.title" fallback="Du har mer rätt än du tror" />
           </h2>
           <p style={{ fontSize: 16, color: '#6B7280', marginBottom: 32, lineHeight: 1.6 }}>
-            Svensk och EU-lagstiftning ger dig starka rättigheter som konsument. De flesta vet inte om dem — och ännu färre agerar på dem.
+            <EditableText textKey="claim.description" fallback="Svensk och EU-lagstiftning ger dig starka rättigheter som konsument. De flesta vet inte om dem — och ännu färre agerar på dem." />
           </p>
 
           <div>
@@ -50,7 +50,6 @@ const WhatCanYouClaim = () => (
           </div>
         </motion.div>
 
-        {/* Right column — result card mockup */}
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}

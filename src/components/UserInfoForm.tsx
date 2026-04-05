@@ -5,7 +5,8 @@ export interface UserProfile {
   fullName: string;
   email: string;
   phone: string;
-  postalAddress: string;
+  postalCode: string;
+  city: string;
   streetAddress: string;
   counterparty: string;
 }
@@ -45,7 +46,8 @@ const UserInfoForm = ({ onSubmit, onBack }: Props) => {
     fullName: '',
     email: '',
     phone: '',
-    postalAddress: '',
+    postalCode: '',
+    city: '',
     streetAddress: '',
     counterparty: '',
   });
@@ -55,7 +57,8 @@ const UserInfoForm = ({ onSubmit, onBack }: Props) => {
     const errs: Record<string, string> = {};
     if (!profile.fullName.trim()) errs.fullName = 'Ange ditt namn';
     if (!profile.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.email)) errs.email = 'Ange en giltig e-postadress';
-    if (!profile.postalAddress.trim()) errs.postalAddress = 'Ange postnummer och ort';
+    if (!profile.postalCode.trim()) errs.postalCode = 'Ange postnummer';
+    if (!profile.city.trim()) errs.city = 'Ange ort';
     if (!profile.counterparty.trim()) errs.counterparty = 'Ange företagets namn';
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -68,7 +71,7 @@ const UserInfoForm = ({ onSubmit, onBack }: Props) => {
 
   const requiredDot = <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#1B4F8A', marginLeft: 6, verticalAlign: 'middle' }} />;
 
-  const field = (key: keyof UserProfile, label: string, required: boolean, placeholder: string, type = 'text', helperText?: string) => (
+  const field = (key: keyof UserProfile, label: string, required: boolean, placeholder: string, type = 'text') => (
     <div>
       <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#1A2744', marginBottom: 6 }}>
         {label}{required && requiredDot}
@@ -85,7 +88,6 @@ const UserInfoForm = ({ onSubmit, onBack }: Props) => {
         onFocus={handleFocus}
         onBlur={handleBlur}
       />
-      {helperText && <p style={{ fontSize: 12, color: '#9BA3AF', marginTop: 4 }}>{helperText}</p>}
       {errors[key] && <p style={{ fontSize: 12, color: '#EF4444', marginTop: 4 }}>{errors[key]}</p>}
     </div>
   );
@@ -108,45 +110,40 @@ const UserInfoForm = ({ onSubmit, onBack }: Props) => {
           DINA UPPGIFTER
         </div>
         <h3 style={{ fontSize: 22, fontWeight: 600, color: '#0F1F3D', lineHeight: 1.3, margin: 0 }}>
-          Fyll i dina uppgifter
+          Sista steget innan din bedömning
         </h3>
         <p style={{ fontSize: 14, color: '#6B7280', marginTop: 8 }}>
-          Dessa uppgifter används i ditt kravbrev. Fyll i innan vi går vidare till frågorna om ditt ärende.
+          Dina uppgifter används för att fylla i kravbrevet automatiskt. Du betalar ingenting nu.
         </p>
       </div>
 
       <form onSubmit={handleSubmit}>
-        {/* Two columns: name + email */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
           {field('fullName', 'Förnamn och efternamn', true, 'Anna Andersson')}
           {field('email', 'E-postadress', true, 'anna@exempel.se', 'email')}
         </div>
 
-        {/* Two columns: phone + postal */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
           {field('phone', 'Telefonnummer', false, '070-123 45 67', 'tel')}
-          {field('postalAddress', 'Postnummer och ort', true, '114 33 Stockholm')}
-        </div>
-
-        {/* Full width: street */}
-        <div style={{ marginBottom: 16 }}>
           {field('streetAddress', 'Gatuadress', false, 'Storgatan 1')}
         </div>
 
-        {/* Full width: counterparty */}
-        <div style={{ marginBottom: 24 }}>
-          {field('counterparty', 'Vilket företag gäller ärendet?', true, 'T.ex. SAS, IKEA, Telia', 'text', 'Används för att adressera kravbrevet korrekt')}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+          {field('postalCode', 'Postnummer', true, '114 33')}
+          {field('city', 'Ort', true, 'Stockholm')}
         </div>
 
-        {/* Trust message */}
+        <div style={{ marginBottom: 24 }}>
+          {field('counterparty', 'Företaget du har ett ärende mot', true, 'T.ex. SAS, IKEA, Telia')}
+        </div>
+
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 24 }}>
           <Lock style={{ width: 14, height: 14, color: '#6B7280' }} />
           <span style={{ fontSize: 12, color: '#6B7280' }}>
-            Dina uppgifter används enbart för att generera ditt kravbrev och delas aldrig med tredje part.
+            Dina uppgifter används bara för att generera kravbrevet och delas aldrig med tredje part.
           </span>
         </div>
 
-        {/* Navigation */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 24, borderTop: '1px solid #F0F4F8' }}>
           <button
             type="button"
