@@ -75,7 +75,7 @@ const WhatCanYouClaim = () => (
             <div style={{ height: 1, background: '#F0F4F8', margin: '16px 0' }} />
 
             <span style={{ fontSize: 12, color: '#9BA3AF', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Uppskattad ersättning</span>
-            <div style={{ fontSize: 32, fontWeight: 700, color: '#0F1F3D', marginTop: 4 }}>400 €</div>
+            <div style={{ fontSize: 32, fontWeight: 700, color: '#0F1F3D', marginTop: 4 }}>4 400 kr</div>
 
             <span style={{ fontSize: 12, color: '#9BA3AF', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginTop: 16 }}>Juridisk grund</span>
             <div style={{ height: 10, background: '#E8ECF4', borderRadius: 4, marginTop: 8, width: '100%' }} />

@@ -44,7 +44,7 @@ export const categories: Category[] = [
       'Paketreselagen (2018:1217): Arrangören ansvarar för hela resan — rätt till prisavdrag',
     ],
     faqs: [
-      { q: 'Vilken ersättning kan jag få vid försenat flyg?', a: 'Vid försening över 3h vid ankomst: 250€ under 1500km, 400€ för 1500–3500km eller 600€ över 3500km.' },
+      { q: 'Vilken ersättning kan jag få vid försenat flyg?', a: 'Vid försening över 3h vid ankomst: cirka 2 750 kr (250€) under 1500km, 4 400 kr (400€) för 1500–3500km eller 6 600 kr (600€) över 3500km.' },
       { q: 'Gäller EU-reglerna för tåg i Sverige?', a: 'Ja, SJ tillämpar EU-förordning 1371/2007. Du har rätt till ersättning vid försening över 60 minuter.' },
       { q: 'Vad gäller vid inställt flyg?', a: 'Vid inställt flyg med under 14 dagars varsel har du rätt till ombokning eller återbetalning samt ekonomisk kompensation.' },
       { q: 'Kan jag kräva ersättning för hotell som inte var som utlovat?', a: 'Ja, vid paketresa ansvarar arrangören. Dokumentera bristerna och reklamera inom skälig tid.' },

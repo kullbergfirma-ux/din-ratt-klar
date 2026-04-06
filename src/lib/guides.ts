@@ -16,7 +16,7 @@ export const guides: Guide[] = [
     seoDescription: 'Steg-för-steg guide för att kräva ersättning vid försenat flyg enligt EU-förordning 261/2004.',
     categorySlug: 'resor',
     sections: [
-      { heading: 'Dina rättigheter vid försenat flyg', content: 'Enligt EU-förordning 261/2004 har du rätt till ekonomisk ersättning om ditt flyg anländer mer än 3 timmar försenat. Ersättningen är 250€ för korta flygningar (<1500km), 400€ för medellånga (1500–3500km) och 600€ för långa (>3500km).' },
+      { heading: 'Dina rättigheter vid försenat flyg', content: 'Enligt EU-förordning 261/2004 har du rätt till ekonomisk ersättning om ditt flyg anländer mer än 3 timmar försenat. Ersättningen är cirka 2 750 kr (250€) för korta flygningar (<1500km), 4 400 kr (400€) för medellånga (1500–3500km) och 6 600 kr (600€) för långa (>3500km).' },
       { heading: 'Undantag — extraordinära omständigheter', content: 'Flygbolaget kan undgå ansvar vid extraordinära omständigheter som extremt väder, politisk instabilitet eller strejk utanför bolagets kontroll. Tekniska fel räknas normalt inte som undantag.' },
       { heading: 'Så här gör du steg för steg', content: '1. Spara boardingkort och bokningsbekräftelse\n2. Dokumentera förseningen (foton av avgångstavlan)\n3. Skicka ett skriftligt krav till flygbolaget\n4. Vänta 6 veckor på svar\n5. Om ingen respons: anmäl till ARN' },
     ],

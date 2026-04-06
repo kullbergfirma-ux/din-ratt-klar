@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import EditableText from '@/components/EditableText';
 
 const reviews = [
-  { text: 'Fick 400€ från flygbolaget efter att ha fått nej två gånger. Brevet övertygade dem direkt.', name: 'Anna K.', category: 'Resor' },
+  { text: 'Fick 4 400 kr från flygbolaget efter att ha fått nej två gånger. Brevet övertygade dem direkt.', name: 'Anna K.', category: 'Resor' },
   { text: 'Visste inte att jag hade rätt att reklamera efter 2 år. Fick ny dator utan krångel.', name: 'Marcus L.', category: 'Köp & e-handel' },
   { text: 'Gymmet fortsatte ta betalt i 4 månader efter uppsägning. Fick tillbaka allt via kravbrevet.', name: 'Sofia B.', category: 'Abonnemang' },
   { text: 'Otroligt enkelt. Fyllde i mina uppgifter, fick ett professionellt brev på 2 minuter.', name: 'Erik J.', category: 'Hantverkare' },
