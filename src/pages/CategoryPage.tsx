@@ -21,13 +21,10 @@ type Step = 'info' | 'questions' | 'userinfo' | 'loading' | 'assessment';
 
 const categoryIconMap: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
   'resor': Globe,
-  'kop-ehandel': ShoppingBag,
+  'kop-reklamation': ShoppingBag,
   'garanti-dolda-fel': Shield,
-  'leverans': Package,
-  'betalning-aterkrav': CreditCard,
   'abonnemang': Smartphone,
   'bilkop': Car,
-  'hyra': Home,
   'hantverkare': Wrench,
 };
 
@@ -37,6 +34,7 @@ const CategoryPage = () => {
   const [step, setStep] = useState<Step>('info');
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [uploadedFiles, setUploadedFiles] = useState<Record<string, File[]>>({});
   const [assessment, setAssessment] = useState('');
   const [sentiment, setSentiment] = useState<'positive' | 'uncertain' | 'negative'>('positive');
   const [letter, setLetter] = useState('');
@@ -57,13 +55,14 @@ const CategoryPage = () => {
     setTimeout(() => toolRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
   };
 
-  const handleQuestionsSubmit = async (ans: Record<string, string>) => {
+  const handleQuestionsSubmit = async (ans: Record<string, string>, files: Record<string, File[]>) => {
     const validationError = validateBeforeAnalysis(category, ans);
     if (validationError) {
       toast.error(validationError);
       return;
     }
     setAnswers(ans);
+    setUploadedFiles(files);
     setStep('userinfo');
   };
 
@@ -72,7 +71,7 @@ const CategoryPage = () => {
     setLoadingMessage('Analyserar din situation mot gällande lagstiftning...');
     setStep('loading');
     try {
-      const result = await getAIAssessment(category, answers);
+      const result = await getAIAssessment(category, answers, uploadedFiles);
       setAssessment(result.assessment);
       setSentiment(result.sentiment);
       setStep('assessment');
@@ -103,6 +102,7 @@ const CategoryPage = () => {
     setStep('info');
     setUserProfile(null);
     setAnswers({});
+    setUploadedFiles({});
     setAssessment('');
     setLetter('');
     setCaseId('');

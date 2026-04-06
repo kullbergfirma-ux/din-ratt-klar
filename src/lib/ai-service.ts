@@ -3,14 +3,6 @@ import { type UserProfile } from '@/components/UserInfoForm';
 import { supabase } from '@/integrations/supabase/client';
 
 export function validateBeforeAnalysis(category: Category, answers: Record<string, string>): string | null {
-  if (category.id === 'betalning-aterkrav') {
-    const amount = answers.amount || '';
-    const parsed = parseFloat(amount.replace(/[^\d.,]/g, '').replace(',', '.'));
-    if (!amount.trim() || parsed === 0 || isNaN(parsed)) {
-      return 'Ange det belopp du anser dig ha rätt att få tillbaka för att vi ska kunna analysera ditt ärende.';
-    }
-  }
-
   const narrativeQuestionIds = category.questions
     .filter(q => q.type === 'text')
     .filter(q => {
@@ -45,20 +37,47 @@ export function validateBeforeAnalysis(category: Category, answers: Record<strin
   return null;
 }
 
+async function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      resolve(result.split(',')[1]);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 export async function getAIAssessment(
   category: Category,
-  answers: Record<string, string>
+  answers: Record<string, string>,
+  files?: Record<string, File[]>
 ): Promise<{ assessment: string; sentiment: 'positive' | 'uncertain' | 'negative' }> {
   const answersText = category.questions
     .filter(q => answers[q.id])
     .map(q => `${q.label}: ${answers[q.id]}`)
     .join('\n');
 
+  // Build file descriptions for the edge function
+  let fileDescriptions = '';
+  if (files) {
+    const fileNames: string[] = [];
+    for (const [questionId, fileList] of Object.entries(files)) {
+      for (const file of fileList) {
+        fileNames.push(`${questionId}: ${file.name} (${file.type})`);
+      }
+    }
+    if (fileNames.length > 0) {
+      fileDescriptions = '\n\nUppladdade filer:\n' + fileNames.join('\n');
+    }
+  }
+
   const { data, error } = await supabase.functions.invoke('ai-assess', {
     body: {
       type: 'assessment',
       categoryTitle: category.title,
-      answersText,
+      answersText: answersText + fileDescriptions,
     },
   });
 

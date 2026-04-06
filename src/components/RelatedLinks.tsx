@@ -8,8 +8,11 @@ interface Props {
   guideSlugs?: string[];
 }
 
+const validSlugs = new Set(['resor', 'kop-reklamation', 'garanti-dolda-fel', 'abonnemang', 'bilkop', 'hantverkare']);
+
 const RelatedLinks = ({ categorySlugs = [], guideSlugs = [] }: Props) => {
   const relatedCategories = categorySlugs
+    .filter(slug => validSlugs.has(slug))
     .map(slug => categories.find(c => c.slug === slug))
     .filter(Boolean);
 
