@@ -36,7 +36,8 @@ export const categories: Category[] = [
     seoTitle: 'Försenat flyg, tåg eller buss? Kräv ersättning',
     seoDescription: 'Få hjälp att kräva ersättning vid försenat flyg, tåg, buss eller färja. Vi guidar dig genom EU-förordningarna och svensk lag.',
     legalInfo: [
-      'EU-förordning 261/2004 (flyg): Ersättning 250–600€ vid försening över 3h, inställt eller överbookning',
+      // Exchange rate: 1 EUR = 11 SEK (approximate, used for display purposes only)
+      'EU-förordning 261/2004 (flyg): Ersättning 2 750–6 600 kr (250–600€) vid försening över 3h, inställt eller överbookning',
       'EU-förordning 1371/2007 (tåg): 25% ersättning vid 60–119 min försening, 50% vid över 120 min',
       'EU-förordning 181/2011 (buss): 50% av biljettpriset vid försening över 120 min på resor över 250 km',
       'EU-förordning 1177/2010 (färja): 25% ersättning vid kortare försening, 50% vid längre',
