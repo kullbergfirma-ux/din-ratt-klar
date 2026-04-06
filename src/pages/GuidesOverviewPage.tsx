@@ -8,7 +8,7 @@ const readingTimes: Record<string, string> = {
   'forsenat-flyg-ersattning': '4 min',
   'forsenat-tag-ersattning': '3 min',
   'reklamera-trasig-produkt': '4 min',
-  'andrahandshyra-regler': '5 min',
+  
   'avsluta-abonnemang': '4 min',
   'fel-pa-hantverksarbete': '4 min',
 };
@@ -25,7 +25,7 @@ const GuidesOverviewPage = () => {
     <main className="py-16 sm:py-24">
       <SEOHead
         title="Guider om konsumenträtt"
-        description="Läs våra guider om dina rättigheter vid flyg, tåg, reklamation, hyra, abonnemang och hantverkare."
+        description="Läs våra guider om dina rättigheter vid flyg, tåg, reklamation, abonnemang och hantverkare."
         canonical="/guider"
       />
 

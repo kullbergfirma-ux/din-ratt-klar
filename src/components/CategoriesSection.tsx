@@ -6,13 +6,10 @@ import EditableText from '@/components/EditableText';
 
 const categoryIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   resor: Globe,
-  'kop-ehandel': ShoppingBag,
+  'kop-reklamation': ShoppingBag,
   'garanti-dolda-fel': Shield,
-  leverans: Package,
-  'betalning-aterkrav': CreditCard,
   abonnemang: Smartphone,
   bilkop: Car,
-  hyra: Home,
   hantverkare: Wrench,
 };
 
@@ -28,7 +25,7 @@ const CategoriesSection = () => (
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" style={{ maxWidth: 860, margin: '0 auto' }}>
         {categories.map((cat, i) => {
           const IconComponent = categoryIcons[cat.slug] || Globe;
           return (

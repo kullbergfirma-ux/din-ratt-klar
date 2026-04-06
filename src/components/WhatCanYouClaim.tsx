@@ -7,7 +7,7 @@ const rights = [
   'Reparation, byte eller pengarna tillbaka vid trasig vara',
   'Hävning av abonnemang med omedelbar verkan',
   'Prisavdrag vid felaktigt utfört hantverksarbete',
-  'Återbetalning vid olaglig andrahandshyra',
+  'Återbetalning vid felaktiga debiteringar',
 ];
 
 const WhatCanYouClaim = () => (

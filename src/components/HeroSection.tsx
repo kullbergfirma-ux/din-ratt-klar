@@ -96,7 +96,7 @@ const HeroSection = () => {
 
             <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-white/60">
               <span className="flex items-center gap-1.5">
-                <Shield className="w-4 h-4" /> <EditableText textKey="hero.trust1" fallback="9 kategorier" />
+                <Shield className="w-4 h-4" /> <EditableText textKey="hero.trust1" fallback="6 kategorier" />
               </span>
               <span className="flex items-center gap-1.5">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>

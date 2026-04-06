@@ -6,7 +6,7 @@ import { questionCompanyMap } from '@/data/companies';
 
 interface Props {
   category: Category;
-  onSubmit: (answers: Record<string, string>) => void;
+  onSubmit: (answers: Record<string, string>, files: Record<string, File[]>) => void;
   onBack: () => void;
 }
 
@@ -29,6 +29,7 @@ const months = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', '
 
 const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [uploadedFiles, setUploadedFiles] = useState<Record<string, File[]>>({});
   const [currentQ, setCurrentQ] = useState(0);
 
   const getVisibleQuestions = (): CategoryQuestion[] => {
@@ -46,14 +47,14 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
   if (!question) return null;
 
   const isLast = currentQ === questions.length - 1;
-  const canProceed = question.type === 'date'
+  const canProceed = question.type === 'file' || question.optional || (question.type === 'date'
     ? /^\d{4}-\d{2}-\d{2}$/.test(answers[question.id] || '')
-    : !!answers[question.id]?.trim();
+    : !!answers[question.id]?.trim());
   const progressPercent = ((currentQ + 1) / questions.length) * 100;
 
   const handleNext = () => {
     if (isLast) {
-      onSubmit(answers);
+      onSubmit(answers, uploadedFiles);
     } else {
       setCurrentQ(currentQ + 1);
     }
@@ -127,6 +128,87 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
     const onChange = (val: string) => setAnswers({ ...answers, [q.id]: val });
     const suggestions = hasSuggestions(q.id);
 
+    if (q.type === 'file') {
+      const files = uploadedFiles[q.id] || [];
+      return (
+        <div>
+          <div
+            onDragOver={e => { e.preventDefault(); e.currentTarget.style.borderColor = '#1B4F8A'; }}
+            onDragLeave={e => { e.currentTarget.style.borderColor = '#E2E8F0'; }}
+            onDrop={e => {
+              e.preventDefault();
+              e.currentTarget.style.borderColor = '#E2E8F0';
+              const dropped = Array.from(e.dataTransfer.files);
+              setUploadedFiles(prev => ({ ...prev, [q.id]: [...(prev[q.id] || []), ...dropped] }));
+              onChange('uploaded');
+            }}
+            style={{
+              border: '2px dashed #E2E8F0',
+              borderRadius: 12,
+              padding: '32px 24px',
+              textAlign: 'center',
+              cursor: 'pointer',
+              transition: 'border-color 0.2s ease',
+              background: '#FAFBFC',
+            }}
+            onClick={() => document.getElementById(`file-input-${q.id}`)?.click()}
+          >
+            <div style={{ fontSize: 32, marginBottom: 8 }}>📎</div>
+            <p style={{ fontSize: 14, color: '#6B7280', margin: '0 0 4px' }}>
+              Dra och släpp filer här eller klicka för att välja
+            </p>
+            <p style={{ fontSize: 12, color: '#9BA3AF', margin: 0 }}>
+              {q.placeholder}
+            </p>
+            <input
+              id={`file-input-${q.id}`}
+              type="file"
+              multiple
+              accept={q.fileTypes?.join(',')}
+              style={{ display: 'none' }}
+              onChange={e => {
+                const selected = Array.from(e.target.files || []);
+                setUploadedFiles(prev => ({ ...prev, [q.id]: [...(prev[q.id] || []), ...selected] }));
+                onChange('uploaded');
+              }}
+            />
+          </div>
+
+          {files.length > 0 && (
+            <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {files.map((file, i) => (
+                <div key={i} style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '10px 14px',
+                  background: '#EEF4FF',
+                  borderRadius: 8,
+                  fontSize: 13,
+                  color: '#1B4F8A',
+                }}>
+                  <span>{file.name}</span>
+                  <button
+                    onClick={() => setUploadedFiles(prev => ({
+                      ...prev,
+                      [q.id]: prev[q.id].filter((_, fi) => fi !== i),
+                    }))}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6B7280', fontSize: 16, lineHeight: 1 }}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <p style={{ fontSize: 12, color: '#9BA3AF', marginTop: 10, textAlign: 'center' }}>
+            Valfritt — du kan gå vidare utan att ladda upp filer
+          </p>
+        </div>
+      );
+    }
+
     if (q.type === 'select' && q.options) {
       const short = isShortOptions(q.options);
       return (
@@ -198,7 +280,7 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
       );
     }
 
-    if (isNarrativeQuestion(q) || isLast) {
+    if (isNarrativeQuestion(q) || (isLast && q.type === 'text')) {
       return (
         <textarea
           value={value}
@@ -292,7 +374,7 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
         </div>
       </div>
 
-      {/* Question header — only the question text, no duplicate counter */}
+      {/* Question header */}
       <div style={{ marginBottom: 24 }}>
         <h3 style={{ fontSize: 22, fontWeight: 600, color: '#0F1F3D', lineHeight: 1.3, margin: 0 }}>
           {question.label}
