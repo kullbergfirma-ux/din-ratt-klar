@@ -3,7 +3,7 @@ import { Check } from 'lucide-react';
 import EditableText from '@/components/EditableText';
 
 const rights = [
-  'Upp till 600 € vid försenat eller inställt flyg',
+  'Upp till 6 600 kr vid försenat eller inställt flyg (600€ enligt EU-lag)',
   'Reparation, byte eller pengarna tillbaka vid trasig vara',
   'Hävning av abonnemang med omedelbar verkan',
   'Prisavdrag vid felaktigt utfört hantverksarbete',
