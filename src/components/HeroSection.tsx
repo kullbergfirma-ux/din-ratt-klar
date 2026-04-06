@@ -26,7 +26,7 @@ const HeroResultCard = () => (
       </div>
       <div style={{ height: 1, background: '#F0F4F8', margin: '16px 0' }} />
       <span style={{ fontSize: 11, color: '#9BA3AF', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Uppskattad ersättning</span>
-      <div style={{ fontSize: 36, fontWeight: 800, color: '#0F1F3D', marginTop: 4 }}>400 €</div>
+      <div style={{ fontSize: 36, fontWeight: 800, color: '#0F1F3D', marginTop: 4 }}>4 400 kr</div>
       <div style={{ height: 1, background: '#F0F4F8', margin: '16px 0' }} />
       <span style={{ fontSize: 11, color: '#9BA3AF', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Juridisk grund</span>
       <div style={{ height: 10, background: '#E8ECF4', borderRadius: 4, marginTop: 8, width: '100%' }} />
@@ -104,7 +104,7 @@ const HeroSection = () => {
               </span>
               <span className="flex items-center gap-1.5">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                <EditableText textKey="hero.trust3" fallback="Upp till 600€" />
+                <EditableText textKey="hero.trust3" fallback="Upp till 6 600 kr" />
               </span>
             </div>
           </motion.div>

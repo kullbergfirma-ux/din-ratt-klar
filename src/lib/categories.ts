@@ -36,14 +36,15 @@ export const categories: Category[] = [
     seoTitle: 'Försenat flyg, tåg eller buss? Kräv ersättning',
     seoDescription: 'Få hjälp att kräva ersättning vid försenat flyg, tåg, buss eller färja. Vi guidar dig genom EU-förordningarna och svensk lag.',
     legalInfo: [
-      'EU-förordning 261/2004 (flyg): Ersättning 250–600€ vid försening över 3h, inställt eller överbookning',
+      // Exchange rate: 1 EUR = 11 SEK (approximate, used for display purposes only)
+      'EU-förordning 261/2004 (flyg): Ersättning 2 750–6 600 kr (250–600€) vid försening över 3h, inställt eller överbookning',
       'EU-förordning 1371/2007 (tåg): 25% ersättning vid 60–119 min försening, 50% vid över 120 min',
       'EU-förordning 181/2011 (buss): 50% av biljettpriset vid försening över 120 min på resor över 250 km',
       'EU-förordning 1177/2010 (färja): 25% ersättning vid kortare försening, 50% vid längre',
       'Paketreselagen (2018:1217): Arrangören ansvarar för hela resan — rätt till prisavdrag',
     ],
     faqs: [
-      { q: 'Vilken ersättning kan jag få vid försenat flyg?', a: 'Vid försening över 3h vid ankomst: 250€ under 1500km, 400€ för 1500–3500km eller 600€ över 3500km.' },
+      { q: 'Vilken ersättning kan jag få vid försenat flyg?', a: 'Vid försening över 3h vid ankomst: cirka 2 750 kr (250€) under 1500km, 4 400 kr (400€) för 1500–3500km eller 6 600 kr (600€) över 3500km.' },
       { q: 'Gäller EU-reglerna för tåg i Sverige?', a: 'Ja, SJ tillämpar EU-förordning 1371/2007. Du har rätt till ersättning vid försening över 60 minuter.' },
       { q: 'Vad gäller vid inställt flyg?', a: 'Vid inställt flyg med under 14 dagars varsel har du rätt till ombokning eller återbetalning samt ekonomisk kompensation.' },
       { q: 'Kan jag kräva ersättning för hotell som inte var som utlovat?', a: 'Ja, vid paketresa ansvarar arrangören. Dokumentera bristerna och reklamera inom skälig tid.' },
