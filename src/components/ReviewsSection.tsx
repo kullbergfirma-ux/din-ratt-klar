@@ -8,7 +8,7 @@ const reviews = [
   { text: 'Visste inte att jag hade rätt att reklamera efter 2 år. Fick ny dator utan krångel.', name: 'Marcus L.', category: 'Köp & e-handel' },
   { text: 'Gymmet fortsatte ta betalt i 4 månader efter uppsägning. Fick tillbaka allt via kravbrevet.', name: 'Sofia B.', category: 'Abonnemang' },
   { text: 'Otroligt enkelt. Fyllde i mina uppgifter, fick ett professionellt brev på 2 minuter.', name: 'Erik J.', category: 'Hantverkare' },
-  { text: 'Andrahandshyran var olaglig. Fick tillbaka 18 000 kr tack vare vägledningen här.', name: 'Linnea M.', category: 'Hyra' },
+  { text: 'Trasig TV efter 3 månader. Fick full ersättning tack vare reklamationsbrevet.', name: 'Linnea M.', category: 'Köp & reklamation' },
   { text: 'Bättre och snabbare än att ringa Konsumentverket. Rekommenderar starkt.', name: 'David A.', category: 'Bilköp' },
 ];
 

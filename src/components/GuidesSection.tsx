@@ -11,7 +11,7 @@ const readingTimes: Record<string, string> = {
   'forsenat-flyg-ersattning': '4 min',
   'forsenat-tag-ersattning': '3 min',
   'reklamera-trasig-produkt': '4 min',
-  'andrahandshyra-regler': '5 min',
+  
   'avsluta-abonnemang': '4 min',
   'fel-pa-hantverksarbete': '4 min',
 };

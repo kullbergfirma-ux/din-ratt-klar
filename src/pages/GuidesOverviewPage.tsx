@@ -25,7 +25,7 @@ const GuidesOverviewPage = () => {
     <main className="py-16 sm:py-24">
       <SEOHead
         title="Guider om konsumenträtt"
-        description="Läs våra guider om dina rättigheter vid flyg, tåg, reklamation, hyra, abonnemang och hantverkare."
+        description="Läs våra guider om dina rättigheter vid flyg, tåg, reklamation, abonnemang och hantverkare."
         canonical="/guider"
       />
 
