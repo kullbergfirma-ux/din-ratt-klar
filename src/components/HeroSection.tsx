@@ -26,7 +26,7 @@ const HeroResultCard = () => (
       </div>
       <div style={{ height: 1, background: '#F0F4F8', margin: '16px 0' }} />
       <span style={{ fontSize: 11, color: '#9BA3AF', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Uppskattad ersättning</span>
-      <div style={{ fontSize: 36, fontWeight: 800, color: '#0F1F3D', marginTop: 4 }}>400 €</div>
+      <div style={{ fontSize: 36, fontWeight: 800, color: '#0F1F3D', marginTop: 4 }}>4 400 kr</div>
       <div style={{ height: 1, background: '#F0F4F8', margin: '16px 0' }} />
       <span style={{ fontSize: 11, color: '#9BA3AF', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Juridisk grund</span>
       <div style={{ height: 10, background: '#E8ECF4', borderRadius: 4, marginTop: 8, width: '100%' }} />
