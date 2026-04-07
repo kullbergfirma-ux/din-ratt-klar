@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Lock, ArrowLeft, Check, Copy, FileText, BookOpen, Mail, Loader2 } from 'lucide-react';
 import { SITE_CONFIG } from '@/config/site';
 import { type Tier } from '@/lib/pricing';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type RefObject } from 'react';
 
 interface Props {
   assessment: string;
@@ -13,30 +13,19 @@ interface Props {
   letter: string;
   onUnlock: (tier: Tier) => Promise<void> | void;
   onBack: () => void;
+  assessmentRef?: RefObject<HTMLDivElement>;
+  letterRef?: RefObject<HTMLDivElement>;
 }
 
-const sentimentStyles = {
-  positive: 'border-l-4 border-l-success',
-  uncertain: 'border-l-4 border-l-warning',
-  negative: 'border-l-4 border-l-destructive',
-};
-
-const sentimentLabels = {
-  positive: 'Du har troligtvis rätt',
-  uncertain: 'Det är osäkert',
-  negative: 'Du har troligtvis inte rätt',
-};
-
-const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBack }: Props) => {
+const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBack, assessmentRef, letterRef }: Props) => {
   const [copied, setCopied] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedLetter, setEditedLetter] = useState('');
 
-  const isAssessmentLocked = tier === 'free' && sentiment !== 'negative';
-  const isLetterLocked = tier === 'free' || tier === 'bas';
-  const showAssessmentPricing = isAssessmentLocked;
-  const showLetterPricing = !isAssessmentLocked && isLetterLocked && sentiment !== 'negative';
+  // Only lock assessment for positive sentiment on free tier
+  const isAssessmentLocked = tier === 'free' && sentiment === 'positive';
+  const showPricing = isAssessmentLocked;
 
   useEffect(() => {
     if (letter && !editedLetter) setEditedLetter(letter);
@@ -44,9 +33,10 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
 
   const displayLetter = editedLetter || letter;
 
-  const displayAssessment = tier === 'komplett'
+  // Strip Nästa steg from assessment for free/bas tiers
+  const cleanAssessment = tier === 'komplett'
     ? assessment
-    : assessment.replace(/###\s*Nästa steg[\s\S]*?(?=###|##|$)/gi, '').trim();
+    : assessment.replace(/###?\s*Nästa steg[\s\S]*?(?=###?|##|$)/gi, '').trim();
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(displayLetter);
@@ -65,30 +55,10 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
 <head>
 <title>Kravbrev</title>
 <style>
-  @page {
-    margin: 40px;
-    size: A4;
-  }
-  @media print {
-    html, body {
-      -webkit-print-color-adjust: exact;
-    }
-  }
-  body {
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    line-height: 1.8;
-    color: #1a1a1a;
-    padding: 0;
-    margin: 0;
-  }
-  pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    line-height: 1.8;
-  }
+  @page { margin: 40px; size: A4; }
+  @media print { html, body { -webkit-print-color-adjust: exact; } }
+  body { font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; color: #1a1a1a; padding: 0; margin: 0; }
+  pre { white-space: pre-wrap; word-wrap: break-word; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; }
 </style>
 </head>
 <body>
@@ -127,76 +97,126 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
     }
   };
 
+  const sentimentColors = {
+    positive: '#1D9E75',
+    uncertain: '#D97706',
+    negative: '#DC2626',
+  };
+
+  const sentimentBgs = {
+    positive: '#F0FDF4',
+    uncertain: '#FFFBEB',
+    negative: '#FEF2F2',
+  };
+
+  const sentimentLabels = {
+    positive: 'Du har troligtvis rätt till ersättning',
+    uncertain: 'Osäkert utfall — vi kunde inte ge ett tydligt svar',
+    negative: 'Du har troligtvis inte rätt till ersättning i detta fall',
+  };
+
+  const markdownComponents = {
+    h2: ({ children }: any) => (
+      <h2 style={{ fontSize: 16, fontWeight: 700, color: '#0F1F3D', marginTop: 28, marginBottom: 8 }}>
+        {children}
+      </h2>
+    ),
+    h3: ({ children }: any) => (
+      <h3 style={{ fontSize: 14, fontWeight: 600, color: '#1A2744', marginTop: 20, marginBottom: 6 }}>
+        {children}
+      </h3>
+    ),
+    p: ({ children }: any) => (
+      <p style={{ fontSize: 14, lineHeight: 1.7, color: '#374151', marginBottom: 12 }}>
+        {children}
+      </p>
+    ),
+    li: ({ children }: any) => (
+      <li style={{ fontSize: 14, lineHeight: 1.7, marginBottom: 4 }}>{children}</li>
+    ),
+    ul: ({ children }: any) => (
+      <ul style={{ paddingLeft: 20, marginBottom: 12 }}>{children}</ul>
+    ),
+    ol: ({ children }: any) => (
+      <ol style={{ paddingLeft: 20, marginBottom: 12 }}>{children}</ol>
+    ),
+  };
+
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
       {/* Verdict banner */}
-      <div className={`card-elevated p-6 sm:p-8 ${sentimentStyles[sentiment]}`}>
-        <h2 className="text-xl font-bold text-foreground mb-2">Din rättighetsbedömning</h2>
+      <div
+        ref={assessmentRef}
+        style={{
+          background: '#FFFFFF',
+          borderRadius: 14,
+          boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)',
+          border: '1px solid rgba(0,0,0,0.06)',
+          borderLeft: `4px solid ${sentimentColors[sentiment]}`,
+          padding: '24px 28px',
+        }}
+      >
+        <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0F1F3D', marginBottom: 8 }}>Din rättighetsbedömning</h2>
 
-        <div className="flex items-center gap-2 mb-4">
-          <span className={`text-lg font-bold ${
-            sentiment === 'positive' ? 'text-success' : sentiment === 'uncertain' ? 'text-warning' : 'text-destructive'
-          }`}>
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 8,
+          padding: '6px 14px',
+          borderRadius: 8,
+          background: sentimentBgs[sentiment],
+          marginBottom: 16,
+        }}>
+          <div style={{ width: 10, height: 10, borderRadius: '50%', background: sentimentColors[sentiment] }} />
+          <span style={{ fontSize: 14, fontWeight: 600, color: sentimentColors[sentiment] }}>
             {sentimentLabels[sentiment]}
           </span>
         </div>
 
         <div className="relative">
           <div
-            className={`prose prose-sm max-w-none text-foreground/90 ${isAssessmentLocked ? 'select-none' : ''}`}
+            className={`prose prose-sm max-w-none ${isAssessmentLocked ? 'select-none' : ''}`}
             style={isAssessmentLocked ? { filter: 'blur(6px)' } : undefined}
           >
-            <ReactMarkdown
-              components={{
-                h2: ({ children }) => (
-                  <h2 style={{ fontSize: 16, fontWeight: 700, color: '#0F1F3D', marginTop: 28, marginBottom: 8 }}>
-                    {children}
-                  </h2>
-                ),
-                h3: ({ children }) => (
-                  <h3 style={{ fontSize: 14, fontWeight: 600, color: '#1A2744', marginTop: 20, marginBottom: 6 }}>
-                    {children}
-                  </h3>
-                ),
-                p: ({ children }) => (
-                  <p style={{ fontSize: 14, lineHeight: 1.7, color: '#374151', marginBottom: 12 }}>
-                    {children}
-                  </p>
-                ),
-                li: ({ children }) => (
-                  <li style={{ fontSize: 14, lineHeight: 1.7, marginBottom: 4 }}>
-                    {children}
-                  </li>
-                ),
-                ul: ({ children }) => (
-                  <ul style={{ paddingLeft: 20, marginBottom: 12 }}>
-                    {children}
-                  </ul>
-                ),
-                ol: ({ children }) => (
-                  <ol style={{ paddingLeft: 20, marginBottom: 12 }}>
-                    {children}
-                  </ol>
-                ),
-              }}
-            >
-              {displayAssessment}
+            <ReactMarkdown components={markdownComponents}>
+              {cleanAssessment}
             </ReactMarkdown>
           </div>
 
           {isAssessmentLocked && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-card/90 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg border border-border">
-                <Lock className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
-                <p className="text-sm font-medium text-foreground mb-1">Lås upp fullständig analys</p>
-                <p className="text-xs text-muted-foreground">Se belopp, lagparagrafer och kravbrev</p>
+              <div style={{ background: 'rgba(255,255,255,0.9)', borderRadius: 12, padding: 24, textAlign: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.08)', border: '1px solid #E2E8F0' }}>
+                <Lock style={{ width: 32, height: 32, color: '#6B7280', margin: '0 auto 12px' }} />
+                <p style={{ fontSize: 14, fontWeight: 600, color: '#0F1F3D', margin: '0 0 4px' }}>Lås upp fullständig analys</p>
+                <p style={{ fontSize: 12, color: '#6B7280', margin: 0 }}>Se belopp, lagparagrafer och kravbrev</p>
               </div>
             </div>
           )}
         </div>
       </div>
 
-      {/* Negative verdict info box */}
+      {/* Uncertain verdict: show edit option */}
+      {sentiment === 'uncertain' && (
+        <div style={{
+          background: '#FFFBEB',
+          border: '1px solid #FDE68A',
+          borderRadius: 10,
+          padding: '14px 18px',
+          marginTop: 16,
+        }}>
+          <p style={{ fontSize: 13, color: '#92400E', margin: '0 0 10px' }}>
+            Om du anser att din situation är tydligare än beskrivningen antyder kan du gå tillbaka och justera dina svar.
+          </p>
+          <button
+            onClick={onBack}
+            style={{ padding: '8px 16px', borderRadius: 8, border: '1.5px solid #D97706', background: 'transparent', color: '#D97706', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
+          >
+            Ändra mina svar
+          </button>
+        </div>
+      )}
+
+      {/* Negative verdict info */}
       {sentiment === 'negative' && tier === 'free' && (
         <div style={{
           background: '#FEF2F2',
@@ -207,7 +227,7 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
           fontSize: 13,
           color: '#991B1B',
         }}>
-          Baserat på din beskrivning finns det troligtvis inte grund för ett krav i detta fall. Läs förklaringen ovan noggrant. Om du anser att situationen är mer komplex kan du kontakta <a href="https://www.konsumentverket.se" target="_blank" rel="noopener noreferrer" style={{ color: '#991B1B', textDecoration: 'underline' }}>Konsumentverket</a> för kostnadsfri rådgivning.
+          Baserat på din beskrivning finns det troligtvis inte grund för ett krav i detta fall. Om du anser att situationen är mer komplex kan du kontakta <a href="https://www.konsumentverket.se" target="_blank" rel="noopener noreferrer" style={{ color: '#991B1B', textDecoration: 'underline' }}>Konsumentverket</a> för kostnadsfri rådgivning.
         </div>
       )}
 
@@ -215,16 +235,18 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
         {SITE_CONFIG.disclaimer} — Bedömningen kostar 39 kr. Kravbrev och handlingsplan är ytterligare 40 kr.
       </div>
 
-      {/* Assessment unlock card */}
-      {showAssessmentPricing && (
+      {/* Two-card pricing for free + positive */}
+      {showPricing && (
         <div style={{ marginTop: 24 }}>
           <p style={{ fontSize: 15, fontWeight: 600, color: '#0F1F3D', textAlign: 'center', marginBottom: 4 }}>
             Lås upp för att se hela bedömningen
           </p>
           <p style={{ fontSize: 13, color: '#6B7280', textAlign: 'center', marginBottom: 20 }}>
-            Se exakt belopp, lagparagrafer och juridisk analys
+            Välj det alternativ som passar dig
           </p>
-          <div style={{ maxWidth: 320, margin: '0 auto' }}>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            {/* Bas — 39 kr */}
             <div style={{
               background: '#FFFFFF',
               border: '2px solid #1B4F8A',
@@ -232,20 +254,13 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
               padding: '24px 20px',
               display: 'flex',
               flexDirection: 'column',
-              gap: 12,
             }}>
-              <div>
-                <p style={{ fontSize: 13, color: '#6B7280', margin: 0 }}>Bedömning</p>
+              <div style={{ marginBottom: 12 }}>
+                <p style={{ fontSize: 13, color: '#6B7280', margin: 0 }}>Bas</p>
                 <p style={{ fontSize: 28, fontWeight: 700, color: '#0F1F3D', margin: '4px 0 0' }}>39 kr</p>
-                <p style={{ fontSize: 12, color: '#9BA3AF', margin: '2px 0 0' }}>Engångsbetalning</p>
               </div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 7 }}>
-                {[
-                  'Exakt ersättningsbelopp i SEK eller EUR',
-                  'Fullständig juridisk analys',
-                  'Verifierade lagparagrafer med källhänvisningar',
-                  'Bedömning av ärendets svagheter',
-                ].map(item => (
+              <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 16px', display: 'flex', flexDirection: 'column', gap: 7, flex: 1 }}>
+                {['Exakt ersättningsbelopp', 'Fullständig juridisk analys', 'Verifierade lagparagrafer'].map(item => (
                   <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: '#374151' }}>
                     <span style={{ color: '#1D9E75', flexShrink: 0, marginTop: 1 }}>✓</span>
                     {item}
@@ -255,80 +270,151 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
               <button
                 onClick={() => handleUnlockClick('bas')}
                 disabled={isGenerating}
-                style={{
-                  width: '100%',
-                  padding: '13px 16px',
-                  borderRadius: 10,
-                  border: 'none',
-                  background: '#1B4F8A',
-                  color: 'white',
-                  fontSize: 15,
-                  fontWeight: 600,
-                  cursor: isGenerating ? 'wait' : 'pointer',
-                  marginTop: 4,
-                  opacity: isGenerating ? 0.7 : 1,
-                }}
+                style={{ width: '100%', padding: '11px 16px', borderRadius: 10, border: 'none', background: '#1B4F8A', color: 'white', fontSize: 14, fontWeight: 600, cursor: isGenerating ? 'wait' : 'pointer', opacity: isGenerating ? 0.7 : 1 }}
               >
                 {isGenerating ? 'Genererar...' : 'Lås upp för 39 kr'}
               </button>
             </div>
+
+            {/* Komplett — 79 kr */}
+            <div style={{
+              background: '#FFFFFF',
+              border: '2px solid #F59E0B',
+              borderRadius: 14,
+              padding: '24px 20px',
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+            }}>
+              <span style={{
+                position: 'absolute',
+                top: -10,
+                right: 16,
+                background: '#F59E0B',
+                color: 'white',
+                fontSize: 10,
+                fontWeight: 700,
+                padding: '3px 10px',
+                borderRadius: 12,
+              }}>
+                Bäst värde
+              </span>
+              <div style={{ marginBottom: 12 }}>
+                <p style={{ fontSize: 13, color: '#6B7280', margin: 0 }}>Komplett</p>
+                <p style={{ fontSize: 28, fontWeight: 700, color: '#0F1F3D', margin: '4px 0 0' }}>79 kr</p>
+              </div>
+              <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 16px', display: 'flex', flexDirection: 'column', gap: 7, flex: 1 }}>
+                {['Allt i Bas', 'Färdigt kravbrev', 'Nästa steg och handlingsplan', 'ARN-anmälningsguide', 'Uppföljningsbrev'].map(item => (
+                  <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: '#374151' }}>
+                    <span style={{ color: '#1D9E75', flexShrink: 0, marginTop: 1 }}>✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => handleUnlockClick('komplett')}
+                disabled={isGenerating}
+                style={{ width: '100%', padding: '11px 16px', borderRadius: 10, border: 'none', background: '#F59E0B', color: 'white', fontSize: 14, fontWeight: 600, cursor: isGenerating ? 'wait' : 'pointer', opacity: isGenerating ? 0.7 : 1 }}
+              >
+                {isGenerating ? 'Genererar...' : 'Lås upp för 79 kr'}
+              </button>
+            </div>
           </div>
           <p style={{ textAlign: 'center', fontSize: 12, color: '#9BA3AF', marginTop: 12 }}>
-            Ingen prenumeration. Betala bara när du vill ha mer.
+            Ingen prenumeration. Engångsbetalning per ärende.
           </p>
         </div>
       )}
 
-      {/* Letter unlock card */}
-      {showLetterPricing && (
-        <div style={{
+      {/* Two-column layout for bas/komplett */}
+      {(tier === 'bas' || tier === 'komplett') && (
+        <div className="assessment-letter-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginTop: 24 }}>
+          {/* Left — assessment is already shown above, so we skip duplicating. Instead show upsell for bas or nothing */}
+        </div>
+      )}
+
+      {/* Upsell block when tier is bas */}
+      {tier === 'bas' && (
+        <div ref={letterRef} style={{
           marginTop: 28,
-          padding: '24px',
-          background: '#F8FAFF',
-          border: '1.5px solid #D4E2F4',
-          borderRadius: 14,
-        }}>
-          <p style={{ fontSize: 15, fontWeight: 600, color: '#0F1F3D', marginBottom: 4 }}>
-            Vill du agera på bedömningen?
-          </p>
-          <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 16 }}>
-            Lås upp kravbrevet och få vägledning om hur du går vidare — för ytterligare 40 kr.
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
-            {[
-              'Färdigt kravbrev anpassat till ditt ärende',
-              'Nästa steg — konkret handlingsplan',
-              'Steg-för-steg ARN-anmälningsguide',
-              'Uppföljningsbrev om motparten inte svarar',
-              'Strategisk vägledning — vad du bör säga och undvika',
-            ].map(item => (
-              <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: '#374151' }}>
-                <span style={{ color: '#1D9E75', flexShrink: 0, marginTop: 1 }}>✓</span>
-                {item}
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 24,
+        }} className="assessment-letter-grid">
+          {/* Left: empty spacer on desktop, hidden on mobile */}
+          <div />
+          {/* Right: upsell + blurred letter preview */}
+          <div>
+            {/* Blurred letter preview */}
+            <div style={{
+              background: '#FFFFFF',
+              borderRadius: 14,
+              border: '1px solid #E2E8F0',
+              padding: 24,
+              position: 'relative',
+              overflow: 'hidden',
+              marginBottom: 16,
+            }}>
+              <p style={{ fontSize: 16, fontWeight: 700, color: '#0F1F3D', marginBottom: 12 }}>Ditt kravbrev</p>
+              <div style={{ filter: 'blur(5px)', userSelect: 'none' }}>
+                {['Hej,', 'Med anledning av din situation vänder jag mig till er med följande krav.', 'Enligt gällande lagstiftning har jag som konsument rätt till ersättning. Jag begär att ni återkommer med en lösning inom 14 dagar.', 'Med vänliga hälsningar,', '[Ditt namn]'].map((line, i) => (
+                  <p key={i} style={{ fontSize: 13, color: '#374151', lineHeight: 1.6, marginBottom: 6 }}>{line}</p>
+                ))}
               </div>
-            ))}
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'rgba(255,255,255,0.7)',
+              }}>
+                <p style={{ fontSize: 15, fontWeight: 700, color: '#0F1F3D', marginBottom: 4 }}>Lås upp kravbrevet</p>
+                <p style={{ fontSize: 12, color: '#6B7280', marginBottom: 12 }}>40 kr till — totalt 79 kr</p>
+                <button
+                  onClick={() => handleUnlockClick('komplett')}
+                  disabled={isGenerating}
+                  style={{ padding: '12px 24px', borderRadius: 10, border: 'none', background: '#F59E0B', color: 'white', fontSize: 14, fontWeight: 600, cursor: isGenerating ? 'wait' : 'pointer', opacity: isGenerating ? 0.7 : 1 }}
+                >
+                  {isGenerating ? 'Genererar...' : 'Lås upp för 40 kr till'}
+                </button>
+              </div>
+            </div>
+
+            {/* Upsell features */}
+            <div style={{
+              padding: '20px 24px',
+              background: '#F8FAFF',
+              border: '1.5px solid #D4E2F4',
+              borderRadius: 14,
+            }}>
+              <p style={{ fontSize: 15, fontWeight: 600, color: '#0F1F3D', marginBottom: 4 }}>
+                Vill du agera på bedömningen?
+              </p>
+              <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 12 }}>
+                Betala 40 kr till och få ett färdigt kravbrev, nästa steg och fullständig handlingsplan.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 12 }}>
+                {['Färdigt kravbrev anpassat till ditt ärende', 'Nästa steg — konkret handlingsplan', 'Steg-för-steg ARN-anmälningsguide', 'Uppföljningsbrev om motparten inte svarar', 'Strategisk vägledning'].map(item => (
+                  <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: '#374151' }}>
+                    <span style={{ color: '#1D9E75', flexShrink: 0, marginTop: 1 }}>✓</span>
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={() => handleUnlockClick('komplett')}
+                disabled={isGenerating}
+                style={{ width: '100%', padding: '13px 16px', borderRadius: 10, border: 'none', background: '#F59E0B', color: 'white', fontSize: 15, fontWeight: 600, cursor: isGenerating ? 'wait' : 'pointer', opacity: isGenerating ? 0.7 : 1 }}
+              >
+                {isGenerating ? 'Genererar...' : 'Lås upp kravbrev för 40 kr till'}
+              </button>
+              <p style={{ fontSize: 12, color: '#9BA3AF', textAlign: 'center', marginTop: 8 }}>
+                Du har redan betalat 39 kr. Totalt 79 kr för fullständigt paket.
+              </p>
+            </div>
           </div>
-          <button
-            onClick={() => handleUnlockClick('komplett')}
-            disabled={isGenerating}
-            style={{
-              width: '100%',
-              padding: '13px 16px',
-              borderRadius: 10,
-              border: 'none',
-              background: '#F59E0B',
-              color: 'white',
-              fontSize: 15,
-              fontWeight: 600,
-              cursor: isGenerating ? 'wait' : 'pointer',
-              opacity: isGenerating ? 0.7 : 1,
-            }}
-          >
-            {isGenerating ? 'Genererar...' : 'Lås upp kravbrev för 40 kr till'}
-          </button>
-          <p style={{ fontSize: 12, color: '#9BA3AF', textAlign: 'center', marginTop: 10 }}>
-            Du har redan betalat 39 kr. Totalt 79 kr för fullständigt paket.
-          </p>
         </div>
       )}
 
@@ -336,7 +422,7 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
       {tier === 'komplett' && (
         <>
           {displayLetter && (
-            <div className="mt-8">
+            <div ref={letterRef} className="mt-8">
               <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
                 <FileText className="w-5 h-5" /> Ditt kravbrev
               </h2>
@@ -374,7 +460,7 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
               <div className="text-sm text-muted-foreground leading-relaxed space-y-2">
                 <p><strong className="text-foreground">Gör:</strong> Var saklig och hänvisa alltid till specifik lagparagraf. Dokumentera all kommunikation skriftligt.</p>
                 <p><strong className="text-foreground">Undvik:</strong> Hotfulla formuleringar eller överdrivna krav. Håll dig till fakta och lagstiftning.</p>
-                <p><strong className="text-foreground">Tips:</strong> Skicka brevet via rekommenderat brev eller e-post med läskvittens för att kunna bevisa att motparten fått kravet.</p>
+                <p><strong className="text-foreground">Tips:</strong> Skicka brevet via rekommenderat brev eller e-post med läskvittens.</p>
               </div>
             </div>
 
@@ -389,15 +475,13 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
 {`[DITT NAMN]
 [DIN ADRESS]
 
-Till: [MOTPARTENS NAMN]
-
 PÅMINNELSE — KRAVBREV
 
 Jag hänvisar till mitt kravbrev daterat [DATUM FÖR FÖRSTA BREVET].
 
 Jag har ännu inte mottagit något svar eller åtgärd. Jag ger er ytterligare 7 dagar att bemöta kravet.
 
-Om jag inte erhåller ett tillfredsställande svar senast [DATUM] kommer jag att anmäla ärendet till [ARN/Hyresnämnden/relevant instans] för prövning.
+Om jag inte erhåller ett tillfredsställande svar senast [DATUM] kommer jag att anmäla ärendet till ARN för prövning.
 
 Med vänliga hälsningar,
 [DITT NAMN]`}
@@ -509,6 +593,14 @@ Med vänliga hälsningar,
           </div>
         </div>
       )}
+
+      <style>{`
+        @media (max-width: 768px) {
+          .assessment-letter-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </motion.div>
   );
 };
