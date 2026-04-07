@@ -157,7 +157,7 @@ Inkludera ALDRIG "## Nästa steg" i bedömningen. Nästa steg tillhandahålls en
 REGLER:
 - FORMAT: Formellt brev, INTE e-post. Börja ALDRIG med "Till:", "Ämne:" eller andra e-postrubriker. Börja med ort och datum, sedan avsändarinformation, sedan brevtexten
 - TOM: Professionell men mänsklig. Konstruktiv och lösningsorienterad, inte aggressiv
-- INLEDNING: Börja med "Hej," följt av en naturlig mening om varför du skriver. ALDRIG med frågor och svar från formuläret
+- INLEDNING: Börja med "Hej," eller direkt med ärendet efter avsändarinformationen. ALDRIG med frågor och svar från formuläret
 - SYNTETISERA: Omvandla svaren till flytande sammanhängande prosa. Inga listor av Q&A
 - LAG: Hänvisa naturligt till relevant lag och paragraf i löptexten — inte som rubrik eller fotnot
 - AVHJÄLPANDE: För reklamation — prioritera: reparation → byte → prisavdrag → återbetalning
