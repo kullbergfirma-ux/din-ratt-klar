@@ -50,6 +50,8 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
   const isLast = currentQ === questions.length - 1;
   const canProceed = question.type === 'file' || question.optional || (question.type === 'date'
     ? /^\d{4}-\d{2}-\d{2}$/.test(answers[question.id] || '')
+    : question.type === 'airport'
+    ? (answers[question.id] || '').trim().length >= 2
     : !!answers[question.id]?.trim());
   const progressPercent = ((currentQ + 1) / questions.length) * 100;
 
