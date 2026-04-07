@@ -131,6 +131,16 @@ const QuestionFlow = ({ category, onSubmit, onBack }: Props) => {
     const onChange = (val: string) => setAnswers({ ...answers, [q.id]: val });
     const suggestions = hasSuggestions(q.id);
 
+    if (q.type === 'airport') {
+      return (
+        <AirportSearch
+          value={value}
+          onChange={onChange}
+          placeholder={q.placeholder}
+        />
+      );
+    }
+
     if (q.type === 'file') {
       const files = uploadedFiles[q.id] || [];
       return (
