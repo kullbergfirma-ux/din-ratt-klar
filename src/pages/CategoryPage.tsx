@@ -42,6 +42,8 @@ const CategoryPage = () => {
   const [tier, setLocalTier] = useState<Tier>('free');
   const [loadingMessage, setLoadingMessage] = useState('Analyserar din situation mot gällande lagstiftning...');
   const toolRef = useRef<HTMLDivElement>(null);
+  const assessmentRef = useRef<HTMLDivElement>(null);
+  const letterRef = useRef<HTMLDivElement>(null);
 
   if (!category) return <NotFound />;
 
