@@ -1,7 +1,7 @@
 export interface CategoryQuestion {
   id: string;
   label: string;
-  type: 'text' | 'select' | 'date' | 'file';
+  type: 'text' | 'select' | 'date' | 'file' | 'airport';
   options?: string[];
   placeholder?: string;
   showWhen?: { questionId: string; values: string[] };
