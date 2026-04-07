@@ -16,6 +16,7 @@ const CategoryPage = lazy(() => import('./pages/CategoryPage'));
 const GuidePage = lazy(() => import('./pages/GuidePage'));
 const GuidesOverviewPage = lazy(() => import('./pages/GuidesOverviewPage'));
 const FAQPage = lazy(() => import('./pages/FAQPage'));
+const PricingPage = lazy(() => import('./pages/PricingPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 const NotFound = lazy(() => import('./pages/NotFound'));
