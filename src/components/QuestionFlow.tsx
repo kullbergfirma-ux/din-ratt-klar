@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { type Category, type CategoryQuestion } from '@/lib/categories';
 import { ChevronLeft, ChevronRight, Plane, Train, Bus, Ship, Building2, Briefcase, Car, Clock, X, Users, AlertTriangle, MessageSquare } from 'lucide-react';
 import AutocompleteInput from '@/components/AutocompleteInput';
+import AirportSearch from '@/components/AirportSearch';
 import { questionCompanyMap } from '@/data/companies';
 
 interface Props {
