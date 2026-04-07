@@ -70,7 +70,7 @@ SVARSFORMAT — svara ALLTID med exakt detta JSON och inget annat:
   "assessment": "## Bedömning\\n\\n..."
 }
 
-ASSESSMENT-STRUKTUR (använd alltid):
+ASSESSMENT-STRUKTUR — inkludera ENBART dessa sektioner:
 ## Bedömning
 [1-2 meningar med tydligt utfall]
 
@@ -83,8 +83,7 @@ ASSESSMENT-STRUKTUR (använd alltid):
 ### Svagheter i ditt ärende
 [Vad motparten troligtvis invänder]
 
-### Nästa steg
-[Konkret handlingsplan med klickbara länkar till ARN/Hyresnämnden/Konsumentverket]
+Inkludera ALDRIG "## Nästa steg" i bedömningen. Nästa steg tillhandahålls enbart i komplett-paketet.
 
 *OBS: Detta är juridisk vägledning baserad på angiven information och gällande lagstiftning. Det ersätter inte rådgivning från en jurist. Vid komplexa ärenden rekommenderas kontakt med Konsumentverket eller en kvalificerad jurist.*`;
 
