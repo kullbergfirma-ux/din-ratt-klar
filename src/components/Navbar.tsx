@@ -6,6 +6,7 @@ import { SITE_CONFIG } from '@/config/site';
 
 const navLinks = [
   { to: '/', label: 'Hem' },
+  { to: '/priser', label: 'Priser' },
   { to: '/guider', label: 'Guider' },
   { to: '/faq', label: 'Vanliga frågor' },
   { to: '/om-oss', label: 'Om oss' },
