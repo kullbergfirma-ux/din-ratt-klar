@@ -49,7 +49,7 @@ const PricingSection = () => (
           transition={{ delay: 0.1 }}
           className="card-elevated p-6 text-center flex flex-col"
         >
-          <div className="text-lg font-bold text-foreground mb-1"><EditableText textKey="pricing.bas.title" fallback="Bedömning" /></div>
+          <div className="text-lg font-bold text-foreground mb-1"><EditableText textKey="pricing.bas.title" fallback="Bas" /></div>
           <div className="text-3xl font-extrabold text-foreground mb-4"><EditableText textKey="pricing.bas.price" fallback="39 kr" /></div>
           <ul className="text-left space-y-2 text-sm text-muted-foreground mb-5">
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Exakt ersättningsbelopp</li>
@@ -79,7 +79,7 @@ const PricingSection = () => (
           <div className="text-lg font-bold text-foreground mb-1"><EditableText textKey="pricing.komplett.title" fallback="Komplett" /></div>
           <div className="text-3xl font-extrabold text-foreground mb-4"><EditableText textKey="pricing.komplett.price" fallback="79 kr" /></div>
           <ul className="text-left space-y-2 text-sm text-muted-foreground mb-5">
-            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Allt i Bedömning</li>
+            <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Allt i Bas</li>
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Färdigt kravbrev</li>
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Nästa steg och handlingsplan</li>
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> ARN-anmälningsguide</li>

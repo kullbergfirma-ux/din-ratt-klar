@@ -1,7 +1,7 @@
 export interface CategoryQuestion {
   id: string;
   label: string;
-  type: 'text' | 'select' | 'date' | 'file';
+  type: 'text' | 'select' | 'date' | 'file' | 'airport';
   options?: string[];
   placeholder?: string;
   showWhen?: { questionId: string; values: string[] };
@@ -52,6 +52,8 @@ export const categories: Category[] = [
     relatedSlugs: ['kop-reklamation', 'abonnemang'],
     questions: [
       { id: 'travel_type', label: 'Vilken typ av resa gäller det?', type: 'select', options: ['Flyg', 'Tåg', 'Buss', 'Färja', 'Hotell', 'Paketresa', 'Hyrbil'] },
+      { id: 'departure', label: 'Varifrån reste du?', type: 'airport', placeholder: 'Sök stad, land eller flygplats', showWhen: { questionId: 'travel_type', values: ['Flyg', 'Tåg', 'Buss'] } },
+      { id: 'destination', label: 'Vart reste du?', type: 'airport', placeholder: 'Sök stad, land eller flygplats', showWhen: { questionId: 'travel_type', values: ['Flyg', 'Tåg', 'Buss'] } },
       { id: 'company', label: 'Vilket bolag eller arrangör gäller det?', type: 'text', placeholder: 'Skriv bolagets namn' },
       { id: 'date', label: 'När skedde resan?', type: 'date' },
       { id: 'issue', label: 'Vad hände?', type: 'select', options: ['Försening', 'Inställt', 'Överbookning', 'Ej som utlovat', 'Annat'] },

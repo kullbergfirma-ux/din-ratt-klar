@@ -70,7 +70,7 @@ SVARSFORMAT — svara ALLTID med exakt detta JSON och inget annat:
   "assessment": "## Bedömning\\n\\n..."
 }
 
-ASSESSMENT-STRUKTUR (använd alltid):
+ASSESSMENT-STRUKTUR — inkludera ENBART dessa sektioner:
 ## Bedömning
 [1-2 meningar med tydligt utfall]
 
@@ -83,8 +83,7 @@ ASSESSMENT-STRUKTUR (använd alltid):
 ### Svagheter i ditt ärende
 [Vad motparten troligtvis invänder]
 
-### Nästa steg
-[Konkret handlingsplan med klickbara länkar till ARN/Hyresnämnden/Konsumentverket]
+Inkludera ALDRIG "## Nästa steg" i bedömningen. Nästa steg tillhandahålls enbart i komplett-paketet.
 
 *OBS: Detta är juridisk vägledning baserad på angiven information och gällande lagstiftning. Det ersätter inte rådgivning från en jurist. Vid komplexa ärenden rekommenderas kontakt med Konsumentverket eller en kvalificerad jurist.*`;
 
@@ -156,9 +155,9 @@ ASSESSMENT-STRUKTUR (använd alltid):
       const systemPrompt = `Du är en erfaren svensk jurist som skriver reklamationsmejl och kravbrev för konsumenter.
 
 REGLER:
-- FORMAT: E-postmeddelande, inte formellt brev. Börja direkt med "Till: [motpart]" och "Ämne: [ämne]"
+- FORMAT: Formellt brev, INTE e-post. Börja ALDRIG med "Till:", "Ämne:" eller andra e-postrubriker. Börja med ort och datum, sedan avsändarinformation, sedan brevtexten
 - TOM: Professionell men mänsklig. Konstruktiv och lösningsorienterad, inte aggressiv
-- INLEDNING: Börja med "Hej," följt av en naturlig mening om varför du skriver. ALDRIG med frågor och svar från formuläret
+- INLEDNING: Börja med "Hej," eller direkt med ärendet efter avsändarinformationen. ALDRIG med frågor och svar från formuläret
 - SYNTETISERA: Omvandla svaren till flytande sammanhängande prosa. Inga listor av Q&A
 - LAG: Hänvisa naturligt till relevant lag och paragraf i löptexten — inte som rubrik eller fotnot
 - AVHJÄLPANDE: För reklamation — prioritera: reparation → byte → prisavdrag → återbetalning
@@ -217,7 +216,9 @@ Skriv ett professionellt reklamationsmejl. Syntetisera svaren till naturlig pros
       }
 
       const data = await response.json();
-      const letterText = data.choices?.[0]?.message?.content || `Till: ${counterparty}\nÄmne: Reklamation\n\nKunde inte generera brev. Försök igen.`;
+      let letterText = data.choices?.[0]?.message?.content || `Kunde inte generera brev. Försök igen.`;
+      // Safety net: strip any Till:/Ämne: headers the AI may have added
+      letterText = letterText.replace(/^Till:.*\n?/im, '').replace(/^Ämne:.*\n?/im, '').trimStart();
 
       return new Response(JSON.stringify({ letter: letterText }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },

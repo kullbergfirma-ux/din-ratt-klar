@@ -42,6 +42,8 @@ const CategoryPage = () => {
   const [tier, setLocalTier] = useState<Tier>('free');
   const [loadingMessage, setLoadingMessage] = useState('Analyserar din situation mot gällande lagstiftning...');
   const toolRef = useRef<HTMLDivElement>(null);
+  const assessmentRef = useRef<HTMLDivElement>(null);
+  const letterRef = useRef<HTMLDivElement>(null);
 
   if (!category) return <NotFound />;
 
@@ -84,6 +86,11 @@ const CategoryPage = () => {
   const handleUnlock = async (newTier: Tier) => {
     setTier(caseId, newTier);
     setLocalTier(newTier);
+    if (newTier === 'bas') {
+      setTimeout(() => {
+        assessmentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
     if (newTier === 'komplett') {
       setLoadingMessage('Genererar ditt kravbrev...');
       setStep('loading');
@@ -94,6 +101,9 @@ const CategoryPage = () => {
         toast.error('Kunde inte generera kravbrev. Försök igen.');
       } finally {
         setStep('assessment');
+        setTimeout(() => {
+          letterRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
       }
     }
   };
@@ -223,6 +233,8 @@ const CategoryPage = () => {
                     letter={letter}
                     onUnlock={handleUnlock}
                     onBack={handleReset}
+                    assessmentRef={assessmentRef}
+                    letterRef={letterRef}
                   />
                 </motion.div>
               )}
