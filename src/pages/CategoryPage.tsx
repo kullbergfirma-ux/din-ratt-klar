@@ -233,6 +233,8 @@ const CategoryPage = () => {
                     letter={letter}
                     onUnlock={handleUnlock}
                     onBack={handleReset}
+                    assessmentRef={assessmentRef}
+                    letterRef={letterRef}
                   />
                 </motion.div>
               )}
