@@ -216,7 +216,9 @@ Skriv ett professionellt reklamationsmejl. Syntetisera svaren till naturlig pros
       }
 
       const data = await response.json();
-      const letterText = data.choices?.[0]?.message?.content || `Till: ${counterparty}\nÄmne: Reklamation\n\nKunde inte generera brev. Försök igen.`;
+      let letterText = data.choices?.[0]?.message?.content || `Kunde inte generera brev. Försök igen.`;
+      // Safety net: strip any Till:/Ämne: headers the AI may have added
+      letterText = letterText.replace(/^Till:.*\n?/im, '').replace(/^Ämne:.*\n?/im, '').trimStart();
 
       return new Response(JSON.stringify({ letter: letterText }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
