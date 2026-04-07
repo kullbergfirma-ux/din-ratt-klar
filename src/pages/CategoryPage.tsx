@@ -86,6 +86,11 @@ const CategoryPage = () => {
   const handleUnlock = async (newTier: Tier) => {
     setTier(caseId, newTier);
     setLocalTier(newTier);
+    if (newTier === 'bas') {
+      setTimeout(() => {
+        assessmentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
     if (newTier === 'komplett') {
       setLoadingMessage('Genererar ditt kravbrev...');
       setStep('loading');
@@ -96,6 +101,9 @@ const CategoryPage = () => {
         toast.error('Kunde inte generera kravbrev. Försök igen.');
       } finally {
         setStep('assessment');
+        setTimeout(() => {
+          letterRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
       }
     }
   };
