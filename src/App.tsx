@@ -68,6 +68,7 @@ const AppContent = () => {
             <Route path="/guide/:slug" element={<GuidePage />} />
             <Route path="/guider" element={<GuidesOverviewPage />} />
             <Route path="/faq" element={<FAQPage />} />
+            <Route path="/priser" element={<PricingPage />} />
             <Route path="/om-oss" element={<AboutPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
