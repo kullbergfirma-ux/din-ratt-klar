@@ -312,13 +312,14 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
           <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0F1F3D', marginBottom: 16 }}>Ditt kravbrev</h2>
 
           <div style={{
-            background: '#FAFBFC',
+            background: '#FAFAF8',
             borderRadius: 10,
             padding: '20px 24px',
             fontSize: 13,
-            lineHeight: 1.8,
+            lineHeight: 1.9,
             whiteSpace: 'pre-wrap',
             color: '#1A2744',
+            fontFamily: 'Georgia, "Times New Roman", serif',
             flex: 1,
             maxHeight: 500,
             overflowY: 'auto',
