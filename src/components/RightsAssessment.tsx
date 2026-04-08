@@ -272,6 +272,23 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
             >
               {isGenerating ? 'Genererar...' : 'Lås upp för 40 kr till'}
             </button>
+
+            <div style={{ marginTop: 20, textAlign: 'left', width: '100%', maxWidth: 260 }}>
+              <p style={{ fontSize: 12, fontWeight: 600, color: '#0F1F3D', marginBottom: 8 }}>Du får även:</p>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 5 }}>
+                {[
+                  'Nästa steg — konkret handlingsplan',
+                  'Steg-för-steg ARN-anmälningsguide',
+                  'Uppföljningsbrev om motparten inte svarar',
+                  'Strategisk vägledning',
+                ].map(item => (
+                  <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, fontSize: 11, color: '#374151' }}>
+                    <span style={{ color: '#1D9E75', flexShrink: 0, marginTop: 1 }}>✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       );
