@@ -61,3 +61,16 @@ export const FAQSchema = ({ items }: { items: FAQItem[] }) => (
     </script>
   </Helmet>
 );
+
+export const ImageSchema = ({ url, description }: { url: string; description: string }) => (
+  <Helmet>
+    <script type="application/ld+json">
+      {JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'ImageObject',
+        url,
+        description,
+      })}
+    </script>
+  </Helmet>
+);

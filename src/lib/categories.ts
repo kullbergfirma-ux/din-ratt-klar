@@ -56,7 +56,7 @@ export const categories: Category[] = [
       { id: 'destination', label: 'Vart reste du?', type: 'airport', placeholder: 'Sök stad, land eller flygplats', showWhen: { questionId: 'travel_type', values: ['Flyg', 'Tåg', 'Buss'] } },
       { id: 'company', label: 'Vilket bolag eller arrangör gäller det?', type: 'text', placeholder: 'Skriv bolagets namn' },
       { id: 'date', label: 'När skedde resan?', type: 'date' },
-      { id: 'issue', label: 'Vad hände?', type: 'select', options: ['Försening', 'Inställt', 'Överbookning', 'Ej som utlovat', 'Annat'] },
+      { id: 'issue', label: 'Vad hände?', type: 'select', options: ['Försening', 'Inställt', 'Överbokning', 'Ej som utlovat', 'Annat'] },
       { id: 'delay_duration', label: 'Hur många timmar var förseningen?', type: 'text', placeholder: 'Ange antal timmar', showWhen: { questionId: 'issue', values: ['Försening'] } },
       { id: 'compensation_offered', label: 'Fick du någon hjälp eller ersättning på plats?', type: 'select', options: ['Ja', 'Nej', 'Delvis'] },
       { id: 'description', label: 'Beskriv vad som hände', type: 'text', placeholder: 'Beskriv händelsen med egna ord' },

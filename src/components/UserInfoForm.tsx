@@ -142,6 +142,11 @@ const UserInfoForm = ({ onSubmit, onBack, prefilledCounterparty }: Props) => {
 
         <div style={{ marginBottom: 24 }}>
           {field('counterparty', 'Företaget du har ett ärende mot', true, 'T.ex. SAS, IKEA, Telia')}
+          {profile.counterparty && prefilledCounterparty && (
+            <p style={{ fontSize: 12, color: '#9BA3AF', marginTop: 4 }}>
+              Hämtad från dina svar — du kan ändra detta
+            </p>
+          )}
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 24 }}>

@@ -21,7 +21,7 @@ const optionIconMap: Record<string, React.ComponentType<{ className?: string; st
   'Hyrbil': Car,
   'Försening': Clock,
   'Inställt': X,
-  'Överbookning': Users,
+  'Överbokning': Users,
   'Ej som utlovat': AlertTriangle,
   'Annat': MessageSquare,
 };
