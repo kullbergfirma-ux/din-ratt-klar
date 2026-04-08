@@ -67,7 +67,7 @@ const PricingPage = () => {
             </div>
             <p style={{ fontSize: 12, color: '#9BA3AF', margin: '0 0 12px' }}>Ingen registrering krävs</p>
             <button
-              onClick={scrollToCategories}
+              onClick={navigateToArenden}
               style={{ width: '100%', padding: '11px 16px', borderRadius: 10, border: '1.5px solid #E2E8F0', background: 'transparent', cursor: 'pointer', fontSize: 14 }}
             >
               Börja gratis
@@ -101,7 +101,7 @@ const PricingPage = () => {
               ))}
             </div>
             <button
-              onClick={scrollToCategories}
+              onClick={navigateToArenden}
               style={{ width: '100%', padding: '11px 16px', borderRadius: 10, border: 'none', background: '#1B4F8A', color: 'white', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
             >
               Kom igång — 39 kr
@@ -151,7 +151,7 @@ const PricingPage = () => {
               ))}
             </div>
             <button
-              onClick={scrollToCategories}
+              onClick={navigateToArenden}
               style={{ width: '100%', padding: '11px 16px', borderRadius: 10, border: 'none', background: '#F59E0B', color: 'white', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
             >
               Kom igång — 79 kr
