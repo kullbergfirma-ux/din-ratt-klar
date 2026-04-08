@@ -503,7 +503,7 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
 
       {/* ── BAS / KOMPLETT: Two-column grid ── */}
       {(tier === 'bas' || tier === 'komplett') && (
-        <div className="result-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, alignItems: 'stretch' }}>
+        <div className="result-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, alignItems: 'stretch', width: '100%' }}>
           {renderAssessmentColumn()}
           {renderLetterColumn()}
         </div>
