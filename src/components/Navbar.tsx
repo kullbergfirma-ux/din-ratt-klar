@@ -61,7 +61,7 @@ const Navbar = () => {
             </Link>
           ))}
           <div className="pt-2">
-            <Link to={isHome ? '/#kategorier' : '/'} onClick={(e) => { handleCTA(e); setMobileOpen(false); }}>
+            <Link to="/arenden" onClick={() => setMobileOpen(false)}>
               <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-bold rounded-lg w-full">
                 Kolla din rätt →
               </Button>
