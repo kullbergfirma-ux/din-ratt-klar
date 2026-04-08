@@ -307,15 +307,16 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
           ref={letterRef}
           style={{
             background: '#FFFFFF',
-            borderRadius: 14,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)',
-            border: '1px solid rgba(0,0,0,0.06)',
-            padding: '24px 28px',
+            borderRadius: 16,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+            border: '1px solid #E2E8F0',
+            padding: '28px 32px',
             display: 'flex',
             flexDirection: 'column' as const,
+            height: '100%',
           }}
         >
-          <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0F1F3D', marginBottom: 16 }}>Ditt kravbrev</h2>
+          <h2 style={{ fontSize: 17, fontWeight: 700, color: '#0F1F3D', marginBottom: 20, flexShrink: 0 }}>Ditt kravbrev</h2>
 
           <div style={{
             background: '#FAFBFC',
