@@ -35,6 +35,7 @@ const CategoryPage = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [uploadedFiles, setUploadedFiles] = useState<Record<string, File[]>>({});
+  const [prefilledCounterparty, setPrefilledCounterparty] = useState('');
   const [assessment, setAssessment] = useState('');
   const [sentiment, setSentiment] = useState<'positive' | 'uncertain' | 'negative'>('positive');
   const [letter, setLetter] = useState('');
