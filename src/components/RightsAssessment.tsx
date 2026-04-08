@@ -325,13 +325,13 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
             padding: '20px 24px',
             fontSize: 14,
             lineHeight: 1.7,
-            whiteSpace: 'pre-wrap',
+            whiteSpace: 'pre-wrap' as const,
             color: '#374151',
             fontFamily: 'inherit',
             flex: 1,
-            maxHeight: 380,
-            overflowY: 'auto',
+            overflowY: 'auto' as const,
             marginBottom: 16,
+            minHeight: 0,
           }}>
             {displayLetter}
           </div>
