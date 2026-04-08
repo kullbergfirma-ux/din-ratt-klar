@@ -15,16 +15,6 @@ const navLinks = [
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
-  const isHome = location.pathname === '/';
-
-  const handleCTA = (e: React.MouseEvent) => {
-    if (isHome) {
-      e.preventDefault();
-      const el = document.getElementById('kategorier');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <header className="border-b border-border/50 bg-card/95 backdrop-blur-md sticky top-0 z-50">
