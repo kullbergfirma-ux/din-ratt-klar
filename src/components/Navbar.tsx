@@ -34,7 +34,7 @@ const Navbar = () => {
         </div>
 
         <div className="hidden lg:flex items-center gap-3">
-          <Link to={isHome ? '/#kategorier' : '/'} onClick={handleCTA}>
+          <Link to="/arenden">
             <Button size="sm" className="rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 font-bold">
               Kolla din rätt →
             </Button>
