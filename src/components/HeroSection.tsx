@@ -40,11 +40,6 @@ const HeroResultCard = () => (
 );
 
 const HeroSection = () => {
-  const handleScrollToCategories = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const el = document.getElementById('kategorier');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <section className="relative overflow-hidden bg-primary text-primary-foreground">
