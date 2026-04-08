@@ -66,6 +66,8 @@ const CategoryPage = () => {
     }
     setAnswers(ans);
     setUploadedFiles(files);
+    const companyName = ans.company || ans.bank || '';
+    setPrefilledCounterparty(companyName);
     setStep('userinfo');
   };
 
