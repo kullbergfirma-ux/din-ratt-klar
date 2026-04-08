@@ -224,7 +224,7 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
         >
           <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0F1F3D', marginBottom: 16 }}>Ditt kravbrev</h2>
 
-          <div style={{ filter: 'blur(5px)', userSelect: 'none', flex: 1, fontFamily: 'Georgia, "Times New Roman", serif', lineHeight: 1.9, background: '#FAFAF8', borderRadius: 10, padding: '20px 24px' }}>
+          <div style={{ filter: 'blur(5px)', userSelect: 'none', pointerEvents: 'none', flex: 1, fontFamily: 'inherit', fontSize: 14, lineHeight: 1.7, color: '#374151', background: '#FAFBFC', borderRadius: 10, border: '1px solid #F0F4F8', padding: '20px 24px' }}>
             <p style={{ fontSize: 13, color: '#374151', marginBottom: 6 }}>Hej,</p>
             <p style={{ fontSize: 13, color: '#374151', marginBottom: 6 }}>Med anledning av nedanstående situation vänder jag mig till er med följande krav. Jag har som konsument rätt till ersättning enligt gällande lagstiftning och begär att ni återkommer med en lösning.</p>
             <p style={{ fontSize: 13, color: '#374151', marginBottom: 6 }}>Enligt tillämplig lag har jag rätt till ersättning för den skada jag lidit. Jag begär att ärendet åtgärdas inom 14 dagar från detta brev.</p>
