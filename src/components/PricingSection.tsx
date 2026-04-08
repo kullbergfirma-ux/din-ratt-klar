@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import EditableText from '@/components/EditableText';
 
-const scrollToCategories = () => {
-  document.getElementById('kategorier')?.scrollIntoView({ behavior: 'smooth' });
+const navigateToArenden = () => {
+  window.location.href = '/arenden';
 };
 
 const PricingSection = () => (

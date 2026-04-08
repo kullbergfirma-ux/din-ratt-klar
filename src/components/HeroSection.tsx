@@ -76,7 +76,7 @@ const HeroSection = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3">
-              <a href="/#kategorier" onClick={handleScrollToCategories}>
+              <a href="/arenden">
                 <button className="bg-accent text-accent-foreground hover:bg-accent/90 text-base font-bold px-8 py-4 rounded-xl shadow-lg flex items-center gap-2 transition-colors">
                   <EditableText textKey="hero.cta" fallback="Kolla din rätt" />
                   <ArrowRight className="w-5 h-5" />

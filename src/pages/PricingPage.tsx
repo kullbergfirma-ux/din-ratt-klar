@@ -21,8 +21,8 @@ anna@exempel.se`;
 const PricingPage = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  const scrollToCategories = () => {
-    window.location.href = '/#kategorier';
+  const navigateToArenden = () => {
+    window.location.href = '/arenden';
   };
 
   return (

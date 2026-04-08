@@ -1,6 +1,6 @@
 import { Scale, Menu, X } from 'lucide-react';
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { SITE_CONFIG } from '@/config/site';
 
