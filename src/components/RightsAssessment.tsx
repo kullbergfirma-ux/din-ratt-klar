@@ -242,6 +242,10 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
             alignItems: 'center',
             justifyContent: 'center',
             background: 'rgba(255,255,255,0.75)',
+            backdropFilter: 'blur(3px)',
+            borderRadius: 16,
+            padding: 32,
+            textAlign: 'center',
           }}>
             <div style={{
               width: 48, height: 48, borderRadius: '50%', background: '#FEF3C7',
