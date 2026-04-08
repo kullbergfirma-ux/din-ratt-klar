@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import EditableText from '@/components/EditableText';
 
-const scrollToCategories = () => {
-  document.getElementById('kategorier')?.scrollIntoView({ behavior: 'smooth' });
+const navigateToArenden = () => {
+  window.location.href = '/arenden';
 };
 
 const PricingSection = () => (
@@ -34,7 +34,7 @@ const PricingSection = () => (
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Se om du troligtvis har rätt</li>
           </ul>
           <button
-            onClick={scrollToCategories}
+            onClick={navigateToArenden}
             style={{ width: '100%', padding: '10px 16px', borderRadius: 8, border: '1.5px solid #E2E8F0', background: 'transparent', cursor: 'pointer', fontSize: 14, marginTop: 'auto' }}
           >
             Börja gratis
@@ -58,7 +58,7 @@ const PricingSection = () => (
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Ärendets svagheter</li>
           </ul>
           <button
-            onClick={scrollToCategories}
+            onClick={navigateToArenden}
             style={{ width: '100%', padding: '10px 16px', borderRadius: 8, border: 'none', background: '#1B4F8A', color: 'white', cursor: 'pointer', fontSize: 14, fontWeight: 600, marginTop: 'auto' }}
           >
             Kom igång — 39 kr
@@ -87,7 +87,7 @@ const PricingSection = () => (
             <li className="flex gap-2"><Check className="w-4 h-4 text-success shrink-0 mt-0.5" /> Strategisk vägledning</li>
           </ul>
           <button
-            onClick={scrollToCategories}
+            onClick={navigateToArenden}
             style={{ width: '100%', padding: '10px 16px', borderRadius: 8, border: 'none', background: '#F59E0B', color: 'white', cursor: 'pointer', fontSize: 14, fontWeight: 600, marginTop: 'auto' }}
           >
             Kom igång — 79 kr

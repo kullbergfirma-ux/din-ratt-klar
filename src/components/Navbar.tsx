@@ -1,11 +1,12 @@
 import { Scale, Menu, X } from 'lucide-react';
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { SITE_CONFIG } from '@/config/site';
 
 const navLinks = [
   { to: '/', label: 'Hem' },
+  { to: '/arenden', label: 'Ärenden' },
   { to: '/priser', label: 'Priser' },
   { to: '/guider', label: 'Guider' },
   { to: '/faq', label: 'Vanliga frågor' },
@@ -14,16 +15,6 @@ const navLinks = [
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
-  const isHome = location.pathname === '/';
-
-  const handleCTA = (e: React.MouseEvent) => {
-    if (isHome) {
-      e.preventDefault();
-      const el = document.getElementById('kategorier');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <header className="border-b border-border/50 bg-card/95 backdrop-blur-md sticky top-0 z-50">
@@ -43,7 +34,7 @@ const Navbar = () => {
         </div>
 
         <div className="hidden lg:flex items-center gap-3">
-          <Link to={isHome ? '/#kategorier' : '/'} onClick={handleCTA}>
+          <Link to="/arenden">
             <Button size="sm" className="rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 font-bold">
               Kolla din rätt →
             </Button>
@@ -70,7 +61,7 @@ const Navbar = () => {
             </Link>
           ))}
           <div className="pt-2">
-            <Link to={isHome ? '/#kategorier' : '/'} onClick={(e) => { handleCTA(e); setMobileOpen(false); }}>
+            <Link to="/arenden" onClick={() => setMobileOpen(false)}>
               <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-bold rounded-lg w-full">
                 Kolla din rätt →
               </Button>

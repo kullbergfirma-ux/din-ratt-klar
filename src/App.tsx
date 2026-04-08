@@ -12,6 +12,7 @@ import { TextEditorProvider, useTextEditor } from '@/context/TextEditorContext';
 import { supabase } from '@/integrations/supabase/client';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
+const ArendenPage = lazy(() => import('./pages/ArendenPage'));
 const CategoryPage = lazy(() => import('./pages/CategoryPage'));
 const GuidePage = lazy(() => import('./pages/GuidePage'));
 const GuidesOverviewPage = lazy(() => import('./pages/GuidesOverviewPage'));
@@ -63,6 +64,7 @@ const AppContent = () => {
         <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="w-8 h-8 border-3 border-primary/30 border-t-primary rounded-full animate-spin" /></div>}>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/arenden" element={<ArendenPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/:slug" element={<CategoryPage />} />
             <Route path="/guide/:slug" element={<GuidePage />} />

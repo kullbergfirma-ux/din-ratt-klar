@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Lock } from 'lucide-react';
 
 export interface UserProfile {
@@ -15,6 +15,7 @@ interface Props {
   onSubmit: (profile: UserProfile) => void;
   onBack: () => void;
   categoryTitle: string;
+  prefilledCounterparty?: string;
 }
 
 const inputStyle: React.CSSProperties = {
@@ -41,7 +42,7 @@ const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
   e.currentTarget.style.background = '#FAFBFC';
 };
 
-const UserInfoForm = ({ onSubmit, onBack }: Props) => {
+const UserInfoForm = ({ onSubmit, onBack, prefilledCounterparty }: Props) => {
   const [profile, setProfile] = useState<UserProfile>({
     fullName: '',
     email: '',
@@ -49,8 +50,14 @@ const UserInfoForm = ({ onSubmit, onBack }: Props) => {
     postalCode: '',
     city: '',
     streetAddress: '',
-    counterparty: '',
+    counterparty: prefilledCounterparty || '',
   });
+
+  useEffect(() => {
+    if (prefilledCounterparty) {
+      setProfile(prev => ({ ...prev, counterparty: prefilledCounterparty }));
+    }
+  }, [prefilledCounterparty]);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validate = (): boolean => {
@@ -135,6 +142,11 @@ const UserInfoForm = ({ onSubmit, onBack }: Props) => {
 
         <div style={{ marginBottom: 24 }}>
           {field('counterparty', 'Företaget du har ett ärende mot', true, 'T.ex. SAS, IKEA, Telia')}
+          {profile.counterparty && prefilledCounterparty && (
+            <p style={{ fontSize: 12, color: '#9BA3AF', marginTop: 4 }}>
+              Hämtad från dina svar — du kan ändra detta
+            </p>
+          )}
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 24 }}>

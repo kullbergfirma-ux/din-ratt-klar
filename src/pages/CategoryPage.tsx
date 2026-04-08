@@ -35,6 +35,7 @@ const CategoryPage = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [uploadedFiles, setUploadedFiles] = useState<Record<string, File[]>>({});
+  const [prefilledCounterparty, setPrefilledCounterparty] = useState('');
   const [assessment, setAssessment] = useState('');
   const [sentiment, setSentiment] = useState<'positive' | 'uncertain' | 'negative'>('positive');
   const [letter, setLetter] = useState('');
@@ -65,6 +66,8 @@ const CategoryPage = () => {
     }
     setAnswers(ans);
     setUploadedFiles(files);
+    const companyName = ans.company || ans.bank || '';
+    setPrefilledCounterparty(companyName);
     setStep('userinfo');
   };
 
@@ -187,7 +190,7 @@ const CategoryPage = () => {
 
       {isInFlow && (
         <div ref={toolRef} style={{ background: '#F4F6F9', minHeight: '80vh', padding: '48px 16px' }}>
-          <div style={{ maxWidth: 640, margin: '0 auto' }}>
+          <div style={{ maxWidth: 1100, margin: '0 auto' }}>
             <ProgressBar current={stepIndex} total={4} />
 
             <AnimatePresence mode="wait">
@@ -199,7 +202,7 @@ const CategoryPage = () => {
 
               {step === 'userinfo' && (
                 <motion.div key="userinfo" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
-                  <UserInfoForm categoryTitle={category.title} onSubmit={handleUserInfoSubmit} onBack={() => setStep('questions')} />
+                  <UserInfoForm categoryTitle={category.title} prefilledCounterparty={prefilledCounterparty} onSubmit={handleUserInfoSubmit} onBack={() => setStep('questions')} />
                 </motion.div>
               )}
 

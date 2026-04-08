@@ -224,12 +224,12 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
         >
           <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0F1F3D', marginBottom: 16 }}>Ditt kravbrev</h2>
 
-          <div style={{ filter: 'blur(5px)', userSelect: 'none', flex: 1 }}>
-            <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.6, marginBottom: 6 }}>Hej,</p>
-            <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.6, marginBottom: 6 }}>Med anledning av nedanstående situation vänder jag mig till er med följande krav. Jag har som konsument rätt till ersättning enligt gällande lagstiftning och begär att ni återkommer med en lösning.</p>
-            <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.6, marginBottom: 6 }}>Enligt tillämplig lag har jag rätt till ersättning för den skada jag lidit. Jag begär att ärendet åtgärdas inom 14 dagar från detta brev.</p>
-            <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.6, marginBottom: 6 }}>Om ni inte återkommer inom angiven tid kommer jag att överväga att anmäla ärendet till Allmänna reklamationsnämnden för prövning.</p>
-            <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.6, marginBottom: 6 }}>Med vänliga hälsningar,{'\n'}[Ditt namn]</p>
+          <div style={{ filter: 'blur(5px)', userSelect: 'none', flex: 1, fontFamily: 'Georgia, "Times New Roman", serif', lineHeight: 1.9, background: '#FAFAF8', borderRadius: 10, padding: '20px 24px' }}>
+            <p style={{ fontSize: 13, color: '#374151', marginBottom: 6 }}>Hej,</p>
+            <p style={{ fontSize: 13, color: '#374151', marginBottom: 6 }}>Med anledning av nedanstående situation vänder jag mig till er med följande krav. Jag har som konsument rätt till ersättning enligt gällande lagstiftning och begär att ni återkommer med en lösning.</p>
+            <p style={{ fontSize: 13, color: '#374151', marginBottom: 6 }}>Enligt tillämplig lag har jag rätt till ersättning för den skada jag lidit. Jag begär att ärendet åtgärdas inom 14 dagar från detta brev.</p>
+            <p style={{ fontSize: 13, color: '#374151', marginBottom: 6 }}>Om ni inte återkommer inom angiven tid kommer jag att överväga att anmäla ärendet till Allmänna reklamationsnämnden för prövning.</p>
+            <p style={{ fontSize: 13, color: '#374151', marginBottom: 6 }}>Med vänliga hälsningar,{'\n'}[Ditt namn]</p>
           </div>
 
           <div style={{
@@ -272,6 +272,23 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
             >
               {isGenerating ? 'Genererar...' : 'Lås upp för 40 kr till'}
             </button>
+
+            <div style={{ marginTop: 20, textAlign: 'left', width: '100%', maxWidth: 260 }}>
+              <p style={{ fontSize: 12, fontWeight: 600, color: '#0F1F3D', marginBottom: 8 }}>Du får även:</p>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 5 }}>
+                {[
+                  'Nästa steg — konkret handlingsplan',
+                  'Steg-för-steg ARN-anmälningsguide',
+                  'Uppföljningsbrev om motparten inte svarar',
+                  'Strategisk vägledning',
+                ].map(item => (
+                  <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, fontSize: 11, color: '#374151' }}>
+                    <span style={{ color: '#1D9E75', flexShrink: 0, marginTop: 1 }}>✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       );
@@ -295,13 +312,14 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
           <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0F1F3D', marginBottom: 16 }}>Ditt kravbrev</h2>
 
           <div style={{
-            background: '#FAFBFC',
+            background: '#FAFAF8',
             borderRadius: 10,
             padding: '20px 24px',
             fontSize: 13,
-            lineHeight: 1.8,
+            lineHeight: 1.9,
             whiteSpace: 'pre-wrap',
             color: '#1A2744',
+            fontFamily: 'Georgia, "Times New Roman", serif',
             flex: 1,
             maxHeight: 500,
             overflowY: 'auto',
