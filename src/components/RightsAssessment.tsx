@@ -146,13 +146,14 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
       ref={assessmentRef}
       style={{
         background: '#FFFFFF',
-        borderRadius: 14,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)',
+        borderRadius: 16,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
         border: '1px solid rgba(0,0,0,0.06)',
         borderLeft: `4px solid ${sentimentColors[sentiment]}`,
-        padding: '24px 28px',
+        padding: '28px 32px',
         display: 'flex',
         flexDirection: 'column' as const,
+        height: '100%',
       }}
     >
       <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0F1F3D', marginBottom: 8 }}>Din rättighetsbedömning</h2>
