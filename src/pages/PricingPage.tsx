@@ -225,7 +225,7 @@ const PricingPage = () => {
                 {exampleLetter}
               </pre>
               <div style={{ borderTop: '1px solid #F0F4F8', paddingTop: 16, marginTop: 16 }}>
-                <Link to="/#kategorier">
+                <Link to="/arenden">
                   <button style={{
                     width: '100%',
                     padding: '11px 16px',

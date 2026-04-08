@@ -12,6 +12,7 @@ import { TextEditorProvider, useTextEditor } from '@/context/TextEditorContext';
 import { supabase } from '@/integrations/supabase/client';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
+const ArendenPage = lazy(() => import('./pages/ArendenPage'));
 const CategoryPage = lazy(() => import('./pages/CategoryPage'));
 const GuidePage = lazy(() => import('./pages/GuidePage'));
 const GuidesOverviewPage = lazy(() => import('./pages/GuidesOverviewPage'));
