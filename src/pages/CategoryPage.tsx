@@ -189,8 +189,8 @@ const CategoryPage = () => {
       )}
 
       {isInFlow && (
-        <div ref={toolRef} style={{ background: '#F4F6F9', minHeight: '80vh', padding: '48px 16px' }}>
-          <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div ref={toolRef} style={{ background: '#F4F6F9', minHeight: '80vh', padding: '40px 40px' }}>
+          <div style={{ width: '100%', maxWidth: 1400, margin: '0 auto' }}>
             <ProgressBar current={stepIndex} total={4} />
 
             <AnimatePresence mode="wait">

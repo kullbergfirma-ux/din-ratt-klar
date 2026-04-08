@@ -146,13 +146,14 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
       ref={assessmentRef}
       style={{
         background: '#FFFFFF',
-        borderRadius: 14,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)',
+        borderRadius: 16,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
         border: '1px solid rgba(0,0,0,0.06)',
         borderLeft: `4px solid ${sentimentColors[sentiment]}`,
-        padding: '24px 28px',
+        padding: '28px 32px',
         display: 'flex',
         flexDirection: 'column' as const,
+        height: '100%',
       }}
     >
       <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0F1F3D', marginBottom: 8 }}>Din rättighetsbedömning</h2>
@@ -212,17 +213,18 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
           ref={letterRef}
           style={{
             background: '#FFFFFF',
-            borderRadius: 14,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)',
-            border: '1px solid rgba(0,0,0,0.06)',
-            padding: '24px 28px',
+            borderRadius: 16,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+            border: '1px solid #E2E8F0',
+            padding: '28px 32px',
             position: 'relative',
             overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column' as const,
+            height: '100%',
           }}
         >
-          <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0F1F3D', marginBottom: 16 }}>Ditt kravbrev</h2>
+          <h2 style={{ fontSize: 17, fontWeight: 700, color: '#0F1F3D', marginBottom: 20, flexShrink: 0 }}>Ditt kravbrev</h2>
 
           <div style={{ filter: 'blur(5px)', userSelect: 'none', pointerEvents: 'none', flex: 1, fontFamily: 'inherit', fontSize: 14, lineHeight: 1.7, color: '#374151', background: '#FAFBFC', borderRadius: 10, border: '1px solid #F0F4F8', padding: '20px 24px' }}>
             <p style={{ fontSize: 13, color: '#374151', marginBottom: 6 }}>Hej,</p>
@@ -240,6 +242,10 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
             alignItems: 'center',
             justifyContent: 'center',
             background: 'rgba(255,255,255,0.75)',
+            backdropFilter: 'blur(3px)',
+            borderRadius: 16,
+            padding: 32,
+            textAlign: 'center',
           }}>
             <div style={{
               width: 48, height: 48, borderRadius: '50%', background: '#FEF3C7',
@@ -301,15 +307,16 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
           ref={letterRef}
           style={{
             background: '#FFFFFF',
-            borderRadius: 14,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)',
-            border: '1px solid rgba(0,0,0,0.06)',
-            padding: '24px 28px',
+            borderRadius: 16,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+            border: '1px solid #E2E8F0',
+            padding: '28px 32px',
             display: 'flex',
             flexDirection: 'column' as const,
+            height: '100%',
           }}
         >
-          <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0F1F3D', marginBottom: 16 }}>Ditt kravbrev</h2>
+          <h2 style={{ fontSize: 17, fontWeight: 700, color: '#0F1F3D', marginBottom: 20, flexShrink: 0 }}>Ditt kravbrev</h2>
 
           <div style={{
             background: '#FAFBFC',
@@ -318,13 +325,13 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
             padding: '20px 24px',
             fontSize: 14,
             lineHeight: 1.7,
-            whiteSpace: 'pre-wrap',
+            whiteSpace: 'pre-wrap' as const,
             color: '#374151',
             fontFamily: 'inherit',
             flex: 1,
-            maxHeight: 380,
-            overflowY: 'auto',
+            overflowY: 'auto' as const,
             marginBottom: 16,
+            minHeight: 0,
           }}>
             {displayLetter}
           </div>
@@ -496,7 +503,7 @@ const RightsAssessment = ({ assessment, sentiment, tier, letter, onUnlock, onBac
 
       {/* ── BAS / KOMPLETT: Two-column grid ── */}
       {(tier === 'bas' || tier === 'komplett') && (
-        <div className="result-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, alignItems: 'stretch' }}>
+        <div className="result-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, alignItems: 'stretch', width: '100%' }}>
           {renderAssessmentColumn()}
           {renderLetterColumn()}
         </div>
